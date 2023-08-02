@@ -27,13 +27,13 @@ precision highp float;
 uniform highp float inp0;
 uniform highp float inp1;
 
+uniform highp float inputs[8];
+
+
 varying highp vec2 vTextureCoord;
 uniform sampler2D uSampler;
 
 uniform int uProcessVal;  // switch the shader behaviour
-
-//(inner < 0.35 && outer > 0.20 && outer < 0.26  ) 
-//ir 1/2
 
 
 
@@ -92,8 +92,8 @@ highp float processPixel(highp vec2 tex){
     
     
     if (
-      ( inner > inp1 && inner < inp0  && outer > 0.20 && outer < 0.25  )  || 
-      (inner > 0.32 && outer > 0.25 && outer < 0.335  ) 
+      ( inner < inputs[0] && inner > inputs[1]  && outer < inputs[2] &&  outer > inputs[3]  )  || 
+      ( inner < inputs[4]  && inner > inputs[5] && outer < inputs[6]  && outer > inputs[7]  ) 
       ) 
           result *= -1.;
 

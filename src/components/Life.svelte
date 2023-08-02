@@ -8,7 +8,7 @@
 	let previousTime = 0;
     let fpsLimit = 80;
 
-	let controls = [0.35,0];
+	let controls = [0.35,0, 0.25,0.2,  1.,0.32,0.335,0.25];
 
 	onMount(() => {
 		scene = new Scene(canvas);
@@ -37,36 +37,38 @@
 		
 	}
 
+	const step = 0.001;
+
 	
 </script>
 <div >
 	<div class="controls-container">
 		
-		<div>
-			inner
+		<div style="display: flex;">	
 			<div  style="display: flex; flex-direction: column;">
-				<input type="number" bind:value={controls[0]} min=0 max="1" step="0.1"/>
-				<input type="number" bind:value={controls[1]} min=0 max="1" step="0.1" />
-			</div>
-			outer
-			<div  style="display: flex; flex-direction: column;">
-				<input type="number" bind:value={controls[2]} min=0 max="1" step="0.1"/>
-				<input type="number" bind:value={controls[3]} min=0 max="1" step="0.1" />
+				inner
+				<input type="number" bind:value={controls[0]} min=0 max="1" step={step}/>
+				<input type="number" bind:value={controls[1]} min=0 max="1" step={step} />
 			</div>
 			
-		</div>
-		<div>
-			inner
 			<div  style="display: flex; flex-direction: column;">
-				<input type="number" bind:value={controls[4]} min=0 max="1" step="0.1"/>
-				<input type="number" bind:value={controls[5]} min=0 max="1" step="0.1" />
+				outer
+				<input type="number" bind:value={controls[2]} min=0 max="1" step={step}/>
+				<input type="number" bind:value={controls[3]} min=0 max="1" step={step} />
 			</div>
-			outer
+		</div>
+		<div style="display: flex;">	
 			<div  style="display: flex; flex-direction: column;">
+				inner
+				<input type="number" bind:value={controls[4]} min=0 max="1" step={step}/>
+				<input type="number" bind:value={controls[5]} min=0 max="1" step={step} />
+			</div>
+			
+			<div  style="display: flex; flex-direction: column;">
+				outer
 				<input type="number" bind:value={controls[6]} min=0 max="1" step="0.1"/>
 				<input type="number" bind:value={controls[7]} min=0 max="1" step="0.1" />
 			</div>
-			
 		</div>
 		
 	</div>
@@ -85,8 +87,12 @@
 	.controls-container{
 		background-color: rgb(158, 90, 90); 
 		display: flex;
-		padding: 40px;
+		flex-direction: column;
+		padding: 10px;
 		margin: 4px;
+	}
+	.controls-container >div:first-child{
+		padding-bottom: 10px;
 	}
 
 	.canvas-container {

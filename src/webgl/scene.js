@@ -53,8 +53,7 @@ export function Scene(canvas) {
 			uniforms: {
 				uSampler: {value:null},
 				uProcessVal: {value:null},
-				inp0: {value:null},
-				inp1: {value:null},
+				inputs: {value:null},
 			},
 		}
 	};
@@ -193,8 +192,7 @@ Scene.prototype.drawScene = function (time,controls)  {
 
 
 	//set the variables
-	gl.uniform1f(shaders.basic.uniforms.inp0.location, controls[0]);
-	gl.uniform1f(shaders.basic.uniforms.inp1.location, controls[1]);
+	gl.uniform1fv(shaders.basic.uniforms.inputs.location, controls);
 
 
 
