@@ -92,7 +92,7 @@ highp float processPixel(highp vec2 tex){
     
     
     if (
-      (inner < 0.35 + inp0  && outer > 0.20 + inp1 && outer < 0.25  )  || 
+      ( inner > inp1 && inner < inp0  && outer > 0.20 && outer < 0.25  )  || 
       (inner > 0.32 && outer > 0.25 && outer < 0.335  ) 
       ) 
           result *= -1.;

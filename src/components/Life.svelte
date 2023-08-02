@@ -1,5 +1,5 @@
 
-<script lang="ts">
+<script >
  	import { onMount } from "svelte";
 	import { Scene } from "../webgl/scene.js";
 
@@ -8,7 +8,7 @@
 	let previousTime = 0;
     let fpsLimit = 80;
 
-	let controls = [0,0];
+	let controls = [0.35,0];
 
 	onMount(() => {
 		scene = new Scene(canvas);
@@ -41,8 +41,34 @@
 </script>
 <div >
 	<div class="controls-container">
-		<input type="number" bind:value={controls[0]} min=-1 max="1" />
-		<input type="number" bind:value={controls[1]} min=-1 max="1" />
+		
+		<div>
+			inner
+			<div  style="display: flex; flex-direction: column;">
+				<input type="number" bind:value={controls[0]} min=0 max="1" step="0.1"/>
+				<input type="number" bind:value={controls[1]} min=0 max="1" step="0.1" />
+			</div>
+			outer
+			<div  style="display: flex; flex-direction: column;">
+				<input type="number" bind:value={controls[2]} min=0 max="1" step="0.1"/>
+				<input type="number" bind:value={controls[3]} min=0 max="1" step="0.1" />
+			</div>
+			
+		</div>
+		<div>
+			inner
+			<div  style="display: flex; flex-direction: column;">
+				<input type="number" bind:value={controls[4]} min=0 max="1" step="0.1"/>
+				<input type="number" bind:value={controls[5]} min=0 max="1" step="0.1" />
+			</div>
+			outer
+			<div  style="display: flex; flex-direction: column;">
+				<input type="number" bind:value={controls[6]} min=0 max="1" step="0.1"/>
+				<input type="number" bind:value={controls[7]} min=0 max="1" step="0.1" />
+			</div>
+			
+		</div>
+		
 	</div>
 </div>
 <div class="canvas-container flex">
@@ -57,7 +83,7 @@
 <style>
 
 	.controls-container{
-		background-color: red; 
+		background-color: rgb(158, 90, 90); 
 		display: flex;
 		padding: 40px;
 		margin: 4px;
