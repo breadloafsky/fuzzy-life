@@ -1,6 +1,18 @@
+
+#define PI 3.1415926538
+precision highp float;
+
+
+
+uniform highp float inputs[8];
+
+
 varying highp vec2 vTextureCoord;
 uniform sampler2D uSampler;
-uniform highp float uProcessVal;
+
+uniform int uProcessVal;  // switch the shader behaviour
+
+
 
 
 highp vec4 getPixel(highp vec2 coord, highp float offsetX,highp float offsetY){
@@ -12,11 +24,11 @@ highp vec4 getPixel(highp vec2 coord, highp float offsetX,highp float offsetY){
 
 highp float processPixel(highp vec2 tex){
  
-  // 0.007 is the 1/128px
-  const highp float mtpl = 1./256.;
+  // e.g.:  0.007 is the 1/128px
+  const highp float mtpl = 1./512.;
 
 
-  const int r = 16;
+  const mediump float radius = 12.0;
   
   highp float inner = 0.;
   highp float outer = 0.;
@@ -25,34 +37,42 @@ highp float processPixel(highp vec2 tex){
   int count_outer = 0;
 
 
-  for(int i = -r+1; i < r; i++){
-    for(int j = -r+1; j < r; j++){
-    
-      mediump float i_f = float(i) * mtpl;
-      mediump float j_f = float(j) * mtpl;
-      mediump float dist = sqrt(pow(i_f,2.) + pow(j_f,2.));
+    const int maxIter = 100;
 
-        if( dist <  float(r)*mtpl/1.6)
-        {
-          inner += getPixel(vTextureCoord ,i_f, j_f ).r;
-          count_inner++;
-        }
-        else if( dist < float(r)*mtpl){
-          outer += getPixel(vTextureCoord ,i_f, j_f ).r;
-          count_outer++;
-        }
+    for(int i = 0; i < maxIter; i++)
+    {
+      mediump float i_f = float(i);
+      mediump float r = sqrt(i_f/float(maxIter));
+      
+      mediump float px = cos(i_f*14.)*radius;
+      mediump float py = sin(i_f*14.)*radius;
+
+      if( r <  0.4)
+      {
+        inner += getPixel(vTextureCoord ,px, py ).r;
+        count_inner++;
+      }
+      else if( r <  1.0)
+      {
+        outer += getPixel(vTextureCoord ,px, py ).r;
+        count_outer++;
+      }
     }
-  }
 
     inner = inner/float(count_inner);
     outer = outer/float(count_outer);
 
-    highp float result = -0.04;
+    highp float result = -0.18;
     
-    if (inner < 0.3 && outer > 0.2 && outer < 0.4)
-          result = 0.04;
+    if (
+      ( inner < inputs[0] && inner > inputs[1]  && outer < inputs[2] &&  outer > inputs[3]  )  || 
+      ( inner < inputs[4]  && inner > inputs[5] && outer < inputs[6]  && outer > inputs[7]  ) 
+      ) 
+          result *= -1.;
 
   return result;
+
+ 
 }
 
 void main(void) {
@@ -61,11 +81,27 @@ void main(void) {
   highp vec4 tex = texture2D(uSampler, vTextureCoord);
   
 
-  if(uProcessVal > 0.0)
-  	tex = tex + processPixel(vTextureCoord);
-  	//if( sqrt(pow(vTextureCoord.x-0.5,2.) + pow(vTextureCoord.y-0.5,2.)) < 0.1)
-  
+  if(float(uProcessVal) > 0.)
+  {
+    tex.r = tex.r + processPixel(vTextureCoord);
+    //tex.r = 0.0;
+  }
+  else{
+    tex = vec4(tex.r,tex.r,tex.r,1.0); 
+    if(tex.r > 0.5)
+      tex.r /=2.; 
+    else
+      tex.rb *= 2.;
+  }
+
+  // if( sqrt(pow(vTextureCoord.x-0.5,2.) + pow(vTextureCoord.y-0.5,2.)) < 0.1)
+  //   tex.r = 0.0;
+
+    
 
   
-gl_FragColor = tex; 
+
+
+  
+  gl_FragColor = tex;
 }

@@ -120,7 +120,7 @@ Scene.prototype.init = function(){
 	// init buffers
 	this.initBuffers();
 	
-	// load textures and create frame buffers
+	// create frame buffers & textures
 	for(let i = 0; i < 2; i++)
 	{
 		//load texture
@@ -173,7 +173,7 @@ Scene.prototype.drawScene = function (time,controls)  {
 	const fb = this.fb;
 
 	gl.enable(gl.CULL_FACE);
-	gl.enable(gl.DEPTH_TEST);
+
 	gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
 	//  clear scene

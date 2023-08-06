@@ -23,11 +23,11 @@ export const utils = {
 		
 
 		const level = 0;
-		const internalFormat = gl.RGBA;
+		const internalFormat = gl.RGB;
 		const width = resolution;
 		const height = resolution;
 		const border = 0;
-		const srcFormat = gl.RGBA;
+		const srcFormat = gl.RGB;
 		const srcType = gl.UNSIGNED_BYTE;
 		
 		let arr = [];
@@ -40,7 +40,7 @@ export const utils = {
 			// 	a = 0
 
 			a = a *255;
-			[a,a,a,255].forEach((e) => arr.push(e));
+			[a,a,a].forEach((e) => arr.push(e));
 		}
 
 		const pixel = new Uint8Array(arr);

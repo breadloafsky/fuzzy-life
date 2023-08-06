@@ -2,13 +2,14 @@
 <script >
  	import { onMount } from "svelte";
 	import { Scene } from "../webgl/scene.js";
-
+	import ParameterControls from "./ParameterControls.svelte";
     let canvas;
 	let scene;
 	let previousTime = 0;
     let fpsLimit = 80;
 
-	let controls = [0.35,0.0001, 0.25,0.2,  0.9999,0.32,0.335,0.271];
+	let controls = [0, 0.35, 0.2, 0.25,  
+	0.32, 1,0.271, 0.335];
 
 	onMount(() => {
 		scene = new Scene(canvas);
@@ -32,19 +33,15 @@
 		
 		scene.drawScene(time * 0.001, controls);	
 		previousTime = time;
-
-
 		
 	}
-
-	const step = 0.001;
 
 	
 </script>
 <div >
-	<div class="controls-container">
-		
-		<div style="display: flex;">	
+	<div>
+		<ParameterControls bind:controls={controls}/>
+		<!-- <div style="display: flex;">	
 			<div  style="display: flex; flex-direction: column;">
 				inner
 				<input type="number" bind:value={controls[0]} min=0 max="0.999" step={step} />
@@ -69,7 +66,7 @@
 				<input type="number" bind:value={controls[6]} min=0 max="0.999" step={step}/>
 				<input type="number" bind:value={controls[7]} min=0 max="0.999" step={step} />
 			</div>
-		</div>
+		</div> -->
 		
 	</div>
 </div>
@@ -84,16 +81,7 @@
 
 <style>
 
-	.controls-container{
-		background-color: rgb(158, 90, 90); 
-		display: flex;
-		flex-direction: column;
-		padding: 10px;
-		margin: 4px;
-	}
-	.controls-container >div:first-child{
-		padding-bottom: 10px;
-	}
+
 
 	.canvas-container {
 		display: flex;

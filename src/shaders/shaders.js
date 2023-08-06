@@ -21,16 +21,14 @@ basicFs:`
 
 
 #define PI 3.1415926538
-precision highp float;
+precision mediump float;
 
 // inputs
-uniform highp float inp0;
-uniform highp float inp1;
 
-uniform highp float inputs[8];
+uniform mediump float inputs[8];
 
 
-varying highp vec2 vTextureCoord;
+varying lowp vec2 vTextureCoord;
 uniform sampler2D uSampler;
 
 uniform int uProcessVal;  // switch the shader behaviour
@@ -38,23 +36,23 @@ uniform int uProcessVal;  // switch the shader behaviour
 
 
 
-highp vec4 getPixel(highp vec2 coord, highp float offsetX,highp float offsetY){
+highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
 
   coord.x += offsetX;
   coord.y += offsetY;
   return texture2D(uSampler, coord);
 }
 
-highp float processPixel(highp vec2 tex){
+float processPixel(highp vec2 tex){
  
   // e.g.:  0.007 is the 1/128px
-  const highp float mtpl = 1./512.;
+  const mediump float mtpl = 1./512.;
 
 
   const int r = 12;
   
-  highp float inner = 0.;
-  highp float outer = 0.;
+  mediump float inner = 0.;
+  mediump float outer = 0.;
 
   int count_inner = 0;
   int count_outer = 0;
@@ -71,31 +69,32 @@ highp float processPixel(highp vec2 tex){
       
       mediump float dist = distance(vec2(i_f, j_f), vec2(0.,0.)); 	
 
-        if( dist <  float(r)*mtpl/3.)
-        {
-          inner += getPixel(vTextureCoord ,i_f, j_f ).r;
-          count_inner++;
-        }
-        else if( dist < float(r)*mtpl){
-          outer += getPixel(vTextureCoord ,i_f, j_f ).r;
-          count_outer++;
-        }
+      if( dist <  float(r)*mtpl/3.)
+      {
+        inner += getPixel(vTextureCoord ,i_f, j_f ).r;
+        count_inner++;
+      }
+      else if( dist < float(r)*mtpl){
+        outer += getPixel(vTextureCoord ,i_f, j_f ).r;
+        count_outer++;
+      }
     }
   }
 
     inner = inner/float(count_inner);
     outer = outer/float(count_outer);
 
-    highp float result = -0.18;
+    highp float result = -0.19;
 
 
     
     
     if (
-      ( inner < inputs[0] && inner > inputs[1]  && outer < inputs[2] &&  outer > inputs[3]  )  || 
-      ( inner < inputs[4]  && inner > inputs[5] && outer < inputs[6]  && outer > inputs[7]  ) 
+      ( inner > inputs[0] && inner < inputs[1]  && outer > inputs[2] &&  outer < inputs[3]  )  || 
+      ( inner > inputs[4]  && inner < inputs[5] && outer > inputs[6]  && outer < inputs[7]  ) 
       ) 
           result *= -1.;
+
 
   return result;
 
@@ -114,15 +113,15 @@ void main(void) {
     //tex.r = 0.0;
   }
   else{
-    tex = vec4(tex.r,tex.r,tex.r,1.0); 
-    if(tex.r > 0.5)
-      tex.r /=2.; 
-    else
-      tex.rb *= 2.;
+    tex.g = sin(tex.r*PI/2.);
+    tex.b = sin(tex.r*PI/1.5);
+    tex.r = sin(tex.r*PI/2.5);
+
+    //tex = vec4(tex.r,tex.r,tex.r,1.);
   }
 
   // if( sqrt(pow(vTextureCoord.x-0.5,2.) + pow(vTextureCoord.y-0.5,2.)) < 0.1)
-  //   tex.r = 0.0;
+  //   tex.r = 1.0;
 
     
 
