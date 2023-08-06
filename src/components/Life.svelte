@@ -8,7 +8,7 @@
 	let previousTime = 0;
     let fpsLimit = 80;
 
-	let controls = [0.35,0, 0.25,0.2,  1.,0.32,0.335,0.25];
+	let controls = [0.35,0.0001, 0.25,0.2,  0.9999,0.32,0.335,0.271];
 
 	onMount(() => {
 		scene = new Scene(canvas);
@@ -47,27 +47,27 @@
 		<div style="display: flex;">	
 			<div  style="display: flex; flex-direction: column;">
 				inner
-				<input type="number" bind:value={controls[0]} min=0 max="1" step={step}/>
-				<input type="number" bind:value={controls[1]} min=0 max="1" step={step} />
+				<input type="number" bind:value={controls[0]} min=0 max="0.999" step={step} />
+				<input type="number" bind:value={controls[1]} min=0 max="0.999" step={step} />
 			</div>
 			
 			<div  style="display: flex; flex-direction: column;">
 				outer
-				<input type="number" bind:value={controls[2]} min=0 max="1" step={step}/>
-				<input type="number" bind:value={controls[3]} min=0 max="1" step={step} />
+				<input type="number" bind:value={controls[2]} min=0 max="0.999" step={step}/>
+				<input type="number" bind:value={controls[3]} min=0 max="0.999" step={step} />
 			</div>
 		</div>
 		<div style="display: flex;">	
 			<div  style="display: flex; flex-direction: column;">
 				inner
-				<input type="number" bind:value={controls[4]} min=0 max="1" step={step}/>
-				<input type="number" bind:value={controls[5]} min=0 max="1" step={step} />
+				<input type="number" bind:value={controls[4]} min=0 max="0.999" step={step}/>
+				<input type="number" bind:value={controls[5]} min=0 max="0.999" step={step} />
 			</div>
 			
 			<div  style="display: flex; flex-direction: column;">
 				outer
-				<input type="number" bind:value={controls[6]} min=0 max="1" step="0.1"/>
-				<input type="number" bind:value={controls[7]} min=0 max="1" step="0.1" />
+				<input type="number" bind:value={controls[6]} min=0 max="0.999" step={step}/>
+				<input type="number" bind:value={controls[7]} min=0 max="0.999" step={step} />
 			</div>
 		</div>
 		

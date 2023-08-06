@@ -51,7 +51,7 @@ highp float processPixel(highp vec2 tex){
   const highp float mtpl = 1./512.;
 
 
-  const int r = 10;
+  const int r = 12;
   
   highp float inner = 0.;
   highp float outer = 0.;
@@ -115,10 +115,10 @@ void main(void) {
   }
   else{
     tex = vec4(tex.r,tex.r,tex.r,1.0); 
-    if(tex.r > 0.9)
-      tex.bg /=2.;
+    if(tex.r > 0.5)
+      tex.r /=2.; 
     else
-      tex.gb *= 2.;
+      tex.rb *= 2.;
   }
 
   // if( sqrt(pow(vTextureCoord.x-0.5,2.) + pow(vTextureCoord.y-0.5,2.)) < 0.1)
