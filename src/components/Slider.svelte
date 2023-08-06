@@ -47,7 +47,7 @@
 
 		val = Math.round(val*1000)/1000;
 
-		if(Math.abs(val0-val) < Math.abs(val1-val))
+		if(Math.abs(val0-val) <= Math.abs(val1-val) )
 			val0 = val;
 		else
 			val1 = val;

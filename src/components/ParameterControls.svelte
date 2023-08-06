@@ -5,14 +5,8 @@
 	export let controls;
 
 	onMount(() => {
-
 		
 	});
-
-
-
-
-   
 </script>
 <div class="params-container" >
 
@@ -34,15 +28,15 @@
 		<div class="rule">
 			<div class="title">A</div>
 			<div>
-				<Slider bind:val0={controls[0]} bind:val1={controls[1]}/>
-				<Slider bind:val0={controls[2]} bind:val1={controls[3]}/>
+				<Slider bind:val0={controls.params[0]} bind:val1={controls.params[1]}/>
+				<Slider bind:val0={controls.params[2]} bind:val1={controls.params[3]}/>
 			</div>
 		</div>
 		<div class="rule">
 			<div class="title">B</div>
 			<div>
-				<Slider bind:val0={controls[4]} bind:val1={controls[5]}/>
-				<Slider bind:val0={controls[6]} bind:val1={controls[7]}/>
+				<Slider bind:val0={controls.params[4]} bind:val1={controls.params[5]}/>
+				<Slider bind:val0={controls.params[6]} bind:val1={controls.params[7]}/>
 			</div>
 		</div>
 	</div>
@@ -70,11 +64,7 @@
 		opacity: 0.8;
 	}
 	.params-container{
-		min-width: 200px;
-		background-color: rgba(0, 0, 0, 0.863); 
-		display: flex;
-		flex-direction: column;
-		padding: 10px;
+	
 	}
 	
 	.diagram {

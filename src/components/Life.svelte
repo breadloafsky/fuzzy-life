@@ -8,8 +8,15 @@
 	let previousTime = 0;
     let fpsLimit = 80;
 
-	let controls = [0, 0.35, 0.2, 0.25,  
-	0.32, 1,0.271, 0.335];
+	let fileInput;
+
+
+	let controls = {
+		params:[0, 0.35, 0.2, 0.25,  
+		0.32, 1,0.271, 0.335]
+	}
+
+	
 
 	onMount(() => {
 		scene = new Scene(canvas);
@@ -35,39 +42,62 @@
 		previousTime = time;
 		
 	}
+	// ToDo - rename controls -> params and params -> *
+
+	function saveScene() {
+    	var file = new Blob([JSON.stringify({...controls},null,"\t")], {type: "json"});
+		var a = document.createElement("a"),
+				url = URL.createObjectURL(file);
+		a.href = url;
+		a.download = "params.json";
+		document.body.appendChild(a);
+		a.click();
+		setTimeout(function() {
+			document.body.removeChild(a);
+			window.URL.revokeObjectURL(url);  
+		}, 0); 
+	}
+
+	function loadScene() {
+    const file = fileInput.files[0];
+    if (file) {
+		const reader = new FileReader();
+		reader.addEventListener("load", function () {
+			controls = {...JSON.parse(reader.result+"")};
+
+		});
+		reader.readAsText(file);
+		return;
+    } 
+	alert("File error");
+
+  }
 
 	
 </script>
 <div >
 	<div>
-		<ParameterControls bind:controls={controls}/>
-		<!-- <div style="display: flex;">	
-			<div  style="display: flex; flex-direction: column;">
-				inner
-				<input type="number" bind:value={controls[0]} min=0 max="0.999" step={step} />
-				<input type="number" bind:value={controls[1]} min=0 max="0.999" step={step} />
+		<div class="controls-container">
+			<div style="display: flex; flex-direction: row-reverse;">
+				<button on:click={scene.generateNoiseTexture()}>R</button>
 			</div>
-			
-			<div  style="display: flex; flex-direction: column;">
-				outer
-				<input type="number" bind:value={controls[2]} min=0 max="0.999" step={step}/>
-				<input type="number" bind:value={controls[3]} min=0 max="0.999" step={step} />
+			<div >
+				<div >load file</div>
+				<label title="load file">
+					<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
+				</label>
 			</div>
+			<div>
+				<div>save file</div>
+				<button 
+				title="save file"
+				on:click={() => saveScene()}
+				>
+				save
+				</button>
+			</div>
+			<ParameterControls bind:controls={controls}/>
 		</div>
-		<div style="display: flex;">	
-			<div  style="display: flex; flex-direction: column;">
-				inner
-				<input type="number" bind:value={controls[4]} min=0 max="0.999" step={step}/>
-				<input type="number" bind:value={controls[5]} min=0 max="0.999" step={step} />
-			</div>
-			
-			<div  style="display: flex; flex-direction: column;">
-				outer
-				<input type="number" bind:value={controls[6]} min=0 max="0.999" step={step}/>
-				<input type="number" bind:value={controls[7]} min=0 max="0.999" step={step} />
-			</div>
-		</div> -->
-		
 	</div>
 </div>
 <div class="canvas-container flex">
@@ -81,7 +111,13 @@
 
 <style>
 
-
+	.controls-container{
+		min-width: 200px;
+		background-color: rgba(0, 0, 0, 0.863); 
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
+	}
 
 	.canvas-container {
 		display: flex;

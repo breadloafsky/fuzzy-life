@@ -113,11 +113,15 @@ void main(void) {
     //tex.r = 0.0;
   }
   else{
-    tex.g = sin(tex.r*PI/2.);
-    tex.b = sin(tex.r*PI/1.5);
-    tex.r = sin(tex.r*PI/2.5);
+    
 
-    //tex = vec4(tex.r,tex.r,tex.r,1.);
+    tex = vec4(tex.r,tex.r,tex.r,1.);
+
+    if(tex.r > 0.9)
+      tex.gb *= vec2(0.8,0.5);
+
+    if(tex.r > 0.5)
+      tex.gr *= vec2(2.,1.);
   }
 
   // if( sqrt(pow(vTextureCoord.x-0.5,2.) + pow(vTextureCoord.y-0.5,2.)) < 0.1)

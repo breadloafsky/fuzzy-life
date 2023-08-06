@@ -120,23 +120,27 @@ Scene.prototype.init = function(){
 	// init buffers
 	this.initBuffers();
 	
-	// create frame buffers & textures
+	// create frame buffers
 	for(let i = 0; i < 2; i++)
 	{
-		//load texture
-		this.textures.push(utils.loadTexture(gl, resolution));
-
-		//create framebuffer
 		let fb  = gl.createFramebuffer();
+		this.fb.push(fb);
+	}
+	// generate random noise texture
+	this.generateNoiseTexture();
+}
+
+
+// create a noise texture
+Scene.prototype.generateNoiseTexture = function(){
+	const gl = this.gl;
+	this.textures = [];
+	this.fb.forEach((fb,i) => {
+		this.textures.push(utils.loadTexture(gl, resolution));
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
-		this.fb.push(fb);
-	}
-	
-	
-
+	});
 }
 
 
@@ -189,16 +193,10 @@ Scene.prototype.drawScene = function (time,controls)  {
 	setAttribute(gl, shaders.basic.attributes.aVertexPosition);
 	setAttribute(gl, shaders.basic.attributes.aTextureCoord);
 
-
-
-	//set the variables
-	gl.uniform1fv(shaders.basic.uniforms.inputs.location, controls);
-
-
-
+	//set the parameters
+	gl.uniform1fv(shaders.basic.uniforms.inputs.location, controls.params);
 
 	fbCurrent  =  1 - fbCurrent;	//flip
-
 
 	
 	//	process the texture
@@ -213,7 +211,7 @@ Scene.prototype.drawScene = function (time,controls)  {
 	//	render to screen
 	{
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[1]);
+		gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 
 		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, 0); 
 		drawScreen(gl);
