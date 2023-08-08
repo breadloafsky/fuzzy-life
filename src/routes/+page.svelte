@@ -1,4 +1,5 @@
 <script>
+	import "../app.css"
 	import Life from "../components/Life.svelte";
 </script>
 
@@ -11,4 +12,5 @@
 		margin: 0;
 		color: aliceblue;
 	}
+	
 </style>

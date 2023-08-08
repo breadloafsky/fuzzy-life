@@ -1,8 +1,12 @@
 
 <script >
 	import Slider from "./Slider.svelte";
+	import SliderDouble from "./SliderDouble.svelte";
+	import CircleParams from "./CircleParams.svelte";
 	import { onMount } from "svelte";
+    
 	export let controls;
+	
 
 	onMount(() => {
 		
@@ -10,33 +14,37 @@
 </script>
 <div class="params-container" >
 
-	<!-- <div class="diagram">
-		<div class="d_outer">
-			<div class="d_control">
-				<div class="d_inner">
-				</div>
+	
+	<div >
+		<h2>Areas:</h2>
+		
+		<div >
+			<div id="radiusSlider">
+				<Slider bind:val={controls.radius} range={[0,12]}/> 
+				Overall Radius
 			</div>
+			<div id="ratioSlider" style="padding-top: 10px;">
+				<Slider bind:val={controls.radiusRatio} range={[0,1]}/>
+				Inner/Outer R Ratio 
+			</div>
+			<CircleParams bind:rr={controls.radiusRatio}/>
 		</div>
-		<div style="display: flex; flex-direction: column;">
-			<div>Radius</div>
-		</div>
-	</div> -->
+		
+	</div>
 	<div>
-		<h2>
-			Rules:
-		</h2>
+		<h2>Rules:</h2>
 		<div class="rule">
 			<div class="title">A</div>
 			<div>
-				<Slider bind:val0={controls.params[0]} bind:val1={controls.params[1]}/>
-				<Slider bind:val0={controls.params[2]} bind:val1={controls.params[3]}/>
+				<SliderDouble bind:val0={controls.params[0]} bind:val1={controls.params[1]} />
+				<SliderDouble bind:val0={controls.params[2]} bind:val1={controls.params[3]} flipY={true}/>
 			</div>
 		</div>
 		<div class="rule">
 			<div class="title">B</div>
 			<div>
-				<Slider bind:val0={controls.params[4]} bind:val1={controls.params[5]}/>
-				<Slider bind:val0={controls.params[6]} bind:val1={controls.params[7]}/>
+				<SliderDouble bind:val0={controls.params[4]} bind:val1={controls.params[5]}/>
+				<SliderDouble bind:val0={controls.params[6]} bind:val1={controls.params[7]} flipY={true}/>
 			</div>
 		</div>
 	</div>
@@ -44,13 +52,23 @@
 </div>
 
 <style>
-	:global(.slider-container:nth-child(even) .bar){
-		background-color: rgb(179, 255, 0) !important;
+
+	:global(.rule .slider-container:nth-child(odd) .bar){
+		--color:var(--color0);
 	}
-	:global(.slider-container:nth-child(even)){
-		flex-direction: column-reverse !important;
+	:global(.rule .slider-container:nth-child(even) .bar){
+		--color:var(--color1);
 	}
 
+	:global(#radiusSlider .slider-container){
+		--color:white;
+	}
+
+	:global(#ratioSlider .slider-container){
+		--color:var(--color0);
+		--color_bg:var(--color1);
+	}
+	
 	.rule{
 		background-color: rgb(43, 43, 43);
 		padding: 10px;
@@ -67,17 +85,9 @@
 	
 	}
 	
-	.diagram {
-		display: flex;
-	}
+	
 
-	.d_outer{
-		width: 40%;
-		height: 100%;
-		border-radius: 50%;
-		background-color: aqua;
-	} 
-
+	
 	
 
    

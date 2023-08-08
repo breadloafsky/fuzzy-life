@@ -1,46 +1,56 @@
 
 <script >
-	export let range = [0,1];
-	export let val;
+	export const range = [0,1];
+	export let val0;
+	export let val1;
+
 	export const color = 0;
 	export let flipY = false;
+
+	let component;
+	let selectedValue = null;
+	let vals = [val0, val1];
 	
 
-	let sliderVal = actualToRelative(val);
-	let component;
-	let isMouseDown = false;
-
 	$:{
-		val = relativeToActual(sliderVal);
+		if(val0 > val1){
+			vals = [val1, val0]
+			selectedValue = 1-selectedValue;
+		}
 	}
 
-	function relativeToActual(v){
-		return Math.round(v * (Math.abs(range[0]-range[1]) + range[0]) * 1000)/1000;		
-	}
-
-	function actualToRelative(v){
-		return (v-range[0])/(Math.abs(range[0]-range[1]));
-	}
+	// onMount(() => {
+	// });
 
 	// remove event listeners
 	function cleanUp()
 	{
 		document.removeEventListener("mousemove", mouseMove);
 		document.removeEventListener("mouseup", cleanUp);
-		isMouseDown = false;
+		selectedValue = null;
 	}
 
 
 	function mouseDown(e){
-		isMouseDown = true;
+		
+	
 		document.addEventListener("mousemove", mouseMove);
 		document.addEventListener("mouseup", cleanUp);
+		
+		let val = getSliderVal(e);
+		if(Math.abs(val0-val) <= Math.abs(val1-val) )
+			selectedValue = 0;
+		else
+			selectedValue = 1;
+
 		mouseMove(e);
 	}
 
 	
 	function mouseMove(e) {
-		sliderVal = getSliderVal(e);
+		let val = getSliderVal(e);
+		vals[selectedValue] = val;
+		[val0, val1] = vals;
 	}
 
 
@@ -68,9 +78,10 @@
 		bind:this={component}
 		on:mousedown={e => mouseDown(e)}
 		class="slider" 
-		style="--sliderVal:{sliderVal};">
+		style="--val0:{val0}; --val1:{val1};">
 		<div class="bar">
-			<div data-selected={isMouseDown}><div>{val}</div></div>
+			<div data-selected={selectedValue == 0}><div>{val0}</div></div>
+			<div data-selected={selectedValue == 1}><div>{val1}</div></div>
 		</div>
 	</button>
 </div>
@@ -86,7 +97,6 @@
 
 	.slider-container{
 		--color:aqua;
-		--color_bg:rgb(134, 134, 134); 
 		display: flex;
 		flex-direction: column;
 	}
@@ -95,8 +105,9 @@
 		flex-direction: column-reverse !important;
 	}
 	.slider{
-		--sliderVal:0.5;
-		background-color: var(--color_bg); 
+		--val0:0.5;
+		--val1:0.5;
+		background-color: rgb(134, 134, 134); 
 		width: 100%;
 		height: 20px;
 		opacity: 0.8;
@@ -108,9 +119,10 @@
 	}
 	.bar{
 		display: flex;
-		justify-content:end;
+		justify-content: space-between;
 		background-color: var(--color);
-		width: calc( ( var(--sliderVal) ) * 100% );
+		width: calc( ( var(--val1) - var(--val0) ) * 100% );
+		margin-left: calc( var(--val0) * 100% );
 		height: 100%;
 	}
 	

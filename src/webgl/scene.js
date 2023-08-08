@@ -4,9 +4,10 @@ import { get } from 'svelte/store';
 import { utils } from './utils';
 
 var screen = [100,100];
+var textureDims = [10,10];
 
 
-var resolution = 512;
+
 // plane vertices
 const screenData ={
 	coords:[
@@ -16,8 +17,6 @@ const screenData ={
 		1.0, 1.0,
 		-1.0, -1.0, 
 		-1.0, 1.0,  
-		
-		
 	],
 	texCoords:[
 		0.0, 0.0,
@@ -36,6 +35,8 @@ const screenData ={
 // initialize the scene
 export function Scene(canvas) {
 
+	this.quality = 2;
+
 	this.initialized = false;
 
 	this.fb = [];	//	frame buffer
@@ -53,6 +54,7 @@ export function Scene(canvas) {
 			uniforms: {
 				uSampler: {value:null},
 				uProcessVal: {value:null},
+				uTextureDims:{value:null},
 				inputs: {value:null},
 			},
 		}
@@ -73,8 +75,6 @@ export function Scene(canvas) {
 		return;
 	}
 	const resize = () =>{
-
-		
 		screen = [
 			window.innerWidth,
 			window.innerHeight,
@@ -82,6 +82,10 @@ export function Scene(canvas) {
 		canvas.setAttribute("width", screen[0]);
 		canvas.setAttribute("height", screen[1]);
 		this.gl.viewport( 0, 0, screen[0], screen[1] );
+		textureDims = [
+			(screen[0]/this.quality),  
+			(screen[1]/this.quality)
+		];
 		if(this.initialized)
 			this.drawScene();
 	}
@@ -127,16 +131,16 @@ Scene.prototype.init = function(){
 		this.fb.push(fb);
 	}
 	// generate random noise texture
-	this.generateNoiseTexture();
+	this.generateTexture();
 }
 
 
 // create a noise texture
-Scene.prototype.generateNoiseTexture = function(){
+Scene.prototype.generateTexture = function(){
 	const gl = this.gl;
 	this.textures = [];
 	this.fb.forEach((fb,i) => {
-		this.textures.push(utils.loadTexture(gl, resolution));
+		this.textures.push(utils.loadTexture(gl, textureDims));
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -195,15 +199,16 @@ Scene.prototype.drawScene = function (time,controls)  {
 
 	//set the parameters
 	gl.uniform1fv(shaders.basic.uniforms.inputs.location, controls.params);
+	gl.uniform1fv(shaders.basic.uniforms.uTextureDims.location, textureDims);
 
-	fbCurrent  =  1 - fbCurrent;	//flip
+	fbCurrent  =  1 - fbCurrent;	//flip the framebuffer
 
 	
 	//	process the texture
 	{
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
-		gl.viewport(0, 0, resolution, resolution);
+		gl.viewport(0, 0, textureDims[0],textureDims[1]);
 		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, 1.0);
 		drawScreen(gl);
 	}

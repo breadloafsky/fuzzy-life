@@ -10,23 +10,26 @@
 
 	let fileInput;
 
-
 	let controls = {
 		params:[0, 0.35, 0.2, 0.25,  
-		0.32, 1,0.271, 0.335]
+		0.32, 1,0.271, 0.335],
+		quality:2,
+		radius:12,
+		radiusRatio:1/3
 	}
-
-	
 
 	onMount(() => {
 		scene = new Scene(canvas);
-		
-		//scene.drawScene();
+
 		requestAnimationFrame(update);
-		// debug
-		document.querySelector("canvas").onclick = () => {
+
+		// document.querySelector("canvas").onclick = () => {	
+		// };
+		document.body.onkeyup = (e) => {
+			if (e.key == " " || e.code == "Space")
+				scene.generateTexture();
 			
-		};
+		}
 		
   	});
 
@@ -37,7 +40,6 @@
 		if (fpsLimit && delta < 1000 / fpsLimit)
         	return;
 
-		
 		scene.drawScene(time * 0.001, controls);	
 		previousTime = time;
 		
@@ -64,7 +66,6 @@
 		const reader = new FileReader();
 		reader.addEventListener("load", function () {
 			controls = {...JSON.parse(reader.result+"")};
-
 		});
 		reader.readAsText(file);
 		return;
@@ -79,7 +80,7 @@
 	<div>
 		<div class="controls-container">
 			<div style="display: flex; flex-direction: row-reverse;">
-				<button on:click={scene.generateNoiseTexture()}>R</button>
+				<button on:click={scene.generateTexture()}>R</button>
 			</div>
 			<div >
 				<div >load file</div>

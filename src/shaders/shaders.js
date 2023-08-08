@@ -26,15 +26,12 @@ precision mediump float;
 // inputs
 
 uniform mediump float inputs[8];
-
+uniform mediump float uTextureDims[2];
 
 varying lowp vec2 vTextureCoord;
 uniform sampler2D uSampler;
 
 uniform int uProcessVal;  // switch the shader behaviour
-
-
-
 
 highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
 
@@ -45,8 +42,7 @@ highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
 
 float processPixel(highp vec2 tex){
  
-  // e.g.:  0.007 is the 1/128px
-  const mediump float mtpl = 1./512.;
+
 
 
   const int r = 12;
@@ -63,18 +59,18 @@ float processPixel(highp vec2 tex){
     
  
       
-      mediump float i_f = float(i) * mtpl;
-      mediump float j_f = float(j) * mtpl;
+      mediump float i_f = float(i) / uTextureDims[0];
+      mediump float j_f = float(j) / uTextureDims[1];
 
       
-      mediump float dist = distance(vec2(i_f, j_f), vec2(0.,0.)); 	
+      mediump float dist = distance(vec2(i_f * uTextureDims[0], j_f * uTextureDims[1]), vec2(0.,0.)); 	
 
-      if( dist <  float(r)*mtpl/3.)
+      if( dist <  float(r)/3.)
       {
         inner += getPixel(vTextureCoord ,i_f, j_f ).r;
         count_inner++;
       }
-      else if( dist < float(r)*mtpl){
+      else if( dist < float(r)){
         outer += getPixel(vTextureCoord ,i_f, j_f ).r;
         count_outer++;
       }
@@ -84,7 +80,7 @@ float processPixel(highp vec2 tex){
     inner = inner/float(count_inner);
     outer = outer/float(count_outer);
 
-    highp float result = -0.19;
+    highp float result = -0.18;
 
 
     
@@ -117,11 +113,13 @@ void main(void) {
 
     tex = vec4(tex.r,tex.r,tex.r,1.);
 
-    if(tex.r > 0.9)
-      tex.gb *= vec2(0.8,0.5);
+    if(tex.r > 0.8)
+      tex.rb *= vec2(0.6,0.8);
 
-    if(tex.r > 0.5)
-      tex.gr *= vec2(2.,1.);
+    else if(tex.r > 0.5)
+      tex.gr *= vec2(1.,2.);
+    else
+      tex.br *= vec2(2.,1.);
   }
 
   // if( sqrt(pow(vTextureCoord.x-0.5,2.) + pow(vTextureCoord.y-0.5,2.)) < 0.1)
