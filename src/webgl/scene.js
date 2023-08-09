@@ -43,7 +43,20 @@ export function Scene(canvas) {
 	this.textures = [];
 
 	this.shaders ={
-		basic:{
+
+		screen:{
+			program: {},
+			attributes: {
+				aTextureCoord: {value:null},
+				aVertexPosition: {value:null},
+			},
+			uniforms: {
+				uSampler: {value:null},
+				uTextureDims:{value:null},
+			},
+		},
+		
+		frame:{
 			program: {},
 			attributes: {
 				aTextureCoord: {value:null},
@@ -52,13 +65,13 @@ export function Scene(canvas) {
 			},
 			uniforms: {
 				uSampler: {value:null},
-				uProcessVal: {value:null},
 				uTextureDims:{value:null},
 				inputs: {value:null},
 				paintRadius:{value:null},
 				paintCoord:{value:null},
 			},
-		}
+		},
+		
 	};
 
 
@@ -99,12 +112,10 @@ export function Scene(canvas) {
 }
 
 
-
+// load the shaders as static files
 Scene.prototype.initShaders = async function(){
 	const gl = this.gl;
-	// load the shaders as static files
 	let promises = [];
-	
 	for (let shaderName in this.shaders)
 	{	
 		const promise = new Promise((resolve, reject) => {
@@ -149,8 +160,6 @@ Scene.prototype.init = async function(){
 		this.generateTexture();
 		this.initialized = true;
 	});
-	
-	
 }
 
 
@@ -182,8 +191,8 @@ Scene.prototype.initBuffers = function(){
 	gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
 
-	this.shaders.basic.attributes.aTextureCoord.value = texCoordBuffer;
-	this.shaders.basic.attributes.aVertexPosition.value = positionBuffer;
+	this.shaders.frame.attributes.aTextureCoord.value = texCoordBuffer;
+	this.shaders.frame.attributes.aVertexPosition.value = positionBuffer;
 	
 }
   
@@ -202,25 +211,21 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	const fb = this.fb;
 
 	gl.enable(gl.CULL_FACE);
-
-	gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-
 	//  clear scene
 	gl.clearColor(0.0, 0.0, 0.0, 0.0);  
 	//gl.clear(gl.COLOR_BUFFER_BIT );  
 
+
 	// use the shader
-	gl.useProgram(shaders.basic.program);
-
-
+	let shader = shaders.frame;
+	gl.useProgram(shader.program);
 
 	// bind the vertex position and texture coordinates
-	setAttribute(gl, shaders.basic.attributes.aVertexPosition);
-	setAttribute(gl, shaders.basic.attributes.aTextureCoord);
-
+	setAttribute(gl, shader.attributes.aVertexPosition);
+	setAttribute(gl, shader.attributes.aTextureCoord);
 	//set the parameters
-	gl.uniform1fv(shaders.basic.uniforms.inputs.location, controls.params);
-	gl.uniform1fv(shaders.basic.uniforms.uTextureDims.location, textureDims);
+	gl.uniform1fv(shader.uniforms.inputs.location, controls.params);
+	gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 
 	
 
@@ -228,21 +233,23 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	//	process the texture
 	{
 		fbCurrent  =  1 - fbCurrent;	//flip the framebuffer
-		
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
 		gl.viewport(0, 0, textureDims[0],textureDims[1]);
-		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, -1);
-		
 		drawScreen(gl);
 	}
+
+
+	shader = shaders.screen;
+	gl.useProgram(shader.program);
+	gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
+
 
 	//	render to screen
 	{
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 
-		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, settings.debugValue); 
 		drawScreen(gl);
 	}
 	
