@@ -13,26 +13,8 @@
 	});
 </script>
 <div class="params-container" >
-
-	
-	<div >
-		<h2>Areas:</h2>
-		
-		<div >
-			<div id="radiusSlider">
-				<Slider bind:val={controls.radius} range={[0,12]}/> 
-				Overall Radius
-			</div>
-			<div id="ratioSlider" style="padding-top: 10px;">
-				<Slider bind:val={controls.radiusRatio} range={[0,1]}/>
-				Inner/Outer R Ratio 
-			</div>
-			<CircleParams bind:rr={controls.radiusRatio}/>
-		</div>
-		
-	</div>
 	<div>
-		<h2>Rules:</h2>
+		<h2>Rules</h2>
 		<div class="rule">
 			<div class="title">A</div>
 			<div>
@@ -49,9 +31,24 @@
 		</div>
 	</div>
 
+	<!-- <div class="section">
+		<h2>Area Radius</h2>
+		<div >
+			<div id="radiusSlider">
+				Overall Radius
+				<Slider bind:val={controls.radius} range={[0,12]} flipY={true}/> 
+			</div>
+			<div id="ratioSlider" style="padding-top: 10px;">
+				Inner/Outer R Ratio 
+				<Slider bind:val={controls.radiusRatio} range={[0,1]} flipY={true}/>		
+			</div>
+			<CircleParams bind:rr={controls.radiusRatio}/>
+		</div>
+	</div> -->
 </div>
 
 <style>
+
 
 	:global(.rule .slider-container:nth-child(odd) .bar){
 		--color:var(--color0);

@@ -49,6 +49,7 @@
 	
 	function mouseMove(e) {
 		let val = getSliderVal(e);
+		vals = [val0, val1];
 		vals[selectedValue] = val;
 		[val0, val1] = vals;
 	}

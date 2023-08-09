@@ -1,4 +1,3 @@
-import { shaders } from '../shaders/shaders';
 import {vec3, mat4, mat3} from 'gl-matrix';
 import { get } from 'svelte/store';
 import { utils } from './utils';
@@ -56,6 +55,8 @@ export function Scene(canvas) {
 				uProcessVal: {value:null},
 				uTextureDims:{value:null},
 				inputs: {value:null},
+				paintRadius:{value:null},
+				paintCoord:{value:null},
 			},
 		}
 	};
@@ -86,52 +87,70 @@ export function Scene(canvas) {
 			(screen[0]/this.quality),  
 			(screen[1]/this.quality)
 		];
-		if(this.initialized)
-			this.drawScene();
+		this.generateTexture();
+		// if(this.initialized)
+		// 	this.drawScene();
 	}
 
 	window.addEventListener("resize",() => resize());
 	resize();
-
 	
-	this.init();
-
-	this.initialized = true;
-
 	return this;
 }
 
 
-Scene.prototype.init = function(){
+
+Scene.prototype.initShaders = async function(){
 	const gl = this.gl;
-	// load the shaders
+	// load the shaders as static files
+	let promises = [];
+	
 	for (let shaderName in this.shaders)
-	{
-		const shader = this.shaders[shaderName];
-		shader.program = this.initShaderProgram( 
-			shaders[shaderName+"Vs"], 
-			shaders[shaderName+"Fs"], 
-		);
-		for(let attributeName in shader.attributes){
-			shader.attributes[attributeName].location = gl.getAttribLocation(shader.program, attributeName);
-		}
-		for(let uniformName in shader.uniforms){
-			shader.uniforms[uniformName].location = gl.getUniformLocation(shader.program, uniformName);
-		}
+	{	
+		const promise = new Promise((resolve, reject) => {
+			const shaderFiles = ["vs","fs"].map(async (e) => {
+				const response = await fetch(`shaders/${shaderName}.${e}`);
+				return await response.text();
+			});
+			Promise.all(shaderFiles).then(data => {
+				const shader = this.shaders[shaderName];
+				shader.program = this.initShaderProgram( 
+					data[0], 
+					data[1], 
+				);
+				for(let attributeName in shader.attributes){
+					shader.attributes[attributeName].location = gl.getAttribLocation(shader.program, attributeName);
+				}
+				for(let uniformName in shader.uniforms){
+					shader.uniforms[uniformName].location = gl.getUniformLocation(shader.program, uniformName);
+				}
+				resolve();
+			});
+		});
+		promises.push(promise);	
 	};
 
+	return promises;
+}
+
+
+Scene.prototype.init = async function(){
+	Promise.all(await this.initShaders()).then(()=>{
+		const gl = this.gl;
+		// init buffers
+		this.initBuffers();	
+		// create frame buffers
+		for(let i = 0; i < 2; i++)
+		{
+			let fb  = gl.createFramebuffer();
+			this.fb.push(fb);
+		}
+		// generate random noise texture
+		this.generateTexture();
+		this.initialized = true;
+	});
 	
-	// init buffers
-	this.initBuffers();
 	
-	// create frame buffers
-	for(let i = 0; i < 2; i++)
-	{
-		let fb  = gl.createFramebuffer();
-		this.fb.push(fb);
-	}
-	// generate random noise texture
-	this.generateTexture();
 }
 
 
@@ -175,7 +194,9 @@ Scene.prototype.initBuffers = function(){
 let fbCurrent = 0;
 
 
-Scene.prototype.drawScene = function (time,controls)  {
+Scene.prototype.drawScene = function (time,controls, settings, input)  {
+	if(!this.initialized)
+		return;
 	const gl = this.gl;
 	const shaders =  this.shaders;
 	const fb = this.fb;
@@ -201,15 +222,18 @@ Scene.prototype.drawScene = function (time,controls)  {
 	gl.uniform1fv(shaders.basic.uniforms.inputs.location, controls.params);
 	gl.uniform1fv(shaders.basic.uniforms.uTextureDims.location, textureDims);
 
-	fbCurrent  =  1 - fbCurrent;	//flip the framebuffer
-
 	
+
+	if(!settings.paused)
 	//	process the texture
 	{
+		fbCurrent  =  1 - fbCurrent;	//flip the framebuffer
+		
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
 		gl.viewport(0, 0, textureDims[0],textureDims[1]);
-		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, 1.0);
+		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, -1);
+		
 		drawScreen(gl);
 	}
 
@@ -218,7 +242,7 @@ Scene.prototype.drawScene = function (time,controls)  {
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 
-		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, 0); 
+		gl.uniform1i(shaders.basic.uniforms.uProcessVal.location, settings.debugValue); 
 		drawScreen(gl);
 	}
 	
