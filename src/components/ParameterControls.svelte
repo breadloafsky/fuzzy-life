@@ -1,8 +1,7 @@
 
 <script >
-	import Slider from "./Slider.svelte";
 	import SliderDouble from "./SliderDouble.svelte";
-	import CircleParams from "./CircleParams.svelte";
+	import Rule from "./Rule.svelte";
 	import { onMount } from "svelte";
     
 	export let controls;
@@ -15,20 +14,14 @@
 <div class="params-container" >
 	<div>
 		<h2>Rules</h2>
-		<div class="rule">
-			<div class="title">A</div>
-			<div>
-				<SliderDouble bind:val0={controls.params[0]} bind:val1={controls.params[1]} />
-				<SliderDouble bind:val0={controls.params[2]} bind:val1={controls.params[3]} flipY={true}/>
-			</div>
-		</div>
-		<div class="rule">
-			<div class="title">B</div>
-			<div>
-				<SliderDouble bind:val0={controls.params[4]} bind:val1={controls.params[5]}/>
-				<SliderDouble bind:val0={controls.params[6]} bind:val1={controls.params[7]} flipY={true}/>
-			</div>
-		</div>
+		{#each "ABCD" as s,i}
+		<Rule 
+			label={s} 
+			bind:inn0={controls.params[i*4]} 
+			bind:inn1={controls.params[i*4+1]} 
+			bind:out0={controls.params[i*4+2]} 
+			bind:out1={controls.params[i*4+3]}/>
+		{/each}
 	</div>
 
 	<!-- <div class="section">
