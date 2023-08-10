@@ -15,13 +15,12 @@ export const utils = {
 		return shader;
 	},
 
+	/**
+	 * 
+	 */
   
-  
-	loadTexture: function(gl, dims) {
-		const texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, texture);
-		
-
+	loadTexture: function(gl, dims, textureP) {
+		gl.bindTexture(gl.TEXTURE_2D, textureP);
 		const level = 0;
 		const internalFormat = gl.RGB;
 		const width = dims[0];
@@ -41,7 +40,6 @@ export const utils = {
 				[a,a,a].forEach((e) => arr.push(e));
 			}
 		}
-
 		const pixel = new Uint8Array(arr);
 
 		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
@@ -68,7 +66,6 @@ export const utils = {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);	
 		
 		
-		return texture;
 	}
 
 	

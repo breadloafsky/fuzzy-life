@@ -6,7 +6,7 @@
     let canvas;
 	let scene;
 	let previousTime = 0;
-    let fpsLimit = 120;
+    let fpsLimit = 60;
 
 	let fileInput;
 
@@ -34,29 +34,20 @@
 	onMount( async() => {
 		scene = new Scene(canvas);	//init the scene
 
-		await scene.init();
-
-		requestAnimationFrame(update);
-		// const response = await fetch('shaders/basic.vs');
-		// const result = await response.text();
-  		// alert(result);
-
-
-
 		document.querySelector("canvas").onclick = () => {	
 		};
 		document.body.onkeyup = (e) => {
 			if (e.key.toLowerCase() == "d")
 				settings.debugValue = settings.debugValue == 1 ? 0.5 : 1;
-
-
 			if (e.key == " " || e.code == "Space")
 				settings.paused = ! settings.paused;
-			
-			else if(e.key.toLowerCase() == "c"){
+			if (e.key.toLowerCase() == "c"){
 				scene.generateTexture();
 			}
 		}
+
+		await scene.init();
+		requestAnimationFrame(update);
 		
 
 		

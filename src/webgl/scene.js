@@ -34,16 +34,12 @@ const screenData ={
 // initialize the scene
 export function Scene(canvas) {
 
-	this.quality = 2;
-
+	this.quality = 1.5;
 	this.initialized = false;
-
-	this.fb = [];	//	frame buffer
-
+	this.fb = [];	//	frame buffers
 	this.textures = [];
 
 	this.shaders ={
-
 		screen:{
 			program: {},
 			attributes: {
@@ -153,11 +149,20 @@ Scene.prototype.init = async function(){
 		// create frame buffers
 		for(let i = 0; i < 2; i++)
 		{
+			//this.textures.push(utils.loadTexture(gl, textureDims));
+			const texture = gl.createTexture();
+			utils.loadTexture(gl, textureDims, texture);
+			this.textures.push(texture);
+
+
 			let fb  = gl.createFramebuffer();
 			this.fb.push(fb);
+			gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
+			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		}
-		// generate random noise texture
-		this.generateTexture();
+		// generate texture
+		//this.generateTexture();
 		this.initialized = true;
 	});
 }
@@ -166,12 +171,9 @@ Scene.prototype.init = async function(){
 // create a noise texture
 Scene.prototype.generateTexture = function(){
 	const gl = this.gl;
-	this.textures = [];
-	this.fb.forEach((fb,i) => {
-		this.textures.push(utils.loadTexture(gl, textureDims));
-		gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
-		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	//this.textures = [];
+	this.textures.forEach((tex,i) => {
+		utils.loadTexture(gl, textureDims, tex);
 	});
 }
 
@@ -187,7 +189,6 @@ Scene.prototype.initBuffers = function(){
 	const texCoordBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(screenData.texCoords), gl.DYNAMIC_DRAW);
-	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(screenData.texCoords), gl.DYNAMIC_DRAW);
 	gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
 
@@ -213,7 +214,7 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	gl.enable(gl.CULL_FACE);
 	//  clear scene
 	gl.clearColor(0.0, 0.0, 0.0, 0.0);  
-	//gl.clear(gl.COLOR_BUFFER_BIT );  
+	gl.clear(gl.COLOR_BUFFER_BIT );  
 
 
 	// use the shader
@@ -224,31 +225,37 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	setAttribute(gl, shader.attributes.aVertexPosition);
 	setAttribute(gl, shader.attributes.aTextureCoord);
 	//set the parameters
-	gl.uniform1fv(shader.uniforms.inputs.location, controls.params);
-	gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 
 	
 
+	
 	if(!settings.paused)
 	//	process the texture
 	{
 		fbCurrent  =  1 - fbCurrent;	//flip the framebuffer
+		gl.uniform1fv(shader.uniforms.inputs.location, controls.params);
+		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
+		
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
+		
 		gl.viewport(0, 0, textureDims[0],textureDims[1]);
 		drawScreen(gl);
+
+		
+		
 	}
 
 
 	shader = shaders.screen;
 	gl.useProgram(shader.program);
 	gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-
+	
 
 	//	render to screen
 	{
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[0]);
+		//gl.bindTexture(gl.TEXTURE_2D, this.textures[fbCurrent]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 
 		drawScreen(gl);
 	}
