@@ -10,11 +10,13 @@ uniform float uTextureDims[2];
 uniform float uDebug;
 uniform float inputs[16];
 uniform int isPaused;
+uniform float brush[3];
 
 
 highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
-  coord.x += offsetX;
-  coord.y += offsetY;
+  coord.x = mod( coord.x	+ offsetX + 1.0, 1.0);
+  coord.y = mod( coord.y	+ offsetY + 1.0, 1.0);
+  
   return texture2D(uSampler, coord);
 }
 
@@ -36,7 +38,7 @@ float t(float m,float n)
 
     return max(a,b);
 }
-float processPixel(highp vec2 tex){
+float processPixel(){
  
 
   const int r = 12;
@@ -68,10 +70,16 @@ float processPixel(highp vec2 tex){
     }
   }
 
-  inner = inner/float(count_inner);
-  outer = outer/float(count_outer);
 
   highp float result = -0.2;
+
+  
+  inner = inner/float(count_inner);
+  outer = outer/float(count_outer);
+  // inner = cos(PI*4.*inner)*0.5+0.5;
+  // outer = sin(PI*4.*outer)*0.5+0.5;
+
+  
   //result = t(inner,outer);
 
   if (
@@ -96,10 +104,19 @@ void main(void) {
   mediump vec4 tex = texture2D(uSampler, vTextureCoord);
   
   if(isPaused == 0){
-    float d = processPixel(vTextureCoord); 
+    float d = processPixel(); 
+
+
     
    
     tex.r += d;
+
+    if(brush[0] != -1.){
+    if(distance(vec2(0.,0.),vec2(vTextureCoord.x-brush[0],vTextureCoord.y-brush[1])) < brush[2]){
+            tex.r = 1.0;
+    }
+    
+    }
     // else
     //   tex.r = clamp(tex.r + ((d*2.-1.) * 0.5), 0.0, 1.0);
 

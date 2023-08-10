@@ -55,7 +55,7 @@ export function Scene(canvas) {
 				uDebug:{value:null},
 				isPaused:{value:null},
 				inputs: {value:null},	// toDo : rename
-				paint:{value:null},
+				brush:{value:null},
 			},
 		},
 		
@@ -157,8 +157,9 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 		gl.uniform1fv(shader.uniforms.inputs.location, controls.params);
+																		// this is confusing. ToDo: swap the var names between.
+		gl.uniform1fv(shader.uniforms.brush.location, input.brush);
 		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
-
 		gl.uniform1f(shader.uniforms.uDebug.location, settings.debugVal);
 		
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);

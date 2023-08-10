@@ -31,19 +31,19 @@
 	}
 
 	let input = {
-		paint:{
-			active:false,
-			x:0,
-			y:0,
-			r:1,
-		}
+		brush:[0.5,0.5,0.05]	//x y r
 	}
 
 	onMount( async() => {
 		scene = new Scene(canvas);	//init the scene
 
-		document.querySelector("canvas").onclick = () => {	
-		};
+		canvas.addEventListener("wheel", (e) => {
+			input.brush[2]+=e.deltaY/100000;
+		});
+
+		canvas.addEventListener("mousedown", (e) => {
+			startDrawing(e);
+		});
 		document.body.onkeyup = (e) => {
 			if (e.key.toLowerCase() == "d")
 				settings.debugVal = 1 - settings.debugVal;
@@ -55,6 +55,8 @@
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
 				for(let i = 0; i < controls.params.length/2; i++) {
+					if(controls.params[i*2] == 0 && controls.params[i*2+1] == 0)
+						continue;
 					const r = 0.5;
 					const w = 0.2;	//width
 
@@ -65,7 +67,7 @@
 						vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
 					});
 
-
+					
 					controls.params[i*2] = Math.round(vals[0]*1000)/1000;
 					controls.params[i*2+1] = Math.round(vals[1]*1000)/1000;
 				}
@@ -79,6 +81,20 @@
 
 
   	});
+
+
+	function startDrawing(e){
+		canvas.addEventListener("mousemove",moveBrush);
+		canvas.addEventListener("mouseup",  (e)=> {
+			canvas.removeEventListener("mousemove" , moveBrush);
+			input.brush[0] = -1;
+		});	
+	}
+
+
+	function moveBrush(e){
+		input.brush =[e.layerX/e.originalTarget.clientWidth,1-e.layerY/e.originalTarget.clientHeight,input.brush[2]];
+	}
 
 	function update(time){
 
@@ -127,33 +143,30 @@
 
   }
 
-	
+
 </script>
-<div >
-	<div>
-		<div class="controls-container">
-			<div style="display: flex; flex-direction: row-reverse;">
-				<button on:click={(e) => {scene.generateTexture(); e.target.blur();}}>repaint</button>
-			</div>
-			<div >
-				<div >load file</div>
-				<label title="load file">
-					<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
-				</label>
-			</div>
-			<div>
-				<div>save file</div>
-				<button 
-				title="save file"
-				on:click={() => saveScene()}
-				>
-				save
-				</button>
-			</div>
-			<ParameterControls bind:controls={controls}/>
+<div style="display: flex;">
+	<div class="controls-container">
+		<div style="display: flex; flex-direction: row-reverse;">
+			<button on:click={(e) => {scene.generateTexture(); e.target.blur();}}>repaint</button>
 		</div>
+		<div >
+			<div >load file</div>
+			<label title="load file">
+				<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
+			</label>
+		</div>
+		<div>
+			<div>save file</div>
+			<button 
+			title="save file"
+			on:click={() => saveScene()}
+			>
+			save
+			</button>
+		</div>
+		<ParameterControls bind:controls={controls}/>
 	</div>
-</div>
 <div class="canvas-container flex">
 	
 	<canvas
@@ -162,6 +175,8 @@
 	/>
 	
 </div>
+</div>
+	
 
 <style>
 
@@ -173,6 +188,7 @@
 		padding: 10px;
 		resize: both;
 		overflow: auto;
+		z-index: 1;
 	}
 
 	.canvas-container {
@@ -181,7 +197,6 @@
 		background-color: rgb(240, 240, 240);
         min-height: 100%;
         width: 100%;
-        z-index: -1;
         overflow: hidden;
         position: fixed;
     }
@@ -189,5 +204,6 @@
 	canvas{
 		width: 100%;
 		height: 100%;
+	
 	}
 </style>

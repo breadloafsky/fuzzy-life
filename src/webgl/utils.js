@@ -108,8 +108,10 @@ export const utils = {
 		{
 			for(let i = 0; i < width; i++)
 			{
-				const a = Math.sin(((j-height/2)/height)*((i-width/2)/width)*40*Math.PI)*255;
-				[a,a,a].forEach((e) => arr.push(e));
+				const a = Math.sin( 
+					((j-height/2)/height+width/200)*((i-width/2)/width+height/200)*Math.tan(2*(i-width/2)/width)
+					*2*Math.PI);
+				[a,a,a].forEach((e) => arr.push((e)*255));
 			}
 		}
 		const pixel = new Uint8Array(arr);
