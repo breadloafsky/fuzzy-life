@@ -18,7 +18,14 @@
 			0.32, 1,0.271, 0.335,	//B
 			0.0, 0.0, 0.0, 0.0,		//C  
 			0.0, 0.0, 0.0, 0.0,		//D
-		],
+		],// the values of sigmoid
+		
+		slopes:[
+			0.0, 0.0, 0.0, 0.0,	 
+			0.0, 0.0, 0.0, 0.0,	
+			0.0, 0.0, 0.0, 0.0,		 
+			0.0, 0.0, 0.0, 0.0
+		],	// slopes of sigmoid
 		radius:12,
 		radiusRatio:1/3,
 	}
@@ -27,18 +34,17 @@
 		paused:0,
 		debugVal:0,
 		quality:2,
-		
 	}
 
 	let input = {
-		brush:[0.5,0.5,0.05]	//x y r
+		brush:[0.5,0.5,1/32]	//x y r
 	}
 
 	onMount( async() => {
 		scene = new Scene(canvas);	//init the scene
 
 		canvas.addEventListener("wheel", (e) => {
-			input.brush[2]+=e.deltaY/100000;
+			input.brush[2]=(1000+input.brush[2]+(e.deltaY/100000))%1000;
 		});
 
 		canvas.addEventListener("mousedown", (e) => {
@@ -84,6 +90,7 @@
 
 
 	function startDrawing(e){
+		moveBrush(e);
 		canvas.addEventListener("mousemove",moveBrush);
 		canvas.addEventListener("mouseup",  (e)=> {
 			canvas.removeEventListener("mousemove" , moveBrush);
@@ -134,6 +141,11 @@
 			while(controls.params.length < 16)
 			{
 				controls.params.push(0);
+			}
+			controls.slopes = [];
+			while(controls.slopes.length < 16)
+			{
+				controls.slopes.push(0.0);
 			}
 		});
 		reader.readAsText(file);

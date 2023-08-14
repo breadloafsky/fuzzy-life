@@ -54,8 +54,9 @@ export function Scene(canvas) {
 				uTextureDims:{value:null},
 				uDebug:{value:null},
 				isPaused:{value:null},
-				inputs: {value:null},	// toDo : rename
-				brush:{value:null},
+				params: {value:null},
+				slopes:{value:null},	//sigmoid slopes
+				brush:{value:null},	// paint brush
 			},
 		},
 		
@@ -140,7 +141,7 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	gl.enable(gl.CULL_FACE);
 	//  clear scene
 	gl.clearColor(0.0, 0.0, 0.0, 0.0);  
-	gl.clear(gl.COLOR_BUFFER_BIT );  
+	//gl.clear(gl.COLOR_BUFFER_BIT );  
 
 
 	// use the shader
@@ -156,9 +157,10 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	{
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-		gl.uniform1fv(shader.uniforms.inputs.location, controls.params);
+		gl.uniform1fv(shader.uniforms.params.location, controls.params);
 																		// this is confusing. ToDo: swap the var names between.
 		gl.uniform1fv(shader.uniforms.brush.location, input.brush);
+		gl.uniform1fv(shader.uniforms.slopes.location, controls.slopes);
 		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
 		gl.uniform1f(shader.uniforms.uDebug.location, settings.debugVal);
 		
@@ -176,6 +178,7 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	
 
 	//	render to screen
+	if(fbCurrent == 0)
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);

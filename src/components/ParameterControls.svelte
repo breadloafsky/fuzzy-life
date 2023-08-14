@@ -20,7 +20,13 @@
 			bind:inn0={controls.params[i*4]} 
 			bind:inn1={controls.params[i*4+1]} 
 			bind:out0={controls.params[i*4+2]} 
-			bind:out1={controls.params[i*4+3]}/>
+			bind:out1={controls.params[i*4+3]}
+
+			bind:sig_inn0={controls.slopes[i*4]} 
+			bind:sig_inn1={controls.slopes[i*4+1]} 
+			bind:sig_out0={controls.slopes[i*4+2]} 
+			bind:sig_out1={controls.slopes[i*4+3]}
+			/>
 		{/each}
 	</div>
 

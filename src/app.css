@@ -2,3 +2,16 @@ body{
 	--color1:aqua;
 	--color0:rgb(179, 255, 0);
 }
+
+input{
+	background-color: transparent;
+	color:white;
+}
+input[type=number]{
+	border: solid 1px rgb(97, 97, 97);
+}
+input[type=number]:focus{
+	border: solid 1px rgb(121, 121, 121);
+	outline: transparent;
+	color:orange
+}

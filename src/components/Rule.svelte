@@ -7,13 +7,37 @@
 	export let inn1;
 	export let out0;
 	export let out1;
+	export let sig_inn0;// slope of sigmoid
+	export let sig_inn1;	
+	export let sig_out0;	
+	export let sig_out1;	
 
 	onMount(() => {
 		
 	});
 </script>
 <div class="rule">
-	<div class="title">{label}</div>
+	
+	<div style="display: grid;
+	grid-template-columns: repeat(2, 1fr);">
+		<div class="title">{label}</div>
+		<div style="display: flex;">
+			Sigmoids:
+			<div style="display:flex; flex-direction: column; font-size: 16px; font-family: monospace;padding-inline: 10px;">
+				<div style="display: flex; gap:4px;">
+					<div style="color:var(--color0);">INN</div>
+					<input bind:value={sig_inn0} type="number" step="0.1" min="0" max="1" />
+					<input bind:value={sig_inn1} type="number" step="0.1" min="0" max="1" />
+				</div>
+				<div style="display: flex; gap:4px;">
+					<div style="color:var(--color1);">OUT</div>
+					<input bind:value={sig_out0} type="number" step="0.1" min="0" max="1" />
+					<input bind:value={sig_out1} type="number" step="0.1" min="0" max="1" />
+				</div>
+			</div>
+		</div>
+		
+	</div>
 	<div>
 		<SliderDouble bind:val0={inn0} bind:val1={inn1} />
 		<SliderDouble bind:val0={out0} bind:val1={out1} flipY={true}/>
@@ -21,6 +45,10 @@
 </div>
 
 <style>
+
+	input[type=number]{
+		width: 60px;
+	}
 
 
 	:global(.rule .slider-container:nth-child(odd) .bar){
@@ -45,10 +73,13 @@
 		margin: 4px;
 	}
 
-	.rule > .title{
+
+	.rule  .title{
 		padding-bottom:10px;
 		font-weight:bolder;
 		font-size: large;
 		opacity: 0.8;
 	}   
 </style>
+
+

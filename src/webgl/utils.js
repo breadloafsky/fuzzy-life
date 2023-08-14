@@ -108,9 +108,10 @@ export const utils = {
 		{
 			for(let i = 0; i < width; i++)
 			{
-				const a = Math.sin( 
-					((j-height/2)/height+width/200)*((i-width/2)/width+height/200)*Math.tan(2*(i-width/2)/width)
-					*2*Math.PI);
+				const a = 0.;
+				// const a = Math.sin( 
+				// 	((j-height/2)/height+width/200)*((i-width/2)/width+height/200)*Math.tan(2*(i-width/2)/width)
+				// 	*2*Math.PI);
 				[a,a,a].forEach((e) => arr.push((e)*255));
 			}
 		}
