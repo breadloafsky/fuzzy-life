@@ -124,7 +124,7 @@
 		transform: scaleY(1.2);
 		opacity: 0.2;
 		transition-property: opacity;
-		transition-duration: 0.1s;
+
 	}
 
 	.slider:hover .bar > div{

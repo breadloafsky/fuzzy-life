@@ -1,50 +1,23 @@
 
-<script >
-// @ts-nocheck
-
+<script lang="ts">
+	import { params, input, settings } from "../stores.js";
  	import { onMount } from "svelte";
 	import { Scene } from "../webgl/scene.js";
 	import ParameterControls from "./ParameterControls.svelte";
-    let canvas;
-	let scene;
+    let canvas : HTMLCanvasElement;
+	let scene : Scene;
 	let previousTime = 0;
     let fpsLimit = 60*2;
-	let fileInput;
 
 
-	let controls = {
-		params:[
-			0.0, 0.35, 0.2, 0.25,	//A  
-			0.32, 1,0.271, 0.335,	//B
-			0.0, 0.0, 0.0, 0.0,		//C  
-			0.0, 0.0, 0.0, 0.0,		//D
-		],// the values of sigmoid
-		
-		slopes:[
-			0.0, 0.0, 0.0, 0.0,	 
-			0.0, 0.0, 0.0, 0.0,	
-			0.0, 0.0, 0.0, 0.0,		 
-			0.0, 0.0, 0.0, 0.0
-		],	// slopes of sigmoid
-		radius:12,
-		radiusRatio:1/3,
-	}
-
-	let settings = {
-		paused:0,
-		debugVal:0,
-		quality:2,
-	}
-
-	let input = {
-		brush:[0.5,0.5,1/32]	//x y r
-	}
 
 	onMount( async() => {
 		scene = new Scene(canvas);	//init the scene
 
 		canvas.addEventListener("wheel", (e) => {
-			input.brush[2]=(1000+input.brush[2]+(e.deltaY/100000))%1000;
+			let v = ($input.brush[2]+(e.deltaY/100));
+			v = v > 100 ? 100 : v < 0 ? 0 : v; 
+			$input.brush[2]= Math.round(v);
 		});
 
 		canvas.addEventListener("mousedown", (e) => {
@@ -52,16 +25,16 @@
 		});
 		document.body.onkeyup = (e) => {
 			if (e.key.toLowerCase() == "d")
-				settings.debugVal = 1 - settings.debugVal;
+				$settings.debugVal = 1 - $settings.debugVal;
 			if (e.key == " " || e.code == "Space")
-				settings.paused = 1 - settings.paused;
+				$settings.paused = ! $settings.paused;
 			if (e.key.toLowerCase() == "c")
 				scene.generateTexture();
 
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
-				for(let i = 0; i < controls.params.length/2; i++) {
-					if(controls.params[i*2] == 0 && controls.params[i*2+1] == 0)
+				for(let i = 0; i < $params.sigmoids.length/2; i++) {
+					if($params.sigmoids[i*2] == 0 && $params.sigmoids[i*2+1] == 0)
 						continue;
 					const r = 0.5;
 					const w = 0.2;	//width
@@ -72,113 +45,47 @@
 					vals.forEach((val,i) => {
 						vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
 					});
-
-					
-					controls.params[i*2] = Math.round(vals[0]*1000)/1000;
-					controls.params[i*2+1] = Math.round(vals[1]*1000)/1000;
+					$params.sigmoids[i*2] = Math.round(vals[0]*1000)/1000;
+					$params.sigmoids[i*2+1] = Math.round(vals[1]*1000)/1000;
 				}
-				scene.generateTexture();
 			}
 		}
-
 		await scene.init();
 		requestAnimationFrame(update);
 		
-
-
   	});
 
-
-	function startDrawing(e){
-		moveBrush(e);
-		canvas.addEventListener("mousemove",moveBrush);
-		canvas.addEventListener("mouseup",  (e)=> {
-			canvas.removeEventListener("mousemove" , moveBrush);
-			input.brush[0] = -1;
-		});	
-	}
-
-
-	function moveBrush(e){
-		input.brush =[e.layerX/e.originalTarget.clientWidth,1-e.layerY/e.originalTarget.clientHeight,input.brush[2]];
-	}
-
-	function update(time){
-
+	  function update(time:number){
 		requestAnimationFrame(update);
 		const delta = time - previousTime;
 		// limit the fps
 		if (fpsLimit && delta < 1000 / fpsLimit)
         	return;
-
-		scene.drawScene(time * 0.001, controls, settings, input);	
-		previousTime = time;
-		
-	}
-	// ToDo - rename controls -> params and params -> *
-	function saveScene() {
-    	var file = new Blob([JSON.stringify({...controls},null,"\t")], {type: "json"});
-		var a = document.createElement("a"),
-				url = URL.createObjectURL(file);
-		a.href = url;
-		a.download = "params.json";
-		document.body.appendChild(a);
-		a.click();
-		setTimeout(function() {
-			document.body.removeChild(a);
-			window.URL.revokeObjectURL(url);  
-		}, 0); 
+		scene.drawScene(time * 0.001, $params, $settings, $input);	
+		previousTime = time;	
 	}
 
-	function loadScene() {
-    const file = fileInput.files[0];
-    if (file) {
-		const reader = new FileReader();
-		reader.addEventListener("load", function () {
-			controls = {...JSON.parse(reader.result+"")};
 
-			// Remove Later
-			while(controls.params.length < 16)
-			{
-				controls.params.push(0);
-			}
-			controls.slopes = [];
-			while(controls.slopes.length < 16)
-			{
-				controls.slopes.push(0.0);
-			}
-		});
-		reader.readAsText(file);
-		return;
-    } 
-	alert("File error");
+	function startDrawing(e:MouseEvent){
+		moveBrush(e);
+		canvas.addEventListener("mousemove",moveBrush);
+		canvas.addEventListener("mouseup",  (e)=> {
+			canvas.removeEventListener("mousemove" , moveBrush);
+			$input.brush[0] = -1;
+		});	
+	}
 
-  }
+	function moveBrush(e:MouseEvent|any){
+		$input.brush = [e.clientX/e.target.clientWidth, 1 - e.clientY/e.target.clientHeight, $input.brush[2]];
+	}
 
+	
+	
 
 </script>
 <div style="display: flex;">
-	<div class="controls-container">
-		<div style="display: flex; flex-direction: row-reverse;">
-			<button on:click={(e) => {scene.generateTexture(); e.target.blur();}}>repaint</button>
-		</div>
-		<div >
-			<div >load file</div>
-			<label title="load file">
-				<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
-			</label>
-		</div>
-		<div>
-			<div>save file</div>
-			<button 
-			title="save file"
-			on:click={() => saveScene()}
-			>
-			save
-			</button>
-		</div>
-		<ParameterControls bind:controls={controls}/>
-	</div>
+
+	<ParameterControls bind:params={$params} bind:scene/>
 <div class="canvas-container flex">
 	
 	<canvas
@@ -192,16 +99,7 @@
 
 <style>
 
-	.controls-container{
-		min-width: 200px;
-		background-color: rgba(0, 0, 0, 0.863); 
-		display: flex;
-		flex-direction: column;
-		padding: 10px;
-		resize: both;
-		overflow: auto;
-		z-index: 1;
-	}
+	
 
 	.canvas-container {
 		display: flex;

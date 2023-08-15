@@ -1,23 +1,20 @@
 
 <script >
-	import { onMount } from "svelte";    
+    
     import SliderDouble from "./SliderDouble.svelte";
+
 	export let label;
-	export let inn0;
+	export let inn0;	// value of sigmoid
 	export let inn1;
 	export let out0;
 	export let out1;
 	export let sig_inn0;// slope of sigmoid
-	export let sig_inn1;	
+	export let sig_inn1;
 	export let sig_out0;	
 	export let sig_out1;	
 
-	onMount(() => {
-		
-	});
 </script>
 <div class="rule">
-	
 	<div style="display: grid;
 	grid-template-columns: repeat(2, 1fr);">
 		<div class="title">{label}</div>
@@ -39,8 +36,8 @@
 		
 	</div>
 	<div>
-		<SliderDouble bind:val0={inn0} bind:val1={inn1} />
-		<SliderDouble bind:val0={out0} bind:val1={out1} flipY={true}/>
+		<SliderDouble bind:val0={inn0} bind:val1={inn1} color={"var(--color0)"}/>
+		<SliderDouble bind:val0={out0} bind:val1={out1} flipY={true} color={"var(--color1)"}/>
 	</div>
 </div>
 
@@ -48,14 +45,6 @@
 
 	input[type=number]{
 		width: 60px;
-	}
-
-
-	:global(.rule .slider-container:nth-child(odd) .bar){
-		--color:var(--color0);
-	}
-	:global(.rule .slider-container:nth-child(even) .bar){
-		--color:var(--color1);
 	}
 
 	:global(#radiusSlider .slider-container){

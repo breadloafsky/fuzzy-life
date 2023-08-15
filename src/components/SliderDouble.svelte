@@ -4,7 +4,7 @@
 	export let val0;
 	export let val1;
 
-	export const color = 0;
+	export let color = "blue";
 	export let flipY = false;
 
 	let component;
@@ -80,7 +80,7 @@
 		on:mousedown={e => mouseDown(e)}
 		class="slider" 
 		style="--val0:{val0}; --val1:{val1};">
-		<div class="bar">
+		<div class="bar" style="--color:{color};">
 			<div data-selected={selectedValue == 0}><div>{val0}</div></div>
 			<div data-selected={selectedValue == 1}><div>{val1}</div></div>
 		</div>

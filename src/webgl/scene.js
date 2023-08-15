@@ -1,4 +1,4 @@
-import {vec3, mat4, mat3} from 'gl-matrix';
+
 import { get } from 'svelte/store';
 import { utils } from './utils';
 
@@ -54,7 +54,7 @@ export function Scene(canvas) {
 				uTextureDims:{value:null},
 				uDebug:{value:null},
 				isPaused:{value:null},
-				params: {value:null},
+				sigmoids: {value:null},
 				slopes:{value:null},	//sigmoid slopes
 				brush:{value:null},	// paint brush
 			},
@@ -128,11 +128,11 @@ Scene.prototype.generateTexture = function(){
 let fbCurrent = 0;
 
 // draw
-Scene.prototype.drawScene = function (time,controls, settings, input)  {
+Scene.prototype.drawScene = function (time, params, settings, input)  {
 	if(!this.initialized)
 		return;
 
-	fbCurrent  =  1 - fbCurrent;	//flip the current framebuffer index
+	
 
 	const gl = this.gl;
 	const shaders =  this.shaders;
@@ -152,15 +152,16 @@ Scene.prototype.drawScene = function (time,controls, settings, input)  {
 	setAttribute(gl, shader.attributes.aVertexPosition);
 	setAttribute(gl, shader.attributes.aTextureCoord);
 	
-	
+	fbCurrent  =  1 - fbCurrent;	//flip the current framebuffer index
 	//	process the texture
 	{
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-		gl.uniform1fv(shader.uniforms.params.location, controls.params);
+		
 																		// this is confusing. ToDo: swap the var names between.
 		gl.uniform1fv(shader.uniforms.brush.location, input.brush);
-		gl.uniform1fv(shader.uniforms.slopes.location, controls.slopes);
+		gl.uniform1fv(shader.uniforms.sigmoids.location, params.sigmoids);
+		gl.uniform1fv(shader.uniforms.slopes.location, params.slopes);
 		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
 		gl.uniform1f(shader.uniforms.uDebug.location, settings.debugVal);
 		
