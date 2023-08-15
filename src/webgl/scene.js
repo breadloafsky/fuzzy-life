@@ -128,7 +128,7 @@ Scene.prototype.generateTexture = function(){
 let fbCurrent = 0;
 
 // draw
-Scene.prototype.drawScene = function (time, params, settings, input)  {
+Scene.prototype.drawScene = function (time,rulesValues, params, settings, input)  {
 	if(!this.initialized)
 		return;
 
@@ -160,8 +160,8 @@ Scene.prototype.drawScene = function (time, params, settings, input)  {
 		
 																		// this is confusing. ToDo: swap the var names between.
 		gl.uniform1fv(shader.uniforms.brush.location, input.brush);
-		gl.uniform1fv(shader.uniforms.sigmoids.location, params.sigmoids);
-		gl.uniform1fv(shader.uniforms.slopes.location, params.slopes);
+		gl.uniform1fv(shader.uniforms.sigmoids.location, rulesValues.thresholds);
+		gl.uniform1fv(shader.uniforms.slopes.location, rulesValues.slopes);
 		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
 		gl.uniform1f(shader.uniforms.uDebug.location, settings.debugVal);
 		

@@ -11,6 +11,41 @@
 
 
 
+	//	store values of all active rules into 2 arrays that will be passed to the shader
+	let rulesValues:any = {
+		thresholds:[],
+		slopes:[],
+	};	
+
+	// update the arrays of values if(changed)
+	$:$params,  updateRuleArrays();
+	function updateRuleArrays(){
+		rulesValues = {
+			thresholds:[],
+			slopes:[],
+		};
+		for(let i = 0; i < 4; i++)
+		{
+			let s;
+			let t;
+			if($params.rules.length > i)
+			{
+				s = $params.rules[i].slopes;
+				t = $params.rules[i].thresholds;
+			}
+			else
+			{
+				s = [0,0,0,0];
+				t = [0,0,0,0];
+			}
+
+			rulesValues.slopes = rulesValues.slopes.concat(s);
+				rulesValues.thresholds = rulesValues.thresholds.concat(t);
+		}
+	}
+
+
+
 	onMount( async() => {
 		scene = new Scene(canvas);	//init the scene
 
@@ -33,21 +68,21 @@
 
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
-				for(let i = 0; i < $params.sigmoids.length/2; i++) {
-					if($params.sigmoids[i*2] == 0 && $params.sigmoids[i*2+1] == 0)
-						continue;
-					const r = 0.5;
-					const w = 0.2;	//width
+				// for(let i = 0; i < $params.sigmoids.length/2; i++) {
+				// 	if($params.sigmoids[i*2] == 0 && $params.sigmoids[i*2+1] == 0)
+				// 		continue;
+				// 	const r = 0.5;
+				// 	const w = 0.2;	//width
 
-					const centre = Math.random()*r;
-					let vals = [centre-Math.random()*w,centre+Math.random()*w];
+				// 	const centre = Math.random()*r;
+				// 	let vals = [centre-Math.random()*w,centre+Math.random()*w];
 
-					vals.forEach((val,i) => {
-						vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
-					});
-					$params.sigmoids[i*2] = Math.round(vals[0]*1000)/1000;
-					$params.sigmoids[i*2+1] = Math.round(vals[1]*1000)/1000;
-				}
+				// 	vals.forEach((val,i) => {
+				// 		vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
+				// 	});
+				// 	$params.sigmoids[i*2] = Math.round(vals[0]*1000)/1000;
+				// 	$params.sigmoids[i*2+1] = Math.round(vals[1]*1000)/1000;
+				// }
 			}
 		}
 		await scene.init();
@@ -61,7 +96,7 @@
 		// limit the fps
 		if (fpsLimit && delta < 1000 / fpsLimit)
         	return;
-		scene.drawScene(time * 0.001, $params, $settings, $input);	
+		scene.drawScene(time * 0.001, rulesValues,  $params, $settings, $input);	
 		previousTime = time;	
 	}
 
@@ -82,13 +117,16 @@
 
 
 </script>
-<div style="display: flex;">
+<div style="display: flex; overflow: hidden;">
 	<ParameterControls bind:params={$params} bind:scene/>
+	
+	<!-- <div style="color: white; width: 100px; z-index: 200;">{"test"}</div> -->
 	<div class="canvas-container flex">
 		<canvas
 			aria-hidden="true"
 			bind:this={canvas} 
 		/>
+		
 	</div>
 </div>
 	

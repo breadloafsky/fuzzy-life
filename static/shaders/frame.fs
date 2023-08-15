@@ -99,7 +99,7 @@ void main(void) {
     // draw
     if(brush[0] != -1.){
         if(distance(vec2(0.,0.),vec2((vTextureCoord.x-brush[0])*uTextureDims[0],(vTextureCoord.y-brush[1])*uTextureDims[1])) < brush[2])
-                  tex.r = sin(vTextureCoord.x*100.*PI)*0.2+0.8;
+                  tex.r = sin((vTextureCoord.x-brush[0])*100.*PI)*0.2+0.8;
     }
     
 

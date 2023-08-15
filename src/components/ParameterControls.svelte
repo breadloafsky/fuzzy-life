@@ -3,12 +3,13 @@
     import { input } from "../stores";
 	import type { Params, Input } from "../types/types";
 	import type { Scene } from "../webgl/scene.js";
-	import Rule from "./Rule.svelte";
+	import RuleComponent from "./RuleComponent.svelte";
+	import { Rule } from "../types/types";
     import SigmoidGraph from "./SigmoidGraph.svelte";
 	export let params:Params;
 	export let scene:Scene;
 	let fileInput:HTMLInputElement|any;
-	let selectedRule = 0;
+	let selectedRule:number|any = null;
 
 
 	function saveScene() {
@@ -31,18 +32,6 @@
 		const reader = new FileReader();
 		reader.addEventListener("load", function () {
 			params = {...JSON.parse(reader.result+"")};
-
-			// Remove Later
-			while(params.sigmoids.length < 16)
-			{
-				params.sigmoids.push(0);
-			}
-			if(params.slopes == undefined)
-				params.slopes = [];
-			while(params.slopes.length < 16)
-			{
-				params.slopes.push(0.1);
-			}
 		});
 		reader.readAsText(file);
 		return;
@@ -53,8 +42,8 @@
   // e.target.blur();
 </script>
 
-<div  class="controls-container">
-	<div class="controls" style="pointer-events: {$input.brush[0] != -1 ? "none" : "all"};">
+
+	<div class="controls-container" style="pointer-events: {$input.brush[0] != -1 ? "none" : "all"};">
 		<div style="display: flex; flex-direction: row-reverse;">
 			<button on:click={(e) => {scene.generateTexture();}}>repaint</button>
 		</div>
@@ -76,20 +65,12 @@
 		<div>
 			<h2>Rules</h2>
 			<div class="rules">
-				{#each "0123" as s,i}
-				<Rule 
-					label={s} 
-					bind:inn0={params.sigmoids[i*4]} 
-					bind:inn1={params.sigmoids[i*4+1]} 
-					bind:out0={params.sigmoids[i*4+2]} 
-					bind:out1={params.sigmoids[i*4+3]}
-
-					bind:sig_inn0={params.slopes[i*4]} 
-					bind:sig_inn1={params.slopes[i*4+1]} 
-					bind:sig_out0={params.slopes[i*4+2]} 
-					bind:sig_out1={params.slopes[i*4+3]}
-					/>
+				{#each params.rules as r,i}
+					<RuleComponent label={i} bind:rule={params.rules[i]}/>
 				{/each}
+				{#if params.rules.length < 4}
+					<div><button on:click={() => {params.rules.push(new Rule()); params = params} }>+</button></div>
+				{/if}
 			</div>
 		</div>
 		<!-- <div class="section">
@@ -108,36 +89,26 @@
 		</div> -->
 		
 	</div>
-	<div >
-		{#if selectedRule != null}
-			<SigmoidGraph 
-				inn0={params.sigmoids[selectedRule*4]} 
-				inn1={params.sigmoids[selectedRule*4+1]} 
-				slope_inn0={params.slopes[selectedRule*4]} 
-				slope_inn1={params.slopes[selectedRule*4+1]} 
-				out0={params.sigmoids[selectedRule*4+2]} 
-				out1={params.sigmoids[selectedRule*4+3]} 
-				slope_out0={params.slopes[selectedRule*4+2]} 
-				slope_out1={params.slopes[selectedRule*4+3]} 
-			/>
-		{/if}
-	</div>
-</div>
+
 
 
 
 <style>
 	.controls-container{
-		min-width: 200px;
+		min-width: 340px;
+		max-height: 100vh;
 		display: flex;
-		overflow: visible;
 		z-index: 1;
-		pointer-events: none;
-	}
-	.controls{
+		overflow: auto;
+
+		display: flex;
+		flex-direction: column;
+		resize: both;
+		overflow: auto;
+		z-index: 1;
 		padding: 10px;
 		background-color: rgba(0, 0, 0, 0.863); 
-		pointer-events: all;
+
 	}
 
 
@@ -150,16 +121,7 @@
 		--color_bg:var(--color1);
 	}
 	
-	.rules{
-		min-width: 200px;
-		background-color: rgba(0, 0, 0, 0.863); 
-		display: flex;
-		flex-direction: column;
-		resize: both;
-		overflow: auto;
-		z-index: 1;
-	}
-	
+
 	
 
 	

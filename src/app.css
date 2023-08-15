@@ -3,6 +3,10 @@ body{
 	--color0:rgb(179, 255, 0); */
 	--color1: #61e9ff;
 	--color0: rgb(255, 203, 0);
+	margin: 0;
+	padding: 0;
+	overflow:hidden;
+	max-height: 100vh;
 }
 
 input{
@@ -13,7 +17,7 @@ input[type=number]{
 	border: solid 1px rgb(97, 97, 97);
 }
 input[type=number]:focus{
-	border: solid 1px rgb(121, 121, 121);
-	outline: transparent;
-	color:orange
+	outline: solid 2px rgb(121, 121, 121);
+
+	
 }

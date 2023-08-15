@@ -1,14 +1,14 @@
 
-<script >
+<script lang="ts">
 	export const range = [0,1];
-	export let val0;
-	export let val1;
+	export let val0:number;
+	export let val1:number;
 
 	export let color = "blue";
 	export let flipY = false;
 
-	let component;
-	let selectedValue = null;
+	let component:HTMLButtonElement;
+	let selectedValue:any = null;
 	let vals = [val0, val1];
 	
 
@@ -31,12 +31,9 @@
 	}
 
 
-	function mouseDown(e){
-		
-	
+	function mouseDown(e:MouseEvent){
 		document.addEventListener("mousemove", mouseMove);
 		document.addEventListener("mouseup", cleanUp);
-		
 		let val = getSliderVal(e);
 		if(Math.abs(val0-val) <= Math.abs(val1-val) )
 			selectedValue = 0;
@@ -47,7 +44,7 @@
 	}
 
 	
-	function mouseMove(e) {
+	function mouseMove(e:MouseEvent) {
 		let val = getSliderVal(e);
 		vals = [val0, val1];
 		vals[selectedValue] = val;
@@ -55,7 +52,7 @@
 	}
 
 
-	function getSliderVal(e){
+	function getSliderVal(e:MouseEvent){
 		let pos = 0;
 		pos = e.clientX - component.offsetLeft;
 		let val = (pos)/component.clientWidth;
@@ -71,7 +68,7 @@
 
    
 </script>
-<div class="slider-container {(flipY) ? "flipped" : ""}" style="user-select: none;">
+<div class="slider-container {(flipY) ? "flipped" : ""}" style="user-select: none; ">
 
 	<div style="padding:10px;"></div>
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -100,6 +97,7 @@
 		--color:aqua;
 		display: flex;
 		flex-direction: column;
+		padding: 1px;
 	}
 
 	.slider-container.flipped{
