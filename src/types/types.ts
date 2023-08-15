@@ -6,10 +6,10 @@ export class Params{
 		0.0, 0.0, 0.0, 0.0,		//D
 	];// the values of sigmoid
 	slopes:number[] =[
-		0.0, 0.0, 0.0, 0.0,	 
-		0.0, 0.0, 0.0, 0.0,	
-		0.0, 0.0, 0.0, 0.0,		 
-		0.0, 0.0, 0.0, 0.0
+		0.01, 0.01, 0.01, 0.01,	 
+		0.01, 0.01, 0.01, 0.01,	
+		0.01, 0.01, 0.01, 0.01,		 
+		0.01, 0.01, 0.01, 0.01
 	];	// slopes of sigmoid
     radius:number=12;	//	overall radius
 	radiusRatio:number=1/3;	// ratio between inner and outer radius
@@ -22,6 +22,6 @@ export class Settings{
 }
 
 export class Input{
-    brush:number[]|any[] = [0.5,0.5,16];	//x y r
+    brush:number[]|any[] = [-1,0.5,16];	//x y r
 }
 

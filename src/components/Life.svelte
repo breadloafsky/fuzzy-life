@@ -79,21 +79,17 @@
 		$input.brush = [e.clientX/e.target.clientWidth, 1 - e.clientY/e.target.clientHeight, $input.brush[2]];
 	}
 
-	
-	
+
 
 </script>
 <div style="display: flex;">
-
 	<ParameterControls bind:params={$params} bind:scene/>
-<div class="canvas-container flex">
-	
-	<canvas
-		aria-hidden="true"
-		bind:this={canvas} 
-	/>
-	
-</div>
+	<div class="canvas-container flex">
+		<canvas
+			aria-hidden="true"
+			bind:this={canvas} 
+		/>
+	</div>
 </div>
 	
 

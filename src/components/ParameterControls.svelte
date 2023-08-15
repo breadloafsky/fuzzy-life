@@ -1,7 +1,7 @@
 
 <script lang="ts">
     import { input } from "../stores";
-    import type { Params, Input } from "../types/types";
+	import type { Params, Input } from "../types/types";
 	import type { Scene } from "../webgl/scene.js";
 	import Rule from "./Rule.svelte";
     import SigmoidGraph from "./SigmoidGraph.svelte";
@@ -53,82 +53,91 @@
   // e.target.blur();
 </script>
 
-
-<div class="controls-container" >
-	<div style="display: flex; flex-direction: row-reverse;">
-		<button on:click={(e) => {scene.generateTexture();}}>repaint</button>
-	</div>
-	<div >
-		<div >load file</div>
-		<label title="load file">
-			<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
-		</label>
-	</div>
-	<div>
-		<div>save file</div>
-		<button 
-		title="save file"
-		on:click={() => saveScene()}
-		>
-		save
-		</button>
-	</div>
-	<div>
-		<h2>Rules</h2>
-		<div class="rules">
-			{#each "0123" as s,i}
-			<Rule 
-				label={s} 
-				bind:inn0={params.sigmoids[i*4]} 
-				bind:inn1={params.sigmoids[i*4+1]} 
-				bind:out0={params.sigmoids[i*4+2]} 
-				bind:out1={params.sigmoids[i*4+3]}
-	
-				bind:sig_inn0={params.slopes[i*4]} 
-				bind:sig_inn1={params.slopes[i*4+1]} 
-				bind:sig_out0={params.slopes[i*4+2]} 
-				bind:sig_out1={params.slopes[i*4+3]}
-				/>
-			{/each}
+<div  class="controls-container">
+	<div class="controls" style="pointer-events: {$input.brush[0] != -1 ? "none" : "all"};">
+		<div style="display: flex; flex-direction: row-reverse;">
+			<button on:click={(e) => {scene.generateTexture();}}>repaint</button>
 		</div>
+		<div >
+			<div >load file</div>
+			<label title="load file">
+				<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
+			</label>
+		</div>
+		<div>
+			<div>save file</div>
+			<button 
+			title="save file"
+			on:click={() => saveScene()}
+			>
+			save
+			</button>
+		</div>
+		<div>
+			<h2>Rules</h2>
+			<div class="rules">
+				{#each "0123" as s,i}
+				<Rule 
+					label={s} 
+					bind:inn0={params.sigmoids[i*4]} 
+					bind:inn1={params.sigmoids[i*4+1]} 
+					bind:out0={params.sigmoids[i*4+2]} 
+					bind:out1={params.sigmoids[i*4+3]}
+
+					bind:sig_inn0={params.slopes[i*4]} 
+					bind:sig_inn1={params.slopes[i*4+1]} 
+					bind:sig_out0={params.slopes[i*4+2]} 
+					bind:sig_out1={params.slopes[i*4+3]}
+					/>
+				{/each}
+			</div>
+		</div>
+		<!-- <div class="section">
+			<h2>Area Radius</h2>
+			<div >
+				<div id="radiusSlider">
+					Overall Radius
+					<Slider bind:val={controls.radius} range={[0,12]} flipY={true}/> 
+				</div>j
+				<div id="ratioSlider" style="padding-top: 10px;">
+					Inner/Outer R Ratio 
+					<Slider bind:val={controls.radiusRatio} range={[0,1]} flipY={true}/>		
+				</div>
+				<CircleParams bind:rr={controls.radiusRatio}/>
+			</div>
+		</div> -->
 		
 	</div>
-	<!-- {#if selectedRule != null}
-		<SigmoidGraph 
-		val0={params.sigmoids[selectedRule*4]} 
-		val1={params.sigmoids[selectedRule*4+1]} 
-		sig_val0={params.slopes[selectedRule*4]} 
-		sig_val1={params.slopes[selectedRule*4+1]} 
-		color={"var(--color1)"}/>
-	{/if} -->
-	
-
-
-	<!-- <div class="section">
-		<h2>Area Radius</h2>
-		<div >
-			<div id="radiusSlider">
-				Overall Radius
-				<Slider bind:val={controls.radius} range={[0,12]} flipY={true}/> 
-			</div>
-			<div id="ratioSlider" style="padding-top: 10px;">
-				Inner/Outer R Ratio 
-				<Slider bind:val={controls.radiusRatio} range={[0,1]} flipY={true}/>		
-			</div>
-			<CircleParams bind:rr={controls.radiusRatio}/>
-		</div>
-	</div> -->
+	<div >
+		{#if selectedRule != null}
+			<SigmoidGraph 
+				inn0={params.sigmoids[selectedRule*4]} 
+				inn1={params.sigmoids[selectedRule*4+1]} 
+				slope_inn0={params.slopes[selectedRule*4]} 
+				slope_inn1={params.slopes[selectedRule*4+1]} 
+				out0={params.sigmoids[selectedRule*4+2]} 
+				out1={params.sigmoids[selectedRule*4+3]} 
+				slope_out0={params.slopes[selectedRule*4+2]} 
+				slope_out1={params.slopes[selectedRule*4+3]} 
+			/>
+		{/if}
+	</div>
 </div>
+
+
 
 <style>
 	.controls-container{
 		min-width: 200px;
-		background-color: rgba(0, 0, 0, 0.863); 
 		display: flex;
-		flex-direction: column;
-		padding: 10px;
 		overflow: visible;
 		z-index: 1;
+		pointer-events: none;
+	}
+	.controls{
+		padding: 10px;
+		background-color: rgba(0, 0, 0, 0.863); 
+		pointer-events: all;
 	}
 
 

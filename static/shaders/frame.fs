@@ -21,14 +21,16 @@ highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
     return texture2D(uSampler, coord);
 }
 
-float s1(float x,float a,float alpha) 
+// 1 sided sigmoid
+float s0(float x,float a,float alpha) 
 { 
     return 1.0 / ( 1.0 + exp( -(x-a)*4.0/alpha ) );
 }
-float s2(float x,float a,float b,float alpha0, float alpha1)
+// 2 sided sigmoid
+float s1(float x,float a,float b,float alpha0, float alpha1)
 {
-    return s1(x,a,alpha0) 
-        * ( 1.0-s1(x,b,alpha1) );
+    return s0(x,a,alpha0) 
+        * ( 1.0-s0(x,b,alpha1) );
 }
 float t(float m,float n)
 {
@@ -36,7 +38,7 @@ float t(float m,float n)
     //ToDo: change this later, remove the hardcoded value
     float max = 0.0;
     for(int i = 0; i < 4; i++){
-        float a = min(s2( m, sigmoids[i*4+0], sigmoids[i*4+1], slopes[i*4+0], slopes[i*4+1]) , s2( n, sigmoids[i*4+2], sigmoids[i*4+3], slopes[i*4+2], slopes[i*4+3]));
+        float a = min(s1( m, sigmoids[i*4+0], sigmoids[i*4+1], slopes[i*4+0], slopes[i*4+1]) , s1( n, sigmoids[i*4+2], sigmoids[i*4+3], slopes[i*4+2], slopes[i*4+3]));
 
         if(a > max)
             max = a;

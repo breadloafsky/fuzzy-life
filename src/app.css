@@ -1,6 +1,8 @@
 body{
-	--color1:aqua;
-	--color0:rgb(179, 255, 0);
+	/* --color1:aqua;
+	--color0:rgb(179, 255, 0); */
+	--color1: #61e9ff;
+	--color0: rgb(255, 203, 0);
 }
 
 input{
