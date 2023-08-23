@@ -20,7 +20,7 @@ const screenData ={
 }
 
 
-export const utils = {
+export const glUtils = {
 	// Load Shader
 	loadShader: function(gl, type, source)  {
 		const shader = gl.createShader(type);
@@ -38,8 +38,8 @@ export const utils = {
 	},	
 	// Initialize shader program
 	initShaderProgram: function(gl,vsSource, fsSource) {
-		const vertexShader = utils.loadShader(gl, gl.VERTEX_SHADER, vsSource);
-		const fragmentShader = utils.loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+		const vertexShader = glUtils.loadShader(gl, gl.VERTEX_SHADER, vsSource);
+		const fragmentShader = glUtils.loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 		const shaderProgram = gl.createProgram();
 		gl.attachShader(shaderProgram, vertexShader);
 		gl.attachShader(shaderProgram, fragmentShader);
@@ -62,7 +62,7 @@ export const utils = {
 				});
 				Promise.all(shaderFiles).then(data => {
 					const shader = shaders[shaderName];
-					shader.program = utils.initShaderProgram(
+					shader.program = glUtils.initShaderProgram(
 						gl,
 						data[0], 
 						data[1], 
@@ -92,7 +92,7 @@ export const utils = {
 		shaders.frame.attributes.aTextureCoord.value = texCoordBuffer;
 		shaders.frame.attributes.aVertexPosition.value = positionBuffer;
 	},	
-	loadTexture: function(gl, dims, textureP) {
+	loadTexture: function(gl, dims, textureP, url=null) {
 		gl.bindTexture(gl.TEXTURE_2D, textureP);
 		const level = 0;
 		const internalFormat = gl.RGB;
@@ -104,15 +104,17 @@ export const utils = {
 		
 		let arr = [];
 
+		const test = Math.random();
 		for(let j = 0; j < height; j++)
 		{
 			for(let i = 0; i < width; i++)
 			{
-				const a = 0.;
-				// const a = Math.sin( 
-				// 	((j-height/2)/height+width/200)*((i-width/2)/width+height/200)*Math.tan(2*(i-width/2)/width)
-				// 	*2*Math.PI);
-				[a,a,a].forEach((e) => arr.push((e)*255));
+				const a = 0;//j / height;
+				// if(i > width/2	){
+				// 	a = Math.random();
+
+				// }
+				[a, a, a].forEach((e) => arr.push((e)*255));
 			}
 		}
 		const pixel = new Uint8Array(arr);
@@ -136,5 +138,32 @@ export const utils = {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);	
 
+
+		if(url)
+		{
+			const image = new Image();
+			image.onload = () => {
+				gl.bindTexture(gl.TEXTURE_2D, textureP);
+				gl.texImage2D(
+				gl.TEXTURE_2D,
+				level,
+				internalFormat,
+				srcFormat,
+				srcType,
+				image,
+				);
+				gl.generateMipmap(gl.TEXTURE_2D);
+			};
+			image.src = url;
+		}
+	
 	},
+
+	
+
+	
 };
+
+function isPowerOf2(value) {
+	return (value & (value - 1)) === 0;
+  }

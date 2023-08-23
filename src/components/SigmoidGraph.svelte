@@ -66,7 +66,7 @@ path{
 }
 
 svg{
-	padding: 10px;
+
 	height: 100%;
 	max-width: 100%;
 	

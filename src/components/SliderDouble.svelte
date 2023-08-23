@@ -4,8 +4,9 @@
 	export let val0:number;
 	export let val1:number;
 
-	export let color = "blue";
-	export let flipY = false;
+	export let color:string = "blue";
+	export let flipY:boolean = false;
+	export let onChange:any;
 
 	let component:HTMLButtonElement;
 	let selectedValue:any = null;
@@ -19,8 +20,6 @@
 		}
 	}
 
-	// onMount(() => {
-	// });
 
 	// remove event listeners
 	function cleanUp()
@@ -49,6 +48,7 @@
 		vals = [val0, val1];
 		vals[selectedValue] = val;
 		[val0, val1] = vals;
+		onChange();
 	}
 
 

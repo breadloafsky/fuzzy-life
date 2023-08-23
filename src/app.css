@@ -1,12 +1,23 @@
 body{
 	/* --color1:aqua;
 	--color0:rgb(179, 255, 0); */
+	--color0: #ffcb00;
 	--color1: #61e9ff;
-	--color0: rgb(255, 203, 0);
+	--color2: #12ff0a;
+	--color3: #ab61ff;
+	--color4: rgb(255, 123, 0);
+	--color5: #ff61dd;
+	--bg0: #000000dc;
+	--bg1: #2b2b2b;
 	margin: 0;
 	padding: 0;
 	overflow:hidden;
 	max-height: 100vh;
+}
+
+
+div {
+	user-select: none;
 }
 
 input{
@@ -17,7 +28,30 @@ input[type=number]{
 	border: solid 1px rgb(97, 97, 97);
 }
 input[type=number]:focus{
-	outline: solid 2px rgb(121, 121, 121);
-
-	
+	outline: solid 2px rgb(121, 121, 121);	
 }
+
+li {
+	list-style-type: none;
+	display: flex;
+	justify-content: space-between;
+}
+
+button{
+	background-color:#2b2b2b;
+	color:white;
+	border: none;
+	border-radius: 2px;
+	cursor: pointer;
+	outline: #616161 1px solid;
+}
+button:hover{
+	background-color:#383838;
+}
+  
+button:active{
+	outline: #61e9ff 2px solid;
+}
+
+
+  

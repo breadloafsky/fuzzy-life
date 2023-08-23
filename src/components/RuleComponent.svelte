@@ -2,11 +2,10 @@
 <script  lang="ts">
 	import type { Rule } from "../types/types";
     import SigmoidGraph from "./SigmoidGraph.svelte";
-
-    
     import SliderDouble from "./SliderDouble.svelte";
 	export let label:string|any;	
 	export let rule:Rule;
+	export let onChange:any;
 
 
 </script>
@@ -21,8 +20,8 @@
 		<SigmoidGraph 
 			rule={rule}
 		/>
-		<SliderDouble bind:val0={rule.thresholds[0]} bind:val1={rule.thresholds[1]} color={"var(--color0)"}/>
-		<SliderDouble bind:val0={rule.thresholds[2]} bind:val1={rule.thresholds[3]} flipY={true} color={"var(--color1)"}/>
+		<SliderDouble bind:val0={rule.thresholds[0]} bind:val1={rule.thresholds[1]} onChange={onChange} color={"var(--color0)"}/>
+		<SliderDouble bind:val0={rule.thresholds[2]} bind:val1={rule.thresholds[3]} onChange={onChange} flipY={true} color={"var(--color1)"}/>
 		<div style="display: flex; justify-content: space-between;">
 			<div style="display: flex; gap:4px;">
 				<div style="color:var(--color0);">Slope First</div>
@@ -31,8 +30,7 @@
 			<div style="display: flex; gap:4px;">
 				<div style="color:var(--color0);">Slope Last</div>
 				<input bind:value={rule.slopes[1]} type="number" step="0.01" min="0.001" max="1" />
-			</div>
-			
+			</div>	
 		</div>
 		
 		<div style="display: flex; justify-content: space-between;">
@@ -55,7 +53,7 @@
 
 
 	.rule{
-		background-color: rgb(43, 43, 43);
+		background-color: var(--bg1);
 		padding: 10px;
 		margin: 4px;
 	}
