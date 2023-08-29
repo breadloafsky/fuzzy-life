@@ -1,12 +1,16 @@
 
 <script lang="ts">
 	import { onMount } from "svelte";    
-    import type { Kernel, Params, Rule } from "../../types/types";
+    import type { Kernel } from "../../types/types";
 	import {utils} from "../../utils";
+
+	import {callbacks} from "../../stores";
+	$callbacks.updateKernelGraphs = repaint;
+
 	export let kernels:Kernel[];
 	export let selectedKernel:number|any;
 	export let hoveredKernel:number|any;
-	export let formatKernel:any;
+	export let updateKernels:any;
 	let svg:SVGSVGElement|HTMLElement;
 	let width:number = 400;
 	let height:number = 240;
@@ -31,7 +35,7 @@
 		document.removeEventListener("mousemove", handleMouseMove);
 		document.removeEventListener("mouseup", cleanUp);
 		selectedPoint = null;
-		formatKernel(selectedKernel);	// update the kernel texture
+		updateKernels();	// update the kernel texture
 	}
 
 	function getMousePos(e:MouseEvent){
@@ -54,16 +58,29 @@
 	function handleMouseDown(e:MouseEvent){
 		if(selectedKernel != null)
 		{
-			document.addEventListener("mousemove", handleMouseMove);
-			document.addEventListener("mouseup", cleanUp);
-			let pos = getMousePos(e);
-			if(selectedPoint == null && kernels[selectedKernel].points.length < 16)
-			{
-				selectedPoint = {x:pos[0],y:pos[1]};
-				kernels[selectedKernel].points.push(selectedPoint);
+			if(e.button == 0){
+				document.addEventListener("mousemove", handleMouseMove);
+				document.addEventListener("mouseup", cleanUp);
+				let pos = getMousePos(e);
+				// add point
+				if(selectedPoint == null && kernels[selectedKernel].points.length < 16)
+				{
+					selectedPoint = {x:pos[0],y:pos[1]};
+					kernels[selectedKernel].points.push(selectedPoint);
+				}
+				kernels = kernels;
+				handleMouseMove(e);
 			}
-			kernels = kernels;
-			handleMouseMove(e);
+			// delete point
+			else if(e.button == 2 && selectedPoint != null && kernels[selectedKernel].points.length > 1)
+			{
+				kernels[selectedKernel].points.splice(kernels[selectedKernel].points.findIndex(p => p == selectedPoint), 1);
+				kernels = kernels;
+				repaint();
+				updateKernels();
+				selectedPoint = null;
+			}
+				
 		}
 	}
 
@@ -71,6 +88,7 @@
 		if(selectedKernel != null && selectedPoint != null)
 		{
 			let pos = getMousePos(e);
+			//	replace the point coordinates
 			let pid = kernels[selectedKernel].points.findIndex(p => p == selectedPoint);
 			selectedPoint=({x:pos[0],y:pos[1]});
 			kernels[selectedKernel].points[pid] = selectedPoint;
@@ -79,11 +97,10 @@
 				return a.x - b.x;
 			});
 		}
-	
+		//formatKernel(selectedKernel);
 	}
 
 
-	
 
 	function repaint(){
 		for(let j = 0; j < kernels.length; j++)
@@ -100,10 +117,10 @@
 </script>
 
 
-<div class="graph-container" bind:clientWidth={width} >
+<div class="graph-container" bind:clientWidth={width}>
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<svg bind:this={svg} viewBox="0 0 {width} {height}" on:mousedown={handleMouseDown}>
+	<svg bind:this={svg} viewBox="0 0 {width} {height}" on:mousedown={handleMouseDown} on:contextmenu|preventDefault={()=>{return false;}}  >
 		{#each kernels as k,i}
 			<path 
 			d={graphPath[i]} 
@@ -119,6 +136,8 @@
 					r="5" 	
 					style={`--color: var(--color${selectedKernel});`} 
 					on:mousedown={()=>{selectedPoint = p;}}
+					
+					
 				/>
 			{/each}
 		{/if}
@@ -126,6 +145,7 @@
 </div>
 
 <style>
+
 
 circle{
 	cursor: pointer;

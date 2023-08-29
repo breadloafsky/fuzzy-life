@@ -5,7 +5,6 @@
 	export let val1:number;
 
 	export let color:string = "blue";
-	export let flipY:boolean = false;
 	export let onChange:any;
 
 	let component:HTMLButtonElement;
@@ -68,19 +67,14 @@
 
    
 </script>
-<div class="slider-container {(flipY) ? "flipped" : ""}" style="user-select: none; ">
-
-	<div style="padding:10px;"></div>
+<div class="slider-container">
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<button
 		bind:this={component}
 		on:mousedown={e => mouseDown(e)}
 		class="slider" 
 		style="--val0:{val0}; --val1:{val1};">
-		<div class="bar" style="--color:{color};">
-			<div data-selected={selectedValue == 0}><div>{val0}</div></div>
-			<div data-selected={selectedValue == 1}><div>{val1}</div></div>
-		</div>
+		<div class="bar" style="--color:{color};"/>
 	</button>
 </div>
 
@@ -98,11 +92,9 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1px;
+		user-select: none;
 	}
 
-	.slider-container.flipped{
-		flex-direction: column-reverse !important;
-	}
 	.slider{
 		--val0:0.5;
 		--val1:0.5;
@@ -143,21 +135,7 @@
 
 	}
 
-	.flipped .bar > div{
-		transform: flip translateY(4px);
-	}
 
-	.bar > div > div{
-		position: absolute;
-		top: -20px;
-	}
-	.flipped .bar > div > div{
-		position: absolute;
-		top: 20px;
-	}
-	.bar > div:first-child > div{
-		right: 0;
-	}
 
 	
 	.slider:active .bar > div[data-selected="true"]{

@@ -45,7 +45,7 @@ void main(void) {
 
   tex = calculateColor(tex.r);
 
-  // tex.rgb = tex.rrr;
+  //tex.rgb = tex.rrb;
 
   // if(tex.r > 0.8)
   //   tex.rb *= vec2(0.6,0.8);

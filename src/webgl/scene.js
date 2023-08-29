@@ -26,11 +26,11 @@ function setAttribute(gl, attrib, num=2, type=null, normalize=false, stride=0, o
 // create scene
 export function Scene(canvas) {
 	
-	this.quality = 1.8;
+	this.quality = 2.2;
 	this.initialized = false;
 	this.fb = [];	//	frame buffers
 	this.textures = [];
-	this.kerns = [];	//kernel textures
+	this.kern = {};	//kernel texture
 	this.shaders ={
 		screen:{
 			program: {},
@@ -54,18 +54,19 @@ export function Scene(canvas) {
 			uniforms: {
 				uSampler: {value:null},
 				uTextureDims:{value:null},
+
+				uKernelRadius:{value:null},
+				uKern:{value:null},
 				
-				uKern0:{value:null},
-				uKern1:{value:null},
-				uKern2:{value:null},
-				uKern3:{value:null},
-				uKern4:{value:null},
-				uKern5:{value:null},
+				uRules:{value:null},
+
+				uDelta: {value:null},
+
+				uNumberOfRules:{value:null},
+				uNumberOfKernels:{value:null},
 
 				uDebug:{value:null},	// DEBUG
 				isPaused:{value:null},
-				sigmoids: {value:null},
-				slopes:{value:null},	//sigmoid slopes
 				brush:{value:null},	// paint brush
 			},
 		},
@@ -110,11 +111,10 @@ Scene.prototype.init = async function(){
 		glUtils.initAttributes(this.gl,this.shaders);	
 
 		// create kernel textures
-		for(let i = 0; i < 6; i++){
-			const texture = gl.createTexture();
-			glUtils.loadTexture(gl, [128,128], texture,"canvas.png");
-			this.kerns.push(texture);
-		}
+
+		this.kern = gl.createTexture();
+		glUtils.loadTexture(gl, [64,64*4], this.kern,"canvas.png");
+		
 		
 		// create main textures
 		for(let i = 0; i < 2; i++)
@@ -142,22 +142,17 @@ Scene.prototype.generateTexture = function(){
 }
 
 
-Scene.prototype.setKernel = function(i, url){
-	glUtils.loadTexture(this.gl, [128,128], this.kerns[i],url);
+Scene.prototype.setKernels = function(url){
+
+	glUtils.loadTexture(this.gl, [64,64*4], this.kern,url);
 }
 
 
-// Scene.prototype.setKernel = function(){
-// 	if(this.kernel == null)
-// 		this.kernel = this.gl.createTexture();
-// 	glUtils.loadTexture(this.gl, [32,32], this.kernel);
-// }
-  
 
 let fbCurrent = 0;
 
 // draw
-Scene.prototype.drawScene = function (time,params, settings, input)  {
+Scene.prototype.drawScene = function (time,params, formattedParams, settings, input)  {
 	if(!this.initialized)
 		return;
 
@@ -189,49 +184,35 @@ Scene.prototype.drawScene = function (time,params, settings, input)  {
 		
 																		// this is confusing. ToDo: swap the var names between.
 		gl.uniform1fv(shader.uniforms.brush.location, input.brush);
-		gl.uniform1fv(shader.uniforms.sigmoids.location, params.thresholds);
-		gl.uniform1fv(shader.uniforms.slopes.location, params.slopes);
+
+		gl.uniform1fv(shader.uniforms.uRules.location, formattedParams.rules);
+
+		gl.uniform1i(shader.uniforms.uNumberOfRules.location, params.numberOfRules);
+		gl.uniform1i(shader.uniforms.uNumberOfKernels.location, params.kernels.length);
+
+		gl.uniform1i(shader.uniforms.uKernelRadius.location, params.convRadius);
 
 		
-
+		gl.uniform1f(shader.uniforms.uDelta.location, params.dt);
 		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
-		gl.uniform1f(shader.uniforms.uDebug.location, settings.debugVal);
+		
 
 		
 		gl.uniform1i(shader.uniforms.uSampler.location, 0);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern0.location, 1);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern1.location, 2);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern2.location, 3);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern3.location, 4);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern4.location, 5);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern5.location, 6);  // texture unit 0
+		gl.uniform1i(shader.uniforms.uKern.location, 1);  // texture unit 0
+
 
 
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
 
+
 		gl.activeTexture(gl.TEXTURE1);
-		gl.bindTexture(gl.TEXTURE_2D, this.kerns[0]);
-
-		gl.activeTexture(gl.TEXTURE2);
-		gl.bindTexture(gl.TEXTURE_2D, this.kerns[1]);
-
-		gl.activeTexture(gl.TEXTURE3);
-		gl.bindTexture(gl.TEXTURE_2D, this.kerns[2]);
-
-		gl.activeTexture(gl.TEXTURE4);
-		gl.bindTexture(gl.TEXTURE_2D, this.kerns[3]);
-
-		gl.activeTexture(gl.TEXTURE5);
-		gl.bindTexture(gl.TEXTURE_2D, this.kerns[4]);
-
-		gl.activeTexture(gl.TEXTURE6);
-		gl.bindTexture(gl.TEXTURE_2D, this.kerns[5]);
-
-		gl.viewport(0, 0, 128,128);
+		gl.bindTexture(gl.TEXTURE_2D, this.kern); // bind kernel texture
+		gl.viewport(0, 0, 64,256);
 
 
 		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
+		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);	// bind main texture
 		gl.viewport(0, 0, textureDims[0],textureDims[1]);
 
 		

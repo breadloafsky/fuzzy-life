@@ -4,13 +4,12 @@
 
 
 export class Callbacks  {
-	setKernel:any;
+	updateKernelGraphs:any;
+	updateKernelTexture:any;
+	updateRules:any;
 }
 
-export class Rule  {
-	thresholds:number[] =  [0.4, 0.5, 0.5, 0.6];
-	slopes:number[] =  [0.001,0.001,0.001,0.001];
-}
+
 
 export class Point  {
 	x:number=0;
@@ -24,38 +23,44 @@ export class Kernel  {
 			y:0.5
 		},
 	];
-	kernImg:any=undefined
+	rules:number[][]=[
+			[0.3, 0.5, 0.001, 0.001],
+	];
+	kernImg:any=undefined;
 }
 
 
 export class Params{
-	rules:Rule[] =[
-		{
-			thresholds: [0.2, 0.35, 0.2, 0.25],
-			slopes:[0.001, 0.001, 0.001, 0.001],
-		},
-		{
-			thresholds: [0.32, 0.5,0.271, 0.34],
-			slopes:[0.001, 0.001, 0.001, 0.001],
-		}
-	];
 	kernels:Kernel[]=[
-		{...new Kernel(), points:[
+		{
+			...new Kernel(), 
+			points:[
 			{x:0.3,y:0.2},
 			{x:0.7,y:0.6},
-		]},
-		{...new Kernel(), points:[
-			{x:0.5,y:0.5},
-		]}
+			],
+			rules:[
+				[0.3,0.5, 0.001, 0.001]
+			],
+
+		},
+		{
+			...new Kernel(), 
+	
+		}
 	];
-    kernelSize:number=12;	//	the radius of kernel/convolution radius
+    convRadius:number=12;	//	the radius of kernel/convolution radius
+	numberOfRules:number = 1;
+	dt:number = 0.5;		// dt multiplier
 }
 
 
 export class FormattedParams{
-	thresholds:number[] = [0];
-	slopes:number[] = [0];
+	rules:number[] = [0];
 	kernelTextures:any=[null,null,null,null,null,null];
+	kernelTexture:any=null;
+	nKernels:number = 1;
+	nRules:number = 1;
+	convRadius:number = 12;
 }
 
 export class Settings{

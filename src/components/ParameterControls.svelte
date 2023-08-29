@@ -1,12 +1,13 @@
 
 <script lang="ts">
     import { input } from "../stores";
-	import { type Params, type Input, Rule, FormattedParams, Settings } from "../types/types";
 	import type { Scene } from "../webgl/scene.js";
 	import RuleComponent from "./RuleComponent.svelte";
     import KernelProperties from "./KernelProperties.svelte";
 	import KernelCanvas from "./graphs/KernelCanvas.svelte";
     import { onMount } from "svelte";
+    import type { FormattedParams, Params, Settings } from "../types/types";
+    import SimulationSettings from "./sections/SimulationSettings.svelte";
 	export let scene:Scene;
 	export let params:Params;
 	export let settings:Settings;
@@ -16,42 +17,17 @@
 	let fileInput:HTMLInputElement|any;
 
 
-	function formatRules(){
-		formattedParams.slopes = [];
-		formattedParams.thresholds = [];
-		//	store values of all active rules into 2 arrays that will be passed to the shader
-		for(let i = 0; i < 4; i++)
-		{
-			let s;
-			let t;
-			if(params.rules.length > i)
-			{
-				s = params.rules[i].slopes;
-				t = params.rules[i].thresholds;
-			}
-			else
-			{
-				s = [0,0,0,0];
-				t = [0,0,0,0];
-			}
-			formattedParams.slopes = formattedParams.slopes.concat(s);
-			formattedParams.thresholds = formattedParams.thresholds.concat(t);
-		}
-	}
+	
 
 
 
-	function formatKernel(i:number){
-		formattedParams.kernelTextures[i] = kc.render(params.kernels[i]);
-		if(scene)
-			scene.setKernel(i,formattedParams.kernelTextures[i]);
-	}
+	
 
 
 	onMount(() => {
 		for(let i = 0; i < params.kernels.length; i++)
 		{
-			formatKernel(i);	
+			updateKernels();	
 		}
 		document.body.onkeyup = (e) => {
 			// if (e.key.toLowerCase() == "d")
@@ -63,23 +39,24 @@
 
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
-				for(let i = 0; i < params.rules.length; i++) {
-					for(let j = 0; j < 2; j++){
-				
-						const r = 0.8;
-						const w = 0.2;	//width
+				for(let i = 0; i < params.kernels.length; i++) {
+					const kern = params.kernels[i];
+					for(let j = 0; j < kern.rules.length; j++){
+						
+						const r = 1.0;
+						const w = 0.4;	//width
 
-						const centre = Math.random()*r/2+0.2;
+						const centre = Math.random()*r/2+0.3;
 						let vals = [centre-Math.random()*w,centre+Math.random()*w];
 
 						vals.forEach((val,i) => {
 							vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
 						});
-						params.rules[i].thresholds[j*2] = Math.round(vals[0]*1000)/1000;
-						params.rules[i].thresholds[j*2+1] = Math.round(vals[1]*1000)/1000;
-
+						kern.rules[j][0] = Math.round(vals[0]*1000)/1000;
+						kern.rules[j][1] = Math.round(vals[1]*1000)/1000;
 					}
 				}
+				params = params;
 				formatRules();
 			}
 		}
@@ -93,6 +70,7 @@
 			return undefined;
 		return v;
 	}
+
 	function saveScene() {
     	var file = new Blob([JSON.stringify({...params},filterProperty,"\t")], {type: "json"});
 		var a = document.createElement("a"),
@@ -108,33 +86,70 @@
 	}
 
 	function loadScene() {
-    const file = fileInput.files[0];
-    if (file) {
-		const reader = new FileReader();
-		reader.addEventListener("load", function () {
-			params = {...params, ...JSON.parse(reader.result+"")};
-		});
-		reader.readAsText(file);
-		return;
-    } 
-	alert("File error");
+		const file = fileInput.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.addEventListener("load", function () {
+				params = {...params, ...JSON.parse(reader.result+"")};
+				updateKernels();
+			});
+			reader.readAsText(file);
+			return;
+		} 
+		alert("File error");
+	}
 
-  }
+	// format and put all the rules into 1d array that will be passed to the shader
+	function formatRules(){
+
+		// update kernel rules
+		for(let i =0 ; i < params.kernels.length; i++){
+			const kern = params.kernels[i];
+			while(kern.rules.length < params.numberOfRules){
+				kern.rules.push([0.4,0.6, 0.001, 0.001]);
+			}
+			while(kern.rules.length > params.numberOfRules){
+				kern.rules.pop();
+			}
+		}
+
+		formattedParams.rules = [];
+		for(let i = 0; i < 4; i++)
+		{
+			let s:number[] = [];
+			if(params.numberOfRules > i)
+			{
+				for(let j = 0; j < 4; j++){
+					if(params.kernels.length > j)
+						s = s.concat(params.kernels[j].rules[i]);
+					else
+						s = s.concat(-0.5,1.5,0.1,0.1);
+				}
+			}
+			else
+				s = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+			formattedParams.rules = formattedParams.rules.concat(s);
+		}
+
+
+	}
+
+  	function updateKernels(){
+		formattedParams.kernelTexture = kc.render(params.kernels, params.convRadius);
+		
+		
+		if(scene)
+			scene.setKernels(formattedParams.kernelTexture);
+
+		params = params;
+
+		formatRules();
+	}
   // e.target.blur();
 </script>
 
 <KernelCanvas bind:this={kc}/>
 <div class="controls-container" style="pointer-events: {$input.brush[0] != -1 ? "none" : "all"};">
-
-
-	<div>
-		<KernelProperties params={params} formattedParams={formattedParams} formatKernel={formatKernel}/>
-	</div>
-
-
-	<div style="display: flex; flex-direction: row-reverse;">
-		<button on:click={(e) => {scene.generateTexture();}}>repaint</button>
-	</div>
 	<div >
 		<div >load file</div>
 		<label title="load file">
@@ -150,14 +165,28 @@
 		save
 		</button>
 	</div>
+
+	<div>
+		<SimulationSettings params={params}/>
+	</div>
+
+	<div>
+		<KernelProperties params={params} formattedParams={formattedParams} updateKernels={updateKernels}/>
+	</div>
+
+
+	<div style="display: flex; flex-direction: row-reverse;">
+		<button on:click={(e) => {scene.generateTexture();}}>repaint</button>
+	</div>
+	
 	<div>
 		<h2>Rules</h2>
 		<div class="rules">
-			{#each params.rules as r,i}
-				<RuleComponent label={i} bind:rule={params.rules[i]} onChange={formatRules}/>
+			{#each new Array(params.numberOfRules) as r,i}
+				<RuleComponent ruleId={i} bind:params={params} onChange={formatRules}/>
 			{/each}
-			{#if params.rules.length < 4}
-				<div><button on:click={() => {params.rules.push(new Rule()); params.rules = params.rules; formatRules()} }>+</button></div>
+			{#if params.numberOfRules < 4}
+				<div><button on:click={() => {params.numberOfRules++; updateKernels(); } }>+</button></div>
 			{/if}
 		</div>
 	</div>

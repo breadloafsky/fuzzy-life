@@ -42,7 +42,7 @@
 		// limit the fps
 		if (fpsLimit && delta < 1000 / fpsLimit)
         	return;
-		scene.drawScene(time * 0.001, formattedParams, settings, input);	
+		scene.drawScene(time * 0.001, params, formattedParams, settings, input);	
 		previousTime = time;	
 	}
 

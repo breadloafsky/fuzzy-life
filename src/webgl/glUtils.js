@@ -102,41 +102,7 @@ export const glUtils = {
 		const srcFormat = gl.RGB;
 		const srcType = gl.UNSIGNED_BYTE;
 		
-		let arr = [];
-
-		const test = Math.random();
-		for(let j = 0; j < height; j++)
-		{
-			for(let i = 0; i < width; i++)
-			{
-				const a = 0;//j / height;
-				// if(i > width/2	){
-				// 	a = Math.random();
-
-				// }
-				[a, a, a].forEach((e) => arr.push((e)*255));
-			}
-		}
-		const pixel = new Uint8Array(arr);
-		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-		gl.texImage2D(
-			gl.TEXTURE_2D,
-			level,
-			internalFormat,
-			width,
-			height,
-			border,
-			srcFormat,
-			srcType,
-			pixel,
-		);
-		{
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		}
-		// gl.LINEAR gl.NEAREST
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);	
+		
 
 
 		if(url)
@@ -152,10 +118,46 @@ export const glUtils = {
 				srcType,
 				image,
 				);
-				gl.generateMipmap(gl.TEXTURE_2D);
+				//gl.generateMipmap(gl.TEXTURE_2D);
+
+				setParams(gl);
 			};
 			image.src = url;
+			
 		}
+		else{
+			let arr = [];
+			const test = Math.random();
+			for(let j = 0; j < height; j++)
+			{
+				for(let i = 0; i < width; i++)
+				{
+					const a = 0;//j / height;
+					// if(i > width/2	){
+					// 	a = Math.random();
+
+					// }
+					[a, a, a].forEach((e) => arr.push((e)*255));
+				}
+			}
+			const pixel = new Uint8Array(arr);
+			gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+			gl.texImage2D(
+				gl.TEXTURE_2D,
+				level,
+				internalFormat,
+				width,
+				height,
+				border,
+				srcFormat,
+				srcType,
+				pixel,
+			);
+			setParams(gl);
+			
+		}
+		
+		
 	
 	},
 
@@ -163,6 +165,15 @@ export const glUtils = {
 
 	
 };
+
+function setParams(gl){
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+	// gl.LINEAR gl.NEAREST
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);	
+}
 
 function isPowerOf2(value) {
 	return (value & (value - 1)) === 0;
