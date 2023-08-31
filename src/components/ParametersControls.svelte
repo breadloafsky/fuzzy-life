@@ -2,12 +2,13 @@
 <script lang="ts">
     import { input } from "../stores";
 	import type { Scene } from "../webgl/scene.js";
-	import RuleComponent from "./RuleComponent.svelte";
-    import KernelProperties from "./KernelProperties.svelte";
+	import RuleComponent from "./sections/RuleComponent.svelte";
 	import KernelCanvas from "./graphs/KernelCanvas.svelte";
     import { onMount } from "svelte";
     import type { FormattedParams, Params, Settings } from "../types/types";
     import SimulationSettings from "./sections/SimulationSettings.svelte";
+    import SectionContainer from "./sections/SectionContainer.svelte";
+    import ConvolutionProperties from "./sections/ConvolutionProperties.svelte";
 	export let scene:Scene;
 	export let params:Params;
 	export let settings:Settings;
@@ -15,20 +16,10 @@
 
 	let kc:KernelCanvas;
 	let fileInput:HTMLInputElement|any;
-
-
 	
-
-
-
-	
-
 
 	onMount(() => {
-		for(let i = 0; i < params.kernels.length; i++)
-		{
-			updateKernels();	
-		}
+		updateKernels();
 		document.body.onkeyup = (e) => {
 			// if (e.key.toLowerCase() == "d")
 			// 	settings.debugVal = 1 - settings.debugVal;
@@ -39,9 +30,9 @@
 
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
-				for(let i = 0; i < params.kernels.length; i++) {
-					const kern = params.kernels[i];
-					for(let j = 0; j < kern.rules.length; j++){
+				for(let i = 0; i < params.rules.length; i++) {
+					const rule = params.rules[i];
+					for(let j = 0; j < rule.subRules.length; j++){
 						
 						const r = 1.0;
 						const w = 0.4;	//width
@@ -52,11 +43,13 @@
 						vals.forEach((val,i) => {
 							vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
 						});
-						kern.rules[j][0] = Math.round(vals[0]*1000)/1000;
-						kern.rules[j][1] = Math.round(vals[1]*1000)/1000;
+
+						rule.subRules[j].thersholds[0] = Math.round(vals[0]*1000)/1000;
+						rule.subRules[j].thersholds[1] = Math.round(vals[1]*1000)/1000;
 					}
 				}
 				params = params;
+				console.log(params); //debug
 				formatRules();
 			}
 		}
@@ -90,7 +83,8 @@
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", function () {
-				params = {...params, ...JSON.parse(reader.result+"")};
+				 
+				Object.assign(params, {...params, ...JSON.parse(reader.result+"")});
 				updateKernels();
 			});
 			reader.readAsText(file);
@@ -101,51 +95,36 @@
 
 	// format and put all the rules into 1d array that will be passed to the shader
 	function formatRules(){
-
-		// update kernel rules
-		for(let i =0 ; i < params.kernels.length; i++){
-			const kern = params.kernels[i];
-			while(kern.rules.length < params.numberOfRules){
-				kern.rules.push([0.4,0.6, 0.001, 0.001]);
-			}
-			while(kern.rules.length > params.numberOfRules){
-				kern.rules.pop();
-			}
-		}
-
 		formattedParams.rules = [];
-		for(let i = 0; i < 4; i++)
+		for(let i = 0; i < params.rules.length; i++)
 		{
 			let s:number[] = [];
-			if(params.numberOfRules > i)
+			if(params.rules[i].enabled)
 			{
-				for(let j = 0; j < 4; j++){
-					if(params.kernels.length > j)
-						s = s.concat(params.kernels[j].rules[i]);
+				for(let j = 0; j < params.kernels.length; j++){
+					if(params.kernels[j].enabled && params.rules[i].subRules[j].enabled)
+					{
+						s = s.concat(params.rules[i].subRules[j].thersholds)
+						s = s.concat(params.rules[i].subRules[j].slopes)
+					}	
 					else
 						s = s.concat(-0.5,1.5,0.1,0.1);
 				}
 			}
 			else
-				s = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+				s = [0,0,0,0, 0,0,0,0, 0,0,0,0];
 			formattedParams.rules = formattedParams.rules.concat(s);
 		}
-
-
 	}
 
   	function updateKernels(){
-		formattedParams.kernelTexture = kc.render(params.kernels, params.convRadius);
-		
-		
+		formattedParams.kernelTexture = kc.renderTexture(params.kernels, params.convRadius);
+		formattedParams.kernelsPreview = kc.renderPreview(params.kernels, params.convRadius);
 		if(scene)
 			scene.setKernels(formattedParams.kernelTexture);
-
 		params = params;
-
 		formatRules();
 	}
-  // e.target.blur();
 </script>
 
 <KernelCanvas bind:this={kc}/>
@@ -165,67 +144,68 @@
 		save
 		</button>
 	</div>
-
-	<div>
-		<SimulationSettings params={params}/>
-	</div>
-
-	<div>
-		<KernelProperties params={params} formattedParams={formattedParams} updateKernels={updateKernels}/>
-	</div>
-
-
 	<div style="display: flex; flex-direction: row-reverse;">
-		<button on:click={(e) => {scene.generateTexture();}}>repaint</button>
+		<button on:click={(e) => {scene.generateTexture();}}>clear</button>
 	</div>
-	
-	<div>
-		<h2>Rules</h2>
-		<div class="rules">
-			{#each new Array(params.numberOfRules) as r,i}
-				<RuleComponent ruleId={i} bind:params={params} onChange={formatRules}/>
+
+	<!-- <SectionContainer label="Settings">
+		<SimulationSettings params={params}/>
+	</SectionContainer> -->
+
+	<SectionContainer label="Convolution Settings">
+		<ConvolutionProperties params={params} formattedParams={formattedParams} updateKernels={updateKernels}/>
+	</SectionContainer>
+
+	<SectionContainer label="Rules">
+		<div class="rules-expression"  style="color: gray;">
+			{"max("}	
+			{#each params.rules as r,i}
+				{#if r.enabled}
+					<div style="padding-left: 20px;">
+						{"min("}
+						{#each params.kernels as k,j}
+							{#if k.enabled && params.rules[i].subRules[j].enabled}
+								<span style="color:var(--color{j});">
+									{["A","B","C","D"][j]+i}
+								</span>
+							{/if}
+						{/each}
+						{")"}
+					</div>
+				{/if}
 			{/each}
-			{#if params.numberOfRules < 4}
-				<div><button on:click={() => {params.numberOfRules++; updateKernels(); } }>+</button></div>
-			{/if}
+			{")"}
 		</div>
-	</div>
+		{#each params.rules as r,i}
+			<RuleComponent ruleId={i} bind:params={params} onChange={formatRules}/>
+		{/each}
+	</SectionContainer>
 </div>
 
 
 
 
 <style>
+
+
+	.rules-expression > div:not(:last-child)::after{
+		content:", "
+	}
+	.rules-expression > div > span:not(:last-child)::after{
+		content:" , ";
+		color: gray;
+	}
 	.controls-container{
 		min-width: 340px;
 		max-height: 80vh;
 		z-index: 1;
 		display: flex;
-		
+		padding-inline: 20px;
+		background-color: var(--bg0); 
 		flex-direction: column;
-
 		overflow: auto;
 		resize: both;
-
-		padding: 10px;
-		background-color: var(--bg0); 
-
 	}
-
-
-	:global(#radiusSlider .slider-container){
-		--color:white;
-	}
-
-	:global(#ratioSlider .slider-container){
-		--color:var(--color0);
-		--color_bg:var(--color1);
-	}
-	
-
-	
-
-	
 	
 
    

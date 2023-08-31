@@ -26,7 +26,7 @@ function setAttribute(gl, attrib, num=2, type=null, normalize=false, stride=0, o
 // create scene
 export function Scene(canvas) {
 	
-	this.quality = 2.2;
+	this.quality = 2;
 	this.initialized = false;
 	this.fb = [];	//	frame buffers
 	this.textures = [];
@@ -113,8 +113,7 @@ Scene.prototype.init = async function(){
 		// create kernel textures
 
 		this.kern = gl.createTexture();
-		glUtils.loadTexture(gl, [64,64*4], this.kern,"canvas.png");
-		
+		glUtils.loadTexture(gl, [64,64], this.kern,"canvas.png");
 		
 		// create main textures
 		for(let i = 0; i < 2; i++)
@@ -143,8 +142,7 @@ Scene.prototype.generateTexture = function(){
 
 
 Scene.prototype.setKernels = function(url){
-
-	glUtils.loadTexture(this.gl, [64,64*4], this.kern,url);
+	glUtils.loadTexture(this.gl, [64,64], this.kern,url);
 }
 
 
@@ -152,7 +150,7 @@ Scene.prototype.setKernels = function(url){
 let fbCurrent = 0;
 
 // draw
-Scene.prototype.drawScene = function (time,params, formattedParams, settings, input)  {
+Scene.prototype.drawScene = function (time, params, formattedParams, settings, input)  {
 	if(!this.initialized)
 		return;
 
@@ -208,7 +206,7 @@ Scene.prototype.drawScene = function (time,params, formattedParams, settings, in
 
 		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, this.kern); // bind kernel texture
-		gl.viewport(0, 0, 64,256);
+		gl.viewport(0, 0, 64,64);
 
 
 		gl.activeTexture(gl.TEXTURE0);

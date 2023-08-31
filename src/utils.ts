@@ -11,7 +11,7 @@ export const utils = {
 
 		let id = 0;
 		for(let i = 0; i < pts.length+1; i++){
-			if(i < pts.length && x < pts[i].x){
+			if(i < pts.length && x < pts[i][0]){
 				id = i;
 				break;
 			}
@@ -24,15 +24,15 @@ export const utils = {
 			if(i + id < 0)
 			{
 				px.push(-0.1);
-				py.push(pts[0].y);
+				py.push(pts[0][1]);
 			}
 			else if(i + id > pts.length-1){
 				px.push(1.1);
-				py.push(pts[pts.length-1].y);
+				py.push(pts[pts.length-1][1]);
 			}
 			else{
-				px.push(pts[i+id].x);
-				py.push(pts[i+id].y);
+				px.push(pts[i+id][0]);
+				py.push(pts[i+id][1]);
 			}
 			
 		}
@@ -42,7 +42,7 @@ export const utils = {
 			+(2*py[0] - 5*py[1] + 4*py[2] - py[3]) * t**2 
 			+(-py[0] + 3*py[1]- 3*py[2] + py[3]) * t**3);
 		
-		return Math.round((1-y)*1000)/1000;
+		return Math.round((y)*1000)/1000;
 	},
 
 	// get kernel's pixel offset positions and distance from center

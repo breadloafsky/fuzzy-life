@@ -3,12 +3,12 @@
 	
  	import { onMount } from "svelte";
 	import { Scene } from "../webgl/scene.js";
-	import ParameterControls from "./ParameterControls.svelte";
+	import ParameterControls from "./ParametersControls.svelte";
     import { FormattedParams, Input, Params, Settings } from "../types/types.js";
     let canvas : HTMLCanvasElement;
 	let scene : Scene;
 	let previousTime = 0;
-    let fpsLimit = 60*2;
+    let fpsLimit = 80;
 
 	let params = new Params();
 	let input = new Input();
@@ -18,11 +18,11 @@
 	
 	
 	onMount( async() => {
-		scene = new Scene(canvas);	//init the scene
+		scene = new Scene(canvas);	//init scene
 		
 
 		canvas.addEventListener("wheel", (e) => {
-			let v = (input.brush[2]+(e.deltaY/100));
+			let v = (input.brush[2]-(e.deltaY/100));
 			v = v > 100 ? 100 : v < 0 ? 0 : v; 
 			input.brush[2]= Math.round(v);
 		});
@@ -39,7 +39,7 @@
 	  function update(time:number){
 		requestAnimationFrame(update);
 		const delta = time - previousTime;
-		// limit the fps
+		// limit fps
 		if (fpsLimit && delta < 1000 / fpsLimit)
         	return;
 		scene.drawScene(time * 0.001, params, formattedParams, settings, input);	

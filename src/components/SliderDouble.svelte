@@ -93,20 +93,25 @@
 		flex-direction: column;
 		padding: 1px;
 		user-select: none;
+		
 	}
 
 	.slider{
 		--val0:0.5;
 		--val1:0.5;
-		background-color: rgb(134, 134, 134); 
+		background-color: #5c5c5c; 
+		
 		width: 100%;
 		height: 20px;
 		opacity: 0.8;
 		display: flex;
 		flex-direction: column;
+		z-index: 2;
 	}
 	.slider:hover, .slider:active{
 		opacity: 1;
+		background-color: #696969; 
+		
 	}
 	.bar{
 		display: flex;
@@ -119,28 +124,7 @@
 	
 	
 	
-	.bar > div{
-		position: relative;
-		background-color: antiquewhite;
-		color: antiquewhite;
-		width: 1px;
-		transform: scaleY(1.2);
-		opacity: 0.2;
-		transition-property: opacity;
-		transition-duration: 0.1s;
-	}
-
-	.slider:hover .bar > div{
-		opacity: 0.5;
-
-	}
-
-
-
 	
-	.slider:active .bar > div[data-selected="true"]{
-		opacity: 1;
-	}
 
    
 </style>

@@ -8,7 +8,10 @@ body{
 	--color4: rgb(255, 123, 0);
 	--color5: #ff61dd;
 	--bg0: #000000dc;
-	--bg1: #2b2b2b;
+	--bg1: #222222;
+	--bg2: #383838;
+	--bg3: #4d4d4d;
+	
 	margin: 0;
 	padding: 0;
 	overflow:hidden;
@@ -41,15 +44,21 @@ button{
 	background-color:#2b2b2b;
 	color:white;
 	border: none;
-	border-radius: 2px;
+	border-radius: 1px;
 	cursor: pointer;
 	outline: #616161 1px solid;
 }
-button:hover{
+
+button[disabled]{
+	cursor:default;
+	color: #616161;
+}
+
+button:hover:not([disabled]){
 	background-color:#383838;
 }
   
-button:active{
+button:active:not([disabled]){
 	outline: #61e9ff 2px solid;
 }
 

@@ -9,7 +9,7 @@
 
 	export let kernels:Kernel[];
 	export let selectedKernel:number|any;
-	export let hoveredKernel:number|any;
+	export let edit:boolean;
 	export let updateKernels:any;
 	let svg:SVGSVGElement|HTMLElement;
 	let width:number = 400;
@@ -65,7 +65,7 @@
 				// add point
 				if(selectedPoint == null && kernels[selectedKernel].points.length < 16)
 				{
-					selectedPoint = {x:pos[0],y:pos[1]};
+					selectedPoint = [pos[0],1-pos[1]];
 					kernels[selectedKernel].points.push(selectedPoint);
 				}
 				kernels = kernels;
@@ -90,11 +90,11 @@
 			let pos = getMousePos(e);
 			//	replace the point coordinates
 			let pid = kernels[selectedKernel].points.findIndex(p => p == selectedPoint);
-			selectedPoint=({x:pos[0],y:pos[1]});
+			selectedPoint=[pos[0],1-pos[1]];
 			kernels[selectedKernel].points[pid] = selectedPoint;
 			// sort the points
 			kernels[selectedKernel].points.sort((a, b) => {
-				return a.x - b.x;
+				return a[0] - b[0];
 			});
 		}
 		//formatKernel(selectedKernel);
@@ -105,7 +105,6 @@
 	function repaint(){
 		for(let j = 0; j < kernels.length; j++)
 		{
-			const points = kernels[j].points;
 			graphPath[j] = `M ${-100} ${height} `;
 			for(let i = 0; i < width; i++){
 				graphPath[j]+=`L ${i} ${ (1-utils.getKernelValue(kernels[j],i/width))*height} `;
@@ -122,17 +121,20 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<svg bind:this={svg} viewBox="0 0 {width} {height}" on:mousedown={handleMouseDown} on:contextmenu|preventDefault={()=>{return false;}}  >
 		{#each kernels as k,i}
-			<path 
+		{#if k.enabled}
+		<path 
 			d={graphPath[i]} 
 			style={`--color: var(--color${i});`} 
-			stroke-opacity={(selectedKernel == i || hoveredKernel == i) ? 1 : (selectedKernel && hoveredKernel)== null ? 0.5 : 0.2}/>
+			stroke-opacity={(selectedKernel == i) ? 1 : (selectedKernel== null) ? 0.5 : 0.2}/>
+		{/if}
+			
 		{/each}
 		
 		{#if selectedKernel != null}
 			{#each kernels[selectedKernel].points as p,i}
 				<circle 
-					cx={width*p.x} 
-					cy={height*p.y} 
+					cx={width*p[0]} 
+					cy={height*(1-p[1])} 
 					r="5" 	
 					style={`--color: var(--color${selectedKernel});`} 
 					on:mousedown={()=>{selectedPoint = p;}}

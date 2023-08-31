@@ -36,18 +36,24 @@
 		for(let i = 0; i < params.kernels.length; i++)
 		{
 			const kern = params.kernels[i];
-			graphPath[i] = "M -10 100 ";
-			for(let j = 0; j < width; j++){
-				graphPath[i]+=`L ${j} ${ 
-					getY(
-						j/	width,
-						kern.rules[ruleId][0], 
-						kern.rules[ruleId][1], 
-						kern.rules[ruleId][2], 
-						kern.rules[ruleId][3], 
-						)*100} `;
+			if(params.kernels[i].enabled){
+				graphPath[i] = "M -10 100 ";
+				for(let j = 0; j < width; j++){
+					graphPath[i]+=`L ${j} ${ 
+						getY(	
+							j/width,
+								params.rules[ruleId].subRules[i].thersholds[0], 
+								params.rules[ruleId].subRules[i].thersholds[1],
+								params.rules[ruleId].subRules[i].slopes[0],
+								params.rules[ruleId].subRules[i].slopes[1], 
+							)
+						*100} `;
+				}
+				graphPath[i] += `L ${width+10} 100 `;
 			}
-			graphPath[i] += `L ${width+10} 100 `;
+			else
+				graphPath[i] = "";
+			
 		}
 		
 	}
@@ -56,8 +62,10 @@
 <div class="graph-container" bind:clientWidth={width} >
 	<svg viewBox="0 0 {width} 100">
 		{#each graphPath as g,i}
-			<path d={g} style={`--color: var(--color${i});`}/>
-			<path d={g} style={`--color: var(--color${i});`}/>
+		{#if params.rules[ruleId].subRules[i].enabled}
+		<path d={g} style={`--color: var(--color${i});`}/>
+		{/if}
+			
 		{/each}
 		
 			
