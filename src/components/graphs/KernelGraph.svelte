@@ -1,13 +1,14 @@
 
 <script lang="ts">
 	import { onMount } from "svelte";    
-    import type { Kernel } from "../../types/types";
+    import type { Kernel, Params } from "../../types/types";
 	import {utils} from "../../utils";
 
 	import {callbacks} from "../../stores";
+    import Coordinates from "./Coordinates.svelte";
 	$callbacks.updateKernelGraphs = repaint;
 
-	export let kernels:Kernel[];
+	export let params:Params;
 	export let selectedKernel:number|any;
 	export let edit:boolean;
 	export let updateKernels:any;
@@ -19,14 +20,15 @@
 	let selectedPoint:any = null;
 
 	
-
+	let kernels:Kernel[] = [];
 
 	onMount(() => {
 		repaint();
+		kernels = params.kernels;
 	});
 
 	
-	$:[kernels,width], repaint();
+	$:[params,width], repaint();
 	
 	
 
@@ -119,7 +121,19 @@
 <div class="graph-container" bind:clientWidth={width}>
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<svg bind:this={svg} viewBox="0 0 {width} {height}" on:mousedown={handleMouseDown} on:contextmenu|preventDefault={()=>{return false;}}  >
+	<svg bind:this={svg} viewBox="0 0 {width} {height}" on:mousedown={handleMouseDown} on:contextmenu|preventDefault={()=>{return false;}}>
+
+		<Coordinates
+		width={width}
+		height={height}
+		x={params.convRadius}
+		y={1}
+		xDiv={params.convRadius}
+		yDiv={4}
+		/>
+		
+
+
 		{#each kernels as k,i}
 		{#if k.enabled}
 		<path 

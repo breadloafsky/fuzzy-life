@@ -21,9 +21,9 @@
 			// draw each kernel
 			for(let k = 0; k < kernels.length; k++){
 				// clear canvas
-				ctx.fillStyle = "black";
-				ctx.fillRect(0, 0, size, size);
-				let pos = [-1,-1];
+
+				ctx.clearRect(0, 0, size, size);
+
 
 				for(let i = 0; i < size; i++){
 					for(let j = 0; j < size; j++)
@@ -33,9 +33,8 @@
 						if(dist < radius)
 						{
 							let c = utils.getKernelValue(kernels[k],(dist)/radius);
-							c = c*255;
-							ctx.fillStyle = `rgba(${c*2},${c},${c})`;
-							ctx.fillRect(i+pos[0], j+pos[1], 1, 1)
+							ctx.fillStyle = `rgba(${255},${180},${180},${c})`;
+							ctx.fillRect(i-1, j-1, 1, 1)
 						}
 					}
 				}

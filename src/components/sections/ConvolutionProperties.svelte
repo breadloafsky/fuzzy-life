@@ -90,7 +90,7 @@
 	<div>Kernel Radial Weights</div>
 	
 	<KernelGraph
-		bind:kernels={params.kernels}
+		bind:params={params}
 		edit={edit}
 		selectedKernel={selectedKernel}
 		updateKernels={updateKernels}
