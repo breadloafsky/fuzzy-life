@@ -51,35 +51,54 @@ export const glUtils = {
 		return shaderProgram;
 	},
 	// load the shaders as static files
-	initShaders: async function(gl, shaders){
-		let promises = [];
+	initShaders: function(gl, shaders){
+		
 		for (let shaderName in shaders)
 		{	
-			const promise = new Promise((resolve, reject) => {
-				const shaderFiles = ["vs","fs"].map(async (e) => {
-					const response = await fetch(`shaders/${shaderName}.${e}`);
-					return await response.text();
-				});
-				Promise.all(shaderFiles).then(data => {
-					const shader = shaders[shaderName];
-					shader.program = glUtils.initShaderProgram(
-						gl,
-						data[0], 
-						data[1], 
-					);
-					for(let attributeName in shader.attributes){
-						shader.attributes[attributeName].location = gl.getAttribLocation(shader.program, attributeName);
-					}
-					for(let uniformName in shader.uniforms){
-						shader.uniforms[uniformName].location = gl.getUniformLocation(shader.program, uniformName);
-					}
-					resolve();
-				});
-			});
-			promises.push(promise);	
-		};
-		return promises;
+			const shader = shaders[shaderName];
+			const data = shader.program;
+			shader.program = glUtils.initShaderProgram(
+				gl,
+				data[0], 
+				data[1], 
+			);
+			for(let attributeName in shader.attributes){
+				shader.attributes[attributeName].location = gl.getAttribLocation(shader.program, attributeName);
+			}
+			for(let uniformName in shader.uniforms){
+				shader.uniforms[uniformName].location = gl.getUniformLocation(shader.program, uniformName);
+			}
+		}
 	},
+	// initShaders: async function(gl, shaders){
+	// 	let promises = [];
+	// 	for (let shaderName in shaders)
+	// 	{	
+	// 		const promise = new Promise((resolve, reject) => {
+	// 			const shaderFiles = ["vs","fs"].map(async (e) => {
+	// 				const response = await fetch(`shaders/${shaderName}.${e}`);
+	// 				return await response.text();
+	// 			});
+	// 			Promise.all(shaderFiles).then(data => {
+	// 				const shader = shaders[shaderName];
+	// 				shader.program = glUtils.initShaderProgram(
+	// 					gl,
+	// 					data[0], 
+	// 					data[1], 
+	// 				);
+	// 				for(let attributeName in shader.attributes){
+	// 					shader.attributes[attributeName].location = gl.getAttribLocation(shader.program, attributeName);
+	// 				}
+	// 				for(let uniformName in shader.uniforms){
+	// 					shader.uniforms[uniformName].location = gl.getUniformLocation(shader.program, uniformName);
+	// 				}
+	// 				resolve();
+	// 			});
+	// 		});
+	// 		promises.push(promise);	
+	// 	};
+	// 	return promises;
+	// },
 	initAttributes : function(gl, shaders){
 		const positionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -132,11 +151,7 @@ export const glUtils = {
 			{
 				for(let i = 0; i < width; i++)
 				{
-					const a = 0;//j / height;
-					// if(i > width/2	){
-					// 	a = Math.random();
-
-					// }
+					const a = 0;//j/height;
 					[a, a, a].forEach((e) => arr.push((e)*255));
 				}
 			}
@@ -154,11 +169,7 @@ export const glUtils = {
 				pixel,
 			);
 			setParams(gl);
-			
 		}
-		
-		
-	
 	},
 
 	

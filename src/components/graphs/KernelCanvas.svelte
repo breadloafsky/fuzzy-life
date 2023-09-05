@@ -13,7 +13,7 @@
 		ctx = canvas.getContext("2d");
   	});
 
-	
+	// render kernels previews
 	export function renderPreview(kernels:Kernel[], radius:number){
 		if(ctx != null){
 
@@ -21,10 +21,7 @@
 			// draw each kernel
 			for(let k = 0; k < kernels.length; k++){
 				// clear canvas
-
 				ctx.clearRect(0, 0, size, size);
-
-
 				for(let i = 0; i < size; i++){
 					for(let j = 0; j < size; j++)
 					{

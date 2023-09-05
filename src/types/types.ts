@@ -3,13 +3,6 @@
 
 
 
-export class Callbacks  {
-	updateKernelGraphs:any;
-	updateKernelTexture:any;
-	updateRules:any;
-}
-
-
 
 
 
@@ -18,7 +11,6 @@ export class SubRule{
 	slopes:number[] = [0.001, 0.001];
 	enabled:boolean = true; 
 }
-
 export class Rule  {
 	subRules:SubRule[] = [
 		new SubRule(),
@@ -32,7 +24,6 @@ export class Kernel  {
 	points:number[][]=[
 			[0.5, 0.5],
 	];
-	previewImage:string|any=null;
 	enabled:boolean = true;
 }
 
@@ -52,8 +43,6 @@ export class Params{
     convRadius:number=12;	//	the radius of kernel/convolution radius
 	dt:number = 0.5;		// dt multiplier
 }
-
-
 export class FormattedParams{
 	rules:number[] = [0];
 	kernelTexture:any=null;
@@ -66,7 +55,19 @@ export class Settings{
 	debugVal:number=0;
 }
 
-export class Input{
-    brush:number[]|any[] = [-1,0.5,16];		//	[x, y, radius(in pixels)]
+
+
+
+
+export class Callbacks  {
+	updateKernelGraphs:any;
+	updateKernelTextures:any;
+	formatRules:any;
 }
 
+export class Automaton{
+	params:Params = new Params();
+	formattedParams:FormattedParams = new FormattedParams();
+	settings:Settings = new Settings();
+	brush:number[]|any[] = [0.5 ,0.5 ,16, 0];		//	[x, y, radius(in pixels), type]
+};

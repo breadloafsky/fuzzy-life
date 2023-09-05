@@ -18,7 +18,7 @@ uniform int uNumberOfKernels;
 uniform int uNumberOfRules;
 
 uniform int isPaused;
-uniform float brush[3];
+uniform float brush[4];
 
 
 
@@ -129,10 +129,17 @@ void main(void) {
     }
 
     //draw
-    if(brush[0] != -1.){
+    if(brush[3] != 0.){
         if(distance(vec2(0.,0.),vec2((vTextureCoord.x-brush[0])*uTextureDims[0],(vTextureCoord.y-brush[1])*uTextureDims[1])) < brush[2])
             {
-                tex.rg = vec2(sin((vTextureCoord.x-brush[0])*100.*PI)*0.2+0.8);
+                if(brush[3] == 1.)
+                {
+                    //tex.rg = vec2(sin((vTextureCoord.x-brush[0])*100.*PI)*0.2+0.8);
+                    tex.rg = vec2(0.8);
+                }
+                else if(brush[3] == 2.)
+                    tex.rg = vec2(0);
+                
             }
     }
     

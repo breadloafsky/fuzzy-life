@@ -24,54 +24,14 @@ function setAttribute(gl, attrib, num=2, type=null, normalize=false, stride=0, o
 
 
 // create scene
-export function Scene(canvas) {
-	
+export function Scene(canvas, shaders, automaton) {
+	this.automaton = automaton;
 	this.quality = 2;
 	this.initialized = false;
 	this.fb = [];	//	frame buffers
 	this.textures = [];
 	this.kern = {};	//kernel texture
-	this.shaders ={
-		screen:{
-			program: {},
-			attributes: {
-				aTextureCoord: {value:null},
-				aVertexPosition: {value:null},
-			},
-			uniforms: {
-				uSampler: {value:null},
-				uTextureDims:{value:null},
-			},
-		},
-		
-		frame:{
-			program: {},
-			attributes: {
-				aTextureCoord: {value:null},
-				aVertexPosition: {value:null},
-				
-			},
-			uniforms: {
-				uSampler: {value:null},
-				uTextureDims:{value:null},
-
-				uKernelRadius:{value:null},
-				uKern:{value:null},
-				
-				uRules:{value:null},
-
-				uDelta: {value:null},
-
-				uNumberOfRules:{value:null},
-				uNumberOfKernels:{value:null},
-
-				uDebug:{value:null},	// DEBUG
-				isPaused:{value:null},
-				brush:{value:null},	// paint brush
-			},
-		},
-		
-	};
+	this.shaders = shaders;
 	const params = {
 		premultipliedAlpha: false, 
 		antialias: true,
@@ -95,7 +55,7 @@ export function Scene(canvas) {
 			(screen[0]/this.quality),  
 			(screen[1]/this.quality)
 		];
-		this.generateTexture();
+		this.clear();
 	}
 	window.addEventListener("resize",() => resize());
 	resize();
@@ -104,37 +64,37 @@ export function Scene(canvas) {
 
 
 // initialize the scene
-Scene.prototype.init = async function(){
+Scene.prototype.init = function(){
 	const gl = this.gl;
-	Promise.all(await glUtils.initShaders(this.gl, this.shaders)).then(()=>{
-		// init attributes
-		glUtils.initAttributes(this.gl,this.shaders);	
+	// init shaders
+	glUtils.initShaders(this.gl, this.shaders)
+	// init attributes
+	glUtils.initAttributes(this.gl,this.shaders);	
 
-		// create kernel textures
+	// create kernel textures
 
-		this.kern = gl.createTexture();
-		glUtils.loadTexture(gl, [64,64], this.kern,"canvas.png");
-		
-		// create main textures
-		for(let i = 0; i < 2; i++)
-		{
-			const texture = gl.createTexture();
-			glUtils.loadTexture(gl, textureDims, texture);
-			this.textures.push(texture);
+	this.kern = gl.createTexture();
+	glUtils.loadTexture(gl, [64,64], this.kern);
+	
+	// create main textures
+	for(let i = 0; i < 2; i++)
+	{
+		const texture = gl.createTexture();
+		glUtils.loadTexture(gl, textureDims, texture);
+		this.textures.push(texture);
 
-			let fb  = gl.createFramebuffer();
-			this.fb.push(fb);
-			gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
-			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-		}
-		this.initialized = true;
-	});
+		let fb  = gl.createFramebuffer();
+		this.fb.push(fb);
+		gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
+		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	}
+	this.initialized = true
 }
 
 
 // create a texture
-Scene.prototype.generateTexture = function(){
+Scene.prototype.clear = function(){
 	this.textures.forEach((tex,i) => {
 		glUtils.loadTexture(this.gl, textureDims, tex);
 	});
@@ -150,11 +110,15 @@ Scene.prototype.setKernels = function(url){
 let fbCurrent = 0;
 
 // draw
-Scene.prototype.drawScene = function (time, params, formattedParams, settings, input)  {
+Scene.prototype.drawScene = function (time)  {
 	if(!this.initialized)
 		return;
 
-	
+
+
+	const {params, formattedParams, settings, brush} = this.automaton;
+
+
 
 	const gl = this.gl;
 	const shaders =  this.shaders;
@@ -180,8 +144,7 @@ Scene.prototype.drawScene = function (time, params, formattedParams, settings, i
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 		
-																		// this is confusing. ToDo: swap the var names between.
-		gl.uniform1fv(shader.uniforms.brush.location, input.brush);
+		gl.uniform1fv(shader.uniforms.brush.location, brush);
 
 		gl.uniform1fv(shader.uniforms.uRules.location, formattedParams.rules);
 

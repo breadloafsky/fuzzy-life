@@ -5,7 +5,6 @@
 	export let val1:number;
 
 	export let color:string = "blue";
-	export let onChange:any;
 
 	let component:HTMLButtonElement;
 	let selectedValue:any = null;
@@ -47,7 +46,6 @@
 		vals = [val0, val1];
 		vals[selectedValue] = val;
 		[val0, val1] = vals;
-		onChange();
 	}
 
 

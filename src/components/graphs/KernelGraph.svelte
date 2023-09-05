@@ -4,31 +4,29 @@
     import type { Kernel, Params } from "../../types/types";
 	import {utils} from "../../utils";
 
-	import {callbacks} from "../../stores";
+	import {automaton, callbacks} from "../../stores";
     import Coordinates from "./Coordinates.svelte";
 	$callbacks.updateKernelGraphs = repaint;
 
-	export let params:Params;
+
 	export let selectedKernel:number|any;
 	export let edit:boolean;
-	export let updateKernels:any;
+
 	let svg:SVGSVGElement|HTMLElement;
 	let width:number = 400;
 	let height:number = 240;
 	let graphPath:string[] = [];
 
 	let selectedPoint:any = null;
-
 	
-	let kernels:Kernel[] = [];
+	$:kernels = $automaton.params.kernels;
 
 	onMount(() => {
 		repaint();
-		kernels = params.kernels;
 	});
 
 	
-	$:[params,width], repaint();
+	$:[width, kernels], repaint();
 	
 	
 
@@ -37,7 +35,7 @@
 		document.removeEventListener("mousemove", handleMouseMove);
 		document.removeEventListener("mouseup", cleanUp);
 		selectedPoint = null;
-		updateKernels();	// update the kernel texture
+		$callbacks.updateKernelTextures();	// update the kernel texture
 	}
 
 	function getMousePos(e:MouseEvent){
@@ -60,6 +58,7 @@
 	function handleMouseDown(e:MouseEvent){
 		if(selectedKernel != null)
 		{
+			// add/move point
 			if(e.button == 0){
 				document.addEventListener("mousemove", handleMouseMove);
 				document.addEventListener("mouseup", cleanUp);
@@ -78,9 +77,9 @@
 			{
 				kernels[selectedKernel].points.splice(kernels[selectedKernel].points.findIndex(p => p == selectedPoint), 1);
 				kernels = kernels;
-				repaint();
-				updateKernels();
 				selectedPoint = null;
+				$callbacks.updateKernelTextures();	// update the kernel texture
+				repaint();
 			}
 				
 		}
@@ -99,7 +98,7 @@
 				return a[0] - b[0];
 			});
 		}
-		//formatKernel(selectedKernel);
+		repaint();
 	}
 
 
@@ -122,45 +121,55 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<svg bind:this={svg} viewBox="0 0 {width} {height}" on:mousedown={handleMouseDown} on:contextmenu|preventDefault={()=>{return false;}}>
-
+		
 		<Coordinates
-		width={width}
-		height={height}
-		x={params.convRadius}
-		y={1}
-		xDiv={params.convRadius}
-		yDiv={4}
+			width={width}
+			height={height}
+			x={$automaton.params.convRadius}
+			y={1}
+			xDiv={$automaton.params.convRadius}
+			yDiv={4}
+			xName="radius (px)"
+			yName="kernel value"
 		/>
-		
 
-
-		{#each kernels as k,i}
-		{#if k.enabled}
-		<path 
-			d={graphPath[i]} 
-			style={`--color: var(--color${i});`} 
-			stroke-opacity={(selectedKernel == i) ? 1 : (selectedKernel== null) ? 0.5 : 0.2}/>
-		{/if}
-			
-		{/each}
-		
-		{#if selectedKernel != null}
-			{#each kernels[selectedKernel].points as p,i}
-				<circle 
-					cx={width*p[0]} 
-					cy={height*(1-p[1])} 
-					r="5" 	
-					style={`--color: var(--color${selectedKernel});`} 
-					on:mousedown={()=>{selectedPoint = p;}}
-					
-					
-				/>
+		<svg class="main" viewBox="0 0 {width} {height}" >
+			{#each kernels as k,i}
+				{#if k.enabled}
+				<path 
+					d={graphPath[i]} 
+					style={`--color: var(--color${i});`} 
+					stroke-opacity={(selectedKernel == i) ? 1 : (selectedKernel== null) ? 0.5 : 0.2}/>
+				{/if}
 			{/each}
-		{/if}
+			
+			{#if selectedKernel != null}
+				{#each kernels[selectedKernel].points as p,i}
+					<circle 
+						cx={width*p[0]} 
+						cy={height*(1-p[1])} 
+						r="5" 	
+						style={`--color: var(--color${selectedKernel});`} 
+						on:mousedown={()=>{selectedPoint = p;}}
+						
+						
+					/>
+				{/each}
+			{/if}
+		</svg>
+		
 	  </svg>
 </div>
 
 <style>
+
+.graph-container{
+	padding-block: 10px;
+}
+
+svg.main{
+	overflow: hidden;
+}
 
 
 circle{
@@ -185,6 +194,8 @@ svg{
 	height: 100%;
 	max-width: 100%;
 	background-color: black;
+	overflow: visible;
+
 
 }
 </style>

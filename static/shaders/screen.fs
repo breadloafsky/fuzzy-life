@@ -6,23 +6,35 @@ uniform sampler2D uSampler;
 varying lowp vec2 vTextureCoord;
 
 
+
+
+
+vec4 getColor0(float v){
+  vec4 c = vec4(1.-(v),1,1,1);
+  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+  c = vec4(c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y),1);
+  c.rgb *= clamp((v*1.5),0.,1.);  
+  return c;
+}
+
+vec4 getColor1(float v){
+  vec3 a = vec3(
+    -cos(1.*PI*v),
+    -cos(1.*PI*v*3.),
+    -cos(1.*PI* v*2.)
+  )*0.5+0.5;
+  return vec4(a,1);
+}
+
+
+
 highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
   coord.x += offsetX;
   coord.y += offsetY;
   return texture2D(uSampler, coord);
 }
-vec4 calculateColor(float v){
 
-  float n = v;
-  vec4  result = vec4(
-      2.- abs(n * 6.0 - 3.),
-      2.- abs(n * 6.0 - 2.),
-      2.- abs(n * 6.0 - 1.),
-      1.);
-  result.rgb *= v*2.;                   // if value == 0 -> paint black
-  result = clamp( result, 0., 1. );
-  return result;
-}
 
 void main(void) {
 
@@ -43,7 +55,7 @@ void main(void) {
   tex.r = (tex.r+tex.g)/2.;
   
 
-  tex = calculateColor(tex.r);
+  tex = getColor0(tex.r);
 
   //tex.rgb = tex.rrb;
 

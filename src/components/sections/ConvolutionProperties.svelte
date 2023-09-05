@@ -2,49 +2,40 @@
 <script  lang="ts">
 	import type { FormattedParams,  Params } from "../../types/types";
     import KernelGraph from "../graphs/KernelGraph.svelte";
-	import {callbacks} from "../../stores";
-	export let params:Params;
-	export let formattedParams:FormattedParams;
-	export let updateKernels:any;
+	import {automaton ,callbacks} from "../../stores";
+    import { onMount } from "svelte";
 	let edit:boolean = false;
 	let selectedKernel:number|any = null;
+	const hue:number[]=[50, 200, 270];
 
-	let kernImg:any = null;
+	$:kernImg = $automaton.formattedParams.kernelsPreview;
+	$:kernels = $automaton.params.kernels;
+	$:convRadius = $automaton.params.convRadius;
 
-	$:formattedParams, formatKernelImage();
-
-	function formatKernelImage(){
-		kernImg = formattedParams.kernelsPreview;
-		params = params;
-	}
-	const hue:number[]=[50, 200, 120 ,270];
-	
-
+	onMount(()=>{$automaton = $automaton; });
 
 </script>
-
 <!-- svelte-ignore a11y-missing-attribute -->
-
-
 <!-- svelte-ignore a11y-no-static-element-interactions -->
+{#if kernImg}
 <div class="properties" 
-	style="--kern-img:url({kernImg}); 
-		--kern-size:{params.convRadius*2-1};
-		--bg-size:{32/((params.convRadius*2-1)/2)};
+	style="
+		--kern-size:{convRadius*2-1};
+		--bg-size:{32/((convRadius*2-1)/2)};
 		">
 	<div>
 		<label for="dt">Δt multiplier:</label><br />
 		<div style="display: flex;">
-			<input bind:value={params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
-			<div style="padding-left: 20px;">{params.dt}</div>
+			<input bind:value={$automaton.params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
+			<div style="padding-left: 20px;">{$automaton.params.dt}</div>
 		</div>
 		
 	</div>
 	<div>
 		<label for="convRadius">kernel radius:</label><br />
 		<div style="display: flex;">
-			<input bind:value={params.convRadius} on:input={() => { formatKernelImage(); updateKernels();}} type="range"  name="convRadius"  step="1" min="2" max="16" />
-			<div style="padding-left: 20px;">{params.convRadius}</div>
+			<input bind:value={$automaton.params.convRadius} on:input={() => {$callbacks.updateKernelTextures(); $automaton = $automaton;}} type="range"  name="convRadius"  step="1" min="2" max="16" />
+			<div style="padding-left: 20px;">{convRadius}</div>
 		</div>
 		
 	</div>
@@ -55,7 +46,7 @@
 	<div>Kernel Preview {selectedKernel==null ? "(Combined)":""}</div>
 	<div style="width: 100%; height: 240px; display: flex; justify-content: center; position: relative;">
 
-		{#if kernImg != null}
+		{#if $automaton.formattedParams.kernelsPreview != null}
 			<div style="height: 240px; width: 240px;">
 				{#if selectedKernel != null}
 					<div 
@@ -66,7 +57,7 @@
 							filter:hue-rotate({hue[selectedKernel]}deg);"
 					/>
 				{:else}
-					{#each params.kernels as k,i}
+					{#each kernels as k,i}
 					{#if k.enabled}
 					<div 
 						class="kern-img"
@@ -90,16 +81,14 @@
 	<div>Kernel Radial Weights</div>
 	
 	<KernelGraph
-		bind:params={params}
 		edit={edit}
 		selectedKernel={selectedKernel}
-		updateKernels={updateKernels}
 	/>
 
 	<div>
 		<div>Kernels</div>
 		<ul class="kern-list">
-			{#each params.kernels as k,i}
+			{#each $automaton.params.kernels as k,i}
 			<li
 				on:mouseenter={()=> !edit && (selectedKernel = k.enabled ? i : null)} 
 				on:mouseleave={()=> !edit && (selectedKernel = null)}
@@ -108,7 +97,7 @@
 				<div style="display: flex; gap: 10px;">
 					<div style="color: var(--color{i}); {!k.enabled && 'filter:grayscale(1);'} ">Kernel {["A","B","C","D"][i]}</div>
 					{#if kernImg != null}
-						<div style="height: 20px; width: 20px;">
+						<div>
 							<div 
 							class="kern-img"
 							style="
@@ -128,7 +117,7 @@
 
 				{:else}
 					<button disabled={!k.enabled} on:click={()=> {edit = true; selectedKernel=i}}>Edit</button>
-					<button on:click={() =>{k.enabled =! k.enabled; selectedKernel=null; updateKernels();}}>{k.enabled ? "disable": "enable" }</button>
+					<button on:click={() =>{k.enabled =! k.enabled; selectedKernel=null; $callbacks.updateKernelGraphs();}}>{k.enabled ? "disable": "enable" }</button>
 		
 				{/if}
 					
@@ -138,13 +127,12 @@
 		</ul>
 	</div>
 </div>
+{/if}
+
 
 
 <style>
 
-	.kern-list{
-		
-	}
 
 	.kern-list > li{
 		background-color: var(--bg1);
@@ -168,7 +156,6 @@
 		image-rendering: pixelated;
 		--size:64;
 		--t:calc(var(--kern-size)/64);
-		
 		height:var(--size);
 		width:var(--size);
 		background-position: calc( var(--size)   / var(--t) )  calc( -1 * var(--size) / var(--t) );

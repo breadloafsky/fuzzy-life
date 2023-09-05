@@ -1,22 +1,19 @@
 
 <script lang="ts">
-    import { input } from "../stores";
-	import type { Scene } from "../webgl/scene.js";
-	import RuleComponent from "./sections/RuleComponent.svelte";
 	import KernelCanvas from "./graphs/KernelCanvas.svelte";
     import { onMount } from "svelte";
-    import type { FormattedParams, Params, Settings } from "../types/types";
-    import SimulationSettings from "./sections/SimulationSettings.svelte";
     import SectionContainer from "./sections/SectionContainer.svelte";
     import ConvolutionProperties from "./sections/ConvolutionProperties.svelte";
-	export let scene:Scene;
-	export let params:Params;
-	export let settings:Settings;
-	export let formattedParams:FormattedParams;
-
+    import Rules from "./sections/Rules.svelte";
+	import {automaton, callbacks} from "../stores";
 	let kc:KernelCanvas;
 	let fileInput:HTMLInputElement|any;
+
+	export let scene:any;
 	
+
+	$callbacks.updateKernelTextures = updateKernels;
+	$callbacks.formatRules = formatRules;
 
 	onMount(() => {
 		updateKernels();
@@ -24,14 +21,14 @@
 			// if (e.key.toLowerCase() == "d")
 			// 	settings.debugVal = 1 - settings.debugVal;
 			if (e.key == " " || e.code == "Space")
-				settings.paused = ! settings.paused;
+				$automaton.settings.paused = ! $automaton.settings.paused;
 			if (e.key.toLowerCase() == "c")
-				scene.generateTexture();
-
+				scene.clear();
+			
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
-				for(let i = 0; i < params.rules.length; i++) {
-					const rule = params.rules[i];
+				for(let i = 0; i < $automaton.params.rules.length; i++) {
+					const rule = $automaton.params.rules[i];
 					for(let j = 0; j < rule.subRules.length; j++){
 						
 						const r = 1.0;
@@ -48,14 +45,11 @@
 						rule.subRules[j].thersholds[1] = Math.round(vals[1]*1000)/1000;
 					}
 				}
-				params = params;
-				console.log(params); //debug
+				console.log($automaton.params); //debug
 				formatRules();
 			}
 		}
 	});
-
-
 
 
 	function filterProperty(k:any,v:any){
@@ -65,7 +59,7 @@
 	}
 
 	function saveScene() {
-    	var file = new Blob([JSON.stringify({...params},filterProperty,"\t")], {type: "json"});
+    	var file = new Blob([JSON.stringify({...$automaton.params},filterProperty,"\t")], {type: "json"});
 		var a = document.createElement("a"),
 				url = URL.createObjectURL(file);
 		a.href = url;
@@ -83,8 +77,11 @@
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", function () {
-				 
-				Object.assign(params, {...params, ...JSON.parse(reader.result+"")});
+				// automaton.set({
+				// 	...$automaton, params:JSON.parse(reader.result+"")
+				// });
+
+				Object.assign($automaton, { ...$automaton, params:JSON.parse(reader.result+"") });
 				updateKernels();
 			});
 			reader.readAsText(file);
@@ -95,6 +92,8 @@
 
 	// format and put all the rules into 1d array that will be passed to the shader
 	function formatRules(){
+		const params = $automaton.params;
+		const formattedParams = $automaton.formattedParams;
 		formattedParams.rules = [];
 		for(let i = 0; i < params.rules.length; i++)
 		{
@@ -118,67 +117,48 @@
 	}
 
   	function updateKernels(){
+		const params = $automaton.params;
+		const formattedParams = $automaton.formattedParams;
 		formattedParams.kernelTexture = kc.renderTexture(params.kernels, params.convRadius);
 		formattedParams.kernelsPreview = kc.renderPreview(params.kernels, params.convRadius);
-		if(scene)
-			scene.setKernels(formattedParams.kernelTexture);
-		params = params;
 		formatRules();
+		$automaton = $automaton;	// update store
+		
 	}
+
+
+	
+
+
 </script>
 
 <KernelCanvas bind:this={kc}/>
-<div class="controls-container" style="pointer-events: {$input.brush[0] != -1 ? "none" : "all"};">
-	<div >
-		<div >load file</div>
-		<label title="load file">
-			<input bind:this={fileInput} on:change={() => loadScene()} type="file" accept="application/JSON"/>
-		</label>
-	</div>
-	<div>
-		<div>save file</div>
-		<button 
-		title="save file"
-		on:click={() => saveScene()}
-		>
-		save
-		</button>
-	</div>
-	<div style="display: flex; flex-direction: row-reverse;">
-		<button on:click={(e) => {scene.generateTexture();}}>clear</button>
-	</div>
+<div class="controls-container" style="pointer-events: {$automaton.brush[3] != 0 ? "none" : "all"};">
 
-	<!-- <SectionContainer label="Settings">
-		<SimulationSettings params={params}/>
-	</SectionContainer> -->
+	<label title="load file">
+		load file
+		<input 
+			bind:this={fileInput} 
+			on:change={() => loadScene()}
+			type="file" 
+			accept="application/JSON"/>
+	</label>
+	<label title="save file">
+		save file
+		<button 
+			title="save file"
+			on:click={() => saveScene()}>save
+		</button>
+	</label>
+	<label title="clear">
+		<button on:click={(e) => {scene.clear();}}>clear scene</button>
+	</label>
 
 	<SectionContainer label="Convolution Settings">
-		<ConvolutionProperties params={params} formattedParams={formattedParams} updateKernels={updateKernels}/>
+		<ConvolutionProperties/>
 	</SectionContainer>
-
 	<SectionContainer label="Rules">
-		<div class="rules-expression"  style="color: gray;">
-			{"max("}	
-			{#each params.rules as r,i}
-				{#if r.enabled}
-					<div style="padding-left: 20px;">
-						{"min("}
-						{#each params.kernels as k,j}
-							{#if k.enabled && params.rules[i].subRules[j].enabled}
-								<span style="color:var(--color{j});">
-									{["A","B","C","D"][j]+i}
-								</span>
-							{/if}
-						{/each}
-						{")"}
-					</div>
-				{/if}
-			{/each}
-			{")"}
-		</div>
-		{#each params.rules as r,i}
-			<RuleComponent ruleId={i} bind:params={params} onChange={formatRules}/>
-		{/each}
+		<Rules/>
 	</SectionContainer>
 </div>
 
@@ -186,15 +166,6 @@
 
 
 <style>
-
-
-	.rules-expression > div:not(:last-child)::after{
-		content:", "
-	}
-	.rules-expression > div > span:not(:last-child)::after{
-		content:" , ";
-		color: gray;
-	}
 	.controls-container{
 		min-width: 340px;
 		max-height: 80vh;
@@ -205,8 +176,5 @@
 		flex-direction: column;
 		overflow: auto;
 		resize: both;
-	}
-	
-
-   
+	}   
 </style>

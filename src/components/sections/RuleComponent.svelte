@@ -1,18 +1,16 @@
 
 <script  lang="ts">
-    import { onMount } from "svelte";
-	import type { Params } from "../../types/types";
     import SigmoidGraph from "../graphs/SigmoidGraph.svelte";
     import SliderDouble from "../SliderDouble.svelte";
+	import {automaton, callbacks} from "../../stores";
 	export let ruleId:number;	
-	export let params:Params;
-	export let onChange:any;
-
 	let ruleContainer:HTMLDivElement;
 
-	$:params, params = params;
+	
 
 
+	$:params = $automaton.params;
+	$:params, $callbacks.formatRules();
 	
 </script>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -20,7 +18,7 @@
 
 	<div class="header">
 		<div>{ruleId}</div>
-		<button on:click={() => {params.rules[ruleId].enabled =! params.rules[ruleId].enabled; onChange();}}>{params.rules[ruleId].enabled ? "disable" : "enable"}</button>
+		<button on:click={() => {params.rules[ruleId].enabled =! params.rules[ruleId].enabled;}}>{params.rules[ruleId].enabled ? "disable" : "enable"}</button>
 	</div>
 	
 	{#if params.rules[ruleId].enabled}
@@ -35,20 +33,20 @@
 				<div class="subrule" style="border-color:var(--color{i});">
 					<div style="display: flex; justify-content: space-between;">
 						<div style="color:var(--color{i});">{["A","B","C","D"][i]} {ruleId}</div>
-						<button on:click={() => {params.rules[ruleId].subRules[i].enabled =! params.rules[ruleId].subRules[i].enabled; onChange();}}>{params.rules[ruleId].subRules[i].enabled ? "disable" : "enable"}</button>
+						<button on:click={() => {params.rules[ruleId].subRules[i].enabled =! params.rules[ruleId].subRules[i].enabled;}}>{params.rules[ruleId].subRules[i].enabled ? "disable" : "enable"}</button>
 					</div>
 
 					{#if params.rules[ruleId].subRules[i].enabled && params.kernels[i].enabled}
-						<SliderDouble bind:val0={params.rules[ruleId].subRules[i].thersholds[0]} bind:val1={params.rules[ruleId].subRules[i].thersholds[1]} onChange={onChange} color="var(--color{i})"/>
+						<SliderDouble bind:val0={params.rules[ruleId].subRules[i].thersholds[0]} bind:val1={params.rules[ruleId].subRules[i].thersholds[1]} color="var(--color{i})"/>
 						<div style="display: flex; justify-content: space-between; padding-top: 10px;">
-							<input bind:value={params.rules[ruleId].subRules[i].thersholds[0]} on:input={onChange} type="number" step="0.01" min="0.0" max="1" />
+							<input bind:value={params.rules[ruleId].subRules[i].thersholds[0]}  type="number" step="0.01" min="0.0" max="1" />
 							<div style="color:var(--color{i});">thresholds</div>
-							<input bind:value={params.rules[ruleId].subRules[i].thersholds[1]} on:input={onChange} type="number" step="0.01" min="0.0" max="1" />
+							<input bind:value={params.rules[ruleId].subRules[i].thersholds[1]}  type="number" step="0.01" min="0.0" max="1" />
 						</div>
 						<div style="display: flex; justify-content: space-between; padding-bottom: 20px; padding-top: 4px;">
-							<input bind:value={params.rules[ruleId].subRules[i].slopes[0]} on:input={onChange} type="number" step="0.01" min="0.001" max="1" />
+							<input bind:value={params.rules[ruleId].subRules[i].slopes[0]}  type="number" step="0.01" min="0.001" max="1" />
 							<div style="color:var(--color{i});">slopes</div>
-							<input bind:value={params.rules[ruleId].subRules[i].slopes[1]} on:input={onChange} type="number" step="0.01" min="0.001" max="1" />
+							<input bind:value={params.rules[ruleId].subRules[i].slopes[1]}  type="number" step="0.01" min="0.001" max="1" />
 						</div>
 					{/if}
 				</div>
@@ -84,7 +82,8 @@
 
 	.body{
 		background-color: var(--bg1);
-		padding: 10px;
+		padding-inline: 14px;
+		padding-bottom: 10px;
 	}
 
 	.subrule{
