@@ -78,7 +78,7 @@
 
 	</div>
 	
-	<div>Kernel Radial Weights</div>
+	<div>Kernel Value ( with respect to the radius )</div>
 	
 	<KernelGraph
 		edit={edit}

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import "../app.css"
-	import { onMount } from "svelte";
-    import Main from "../components/Main.svelte";
+
     import { browser } from "$app/environment";
+	import Main from "../components/Main.svelte";
  
 	const shaders:any ={
 		screen:{
@@ -46,18 +46,17 @@
 	};
 
 
-	onMount( async() => {
-		
-	});
+
+
 	// preload the shaders
-	async function loadShadersFiles(){
+	async function loadShaderFiles(){
 		let promises = [];
 		for (let shaderName in shaders)
 		{	
 			const promise = new Promise<void>((resolve, reject) => {
 				const shaderFiles = ["vs","fs"].map(async (e) => {
 					const response = await fetch(`shaders/${shaderName}.${e}`);
-					return await response.text();
+					return response.text();
 				});
 				Promise.all(shaderFiles).then(data => {
 						const shader = shaders[shaderName];
@@ -66,14 +65,14 @@
 				});
 			});
 			promises.push(promise);	
-		}
+		}	
 		return promises;
 	}
 
 	async function preload() {
 		if(browser)
 		return new Promise<void>(async function(resolve) {
-			Promise.all(await loadShadersFiles()).then(()=>{
+			Promise.all(await loadShaderFiles()).then(()=>{
 				resolve();
 			});
 		})
@@ -81,7 +80,7 @@
 
 </script>
 {#await preload() then _}
-	<Main shaders={shaders}/>
+	<Main shaders={shaders} />
 {/await}
 
 <style>

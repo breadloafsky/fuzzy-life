@@ -27,6 +27,10 @@ vec4 getColor1(float v){
   return vec4(a,1);
 }
 
+vec4 getColor2(float v){
+  return vec4(v);
+}
+
 
 
 highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
@@ -48,25 +52,11 @@ void main(void) {
     }
   }
   tex.rgba /= 4.;
-  //tex.rgb = tex.rrr;
 
-
-
-  tex.r = (tex.r+tex.g)/2.;
+  tex.r = (tex.r+tex.g)/2.; // reduce the high frequency blinking
   
 
   tex = getColor0(tex.r);
-
-  //tex.rgb = tex.rrb;
-
-  // if(tex.r > 0.8)
-  //   tex.rb *= vec2(0.6,0.8);
-  // else if(tex.r > 0.3)
-  //   tex.gr *= vec2(1.4,1.);
-  // else
-  //   tex.br *= vec2(2.,1.);
-  
-
   
   gl_FragColor = tex;
 }

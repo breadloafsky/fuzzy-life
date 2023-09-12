@@ -70,35 +70,7 @@ export const glUtils = {
 			}
 		}
 	},
-	// initShaders: async function(gl, shaders){
-	// 	let promises = [];
-	// 	for (let shaderName in shaders)
-	// 	{	
-	// 		const promise = new Promise((resolve, reject) => {
-	// 			const shaderFiles = ["vs","fs"].map(async (e) => {
-	// 				const response = await fetch(`shaders/${shaderName}.${e}`);
-	// 				return await response.text();
-	// 			});
-	// 			Promise.all(shaderFiles).then(data => {
-	// 				const shader = shaders[shaderName];
-	// 				shader.program = glUtils.initShaderProgram(
-	// 					gl,
-	// 					data[0], 
-	// 					data[1], 
-	// 				);
-	// 				for(let attributeName in shader.attributes){
-	// 					shader.attributes[attributeName].location = gl.getAttribLocation(shader.program, attributeName);
-	// 				}
-	// 				for(let uniformName in shader.uniforms){
-	// 					shader.uniforms[uniformName].location = gl.getUniformLocation(shader.program, uniformName);
-	// 				}
-	// 				resolve();
-	// 			});
-	// 		});
-	// 		promises.push(promise);	
-	// 	};
-	// 	return promises;
-	// },
+
 	initAttributes : function(gl, shaders){
 		const positionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -183,7 +155,7 @@ function setParams(gl){
 
 	// gl.LINEAR gl.NEAREST
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);	
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);	
 }
 
 function isPowerOf2(value) {

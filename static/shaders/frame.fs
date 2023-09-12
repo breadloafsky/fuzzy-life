@@ -127,15 +127,16 @@ void main(void) {
         tex.g = tex.r;
         tex.r = clamp(tex.r + ((d*2.-1.) * uDelta), 0.0, 1.0);
     }
-
+    
     //draw
     if(brush[3] != 0.){
-        if(distance(vec2(0.,0.),vec2((vTextureCoord.x-brush[0])*uTextureDims[0],(vTextureCoord.y-brush[1])*uTextureDims[1])) < brush[2])
+        vec2 pos = vec2((vTextureCoord.x-brush[0])*uTextureDims[0],(vTextureCoord.y-brush[1])*uTextureDims[1]);
+        if(distance(vec2(0.,0.),pos) < brush[2])
             {
                 if(brush[3] == 1.)
                 {
-                    //tex.rg = vec2(sin((vTextureCoord.x-brush[0])*100.*PI)*0.2+0.8);
-                    tex.rg = vec2(0.8);
+                    //tex.rg = vec2(sin(atan(pos.x,pos.y)*9.)*0.4+0.6);
+                    tex.rg = vec2(1.0);
                 }
                 else if(brush[3] == 2.)
                     tex.rg = vec2(0);

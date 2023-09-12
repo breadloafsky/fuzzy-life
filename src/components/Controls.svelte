@@ -6,10 +6,11 @@
     import ConvolutionProperties from "./sections/ConvolutionProperties.svelte";
     import Rules from "./sections/Rules.svelte";
 	import {automaton, callbacks} from "../stores";
-	let kc:KernelCanvas;
-	let fileInput:HTMLInputElement|any;
-
+    import ParametersSelection from "./sections/ParametersSelection.svelte";
+	
 	export let scene:any;
+	let kc:KernelCanvas;
+	let paramsHidden = false;
 	
 
 	$callbacks.updateKernelTextures = updateKernels;
@@ -18,8 +19,6 @@
 	onMount(() => {
 		updateKernels();
 		document.body.onkeyup = (e) => {
-			// if (e.key.toLowerCase() == "d")
-			// 	settings.debugVal = 1 - settings.debugVal;
 			if (e.key == " " || e.code == "Space")
 				$automaton.settings.paused = ! $automaton.settings.paused;
 			if (e.key.toLowerCase() == "c")
@@ -52,43 +51,6 @@
 	});
 
 
-	function filterProperty(k:any,v:any){
-		if(k == "test")
-			return undefined;
-		return v;
-	}
-
-	function saveScene() {
-    	var file = new Blob([JSON.stringify({...$automaton.params},filterProperty,"\t")], {type: "json"});
-		var a = document.createElement("a"),
-				url = URL.createObjectURL(file);
-		a.href = url;
-		a.download = "params.json";
-		document.body.appendChild(a);
-		a.click();
-		setTimeout(function() {
-			document.body.removeChild(a);
-			window.URL.revokeObjectURL(url);  
-		}, 0); 
-	}
-
-	function loadScene() {
-		const file = fileInput.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.addEventListener("load", function () {
-				// automaton.set({
-				// 	...$automaton, params:JSON.parse(reader.result+"")
-				// });
-
-				Object.assign($automaton, { ...$automaton, params:JSON.parse(reader.result+"") });
-				updateKernels();
-			});
-			reader.readAsText(file);
-			return;
-		} 
-		alert("File error");
-	}
 
 	// format and put all the rules into 1d array that will be passed to the shader
 	function formatRules(){
@@ -127,54 +89,93 @@
 	}
 
 
-	
-
-
 </script>
 
 <KernelCanvas bind:this={kc}/>
-<div class="controls-container" style="pointer-events: {$automaton.brush[3] != 0 ? "none" : "all"};">
+<div class="controls-container">
+	<div class="params-container" data-hidden={paramsHidden} style="pointer-events: {$automaton.brush[3] != 0 ? "none" : "all"};">
+		<div class="params-header">
+			<button on:click={ ()=> paramsHidden = !paramsHidden}>{paramsHidden ? ">" : "<"}</button>
+		</div>
+		<div class="params-window">
+			<SectionContainer label="Save / Load Parameters">
+				<ParametersSelection/>
+			</SectionContainer>
+			<SectionContainer label="Convolution Properties">
+				<ConvolutionProperties/>
+			</SectionContainer>
+			<SectionContainer label="Rules">
+				<Rules/>
+			</SectionContainer>
+		</div>
+	</div>
 
-	<label title="load file">
-		load file
-		<input 
-			bind:this={fileInput} 
-			on:change={() => loadScene()}
-			type="file" 
-			accept="application/JSON"/>
-	</label>
-	<label title="save file">
-		save file
-		<button 
-			title="save file"
-			on:click={() => saveScene()}>save
-		</button>
-	</label>
-	<label title="clear">
-		<button on:click={(e) => {scene.clear();}}>clear scene</button>
-	</label>
-
-	<SectionContainer label="Convolution Settings">
-		<ConvolutionProperties/>
-	</SectionContainer>
-	<SectionContainer label="Rules">
-		<Rules/>
-	</SectionContainer>
 </div>
 
 
 
 
+
 <style>
+
+	
+	
 	.controls-container{
+		min-width: 100vw;
+		max-height: 100vh;
+		display: flex;
+		pointer-events: none;
+	} 
+	.controls-container > div{
+		z-index: 1;
+	} 
+	.params-container{
+	
+		/* opacity: 0.6; */
+		background-color: var(--bg0); 
+	} 
+	
+
+	
+
+	.params-window{
 		min-width: 340px;
-		max-height: 80vh;
+		max-height: calc( 100vh - 40px);
 		z-index: 1;
 		display: flex;
-		padding-inline: 20px;
-		background-color: var(--bg0); 
 		flex-direction: column;
+		padding-inline: 20px;
+		margin-top: 10px;
+		
 		overflow: auto;
 		resize: both;
+	}  
+
+	.params-header{
+		z-index: 1;
+		display: flex;
+		flex-direction: row-reverse;
+		border-bottom: 1px solid rgb(109, 109, 109);
 	}   
+	.params-header > button{
+		width: 40px;
+		height: 30px;
+	}  
+
+	
+
+	.params-container[data-hidden="true"] .params-window  {
+		min-width: 0px !important;
+		width: 0px !important;
+		max-height: 0px;
+		height: 0px;
+		margin-top: 0px;
+		visibility: hidden;
+	}
+
+	/* .params-container[data-hidden="true"] .params-toggle > button {
+		height: 40px;
+	} */
+
+
 </style>

@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 export class SubRule{
 	thersholds:number[] = [0.3, 0.5];
 	slopes:number[] = [0.001, 0.001];

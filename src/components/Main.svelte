@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
    	import { Scene } from "../webgl/scene.js";
-	import { automaton } from "../stores"
+	import { automaton} from "../stores"
     import Controls from "../components/Controls.svelte";
 	let canvas : HTMLCanvasElement;
 	let scene : Scene;
@@ -10,10 +10,9 @@
 
 	export let shaders:any;
 
-
+	
 
 	onMount( async() => {
-		
 		scene = new Scene(canvas, shaders, $automaton);	//init scene
 		scene.init();
 		requestAnimationFrame(update);

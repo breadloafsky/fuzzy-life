@@ -31,6 +31,7 @@
 	background-color: var(--bg2);
 	top: 0;
 	padding: 10px;
+	transform:translateY(2);
 	margin: 0;
 
 }
