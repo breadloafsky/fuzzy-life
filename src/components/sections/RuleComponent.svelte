@@ -2,12 +2,10 @@
 <script  lang="ts">
     import SigmoidGraph from "../graphs/SigmoidGraph.svelte";
     import SliderDouble from "../SliderDouble.svelte";
+	import Switch from "../ui/Switch.svelte";
 	import {automaton, callbacks} from "../../stores";
 	export let ruleId:number;	
 	let ruleContainer:HTMLDivElement;
-
-	
-
 
 	$:params = $automaton.params;
 	$:params, $callbacks.formatRules();
@@ -17,8 +15,8 @@
 <div bind:this={ruleContainer} class="rule-container">
 
 	<div class="header">
-		<div>{ruleId}</div>
-		<button on:click={() => {params.rules[ruleId].enabled =! params.rules[ruleId].enabled;}}>{params.rules[ruleId].enabled ? "disable" : "enable"}</button>
+		<div>Rule {ruleId}</div>
+		<Switch bind:value={params.rules[ruleId].enabled}/>
 	</div>
 	
 	{#if params.rules[ruleId].enabled}
@@ -31,9 +29,9 @@
 		{#each params.kernels as r,i}
 			{#if params.kernels[i].enabled}
 				<div class="subrule" style="border-color:var(--color{i});">
-					<div style="display: flex; justify-content: space-between;">
+					<div style="display: flex; justify-content: space-between;  padding-block:4px;">
 						<div style="color:var(--color{i});">{["A","B","C","D"][i]} {ruleId}</div>
-						<button on:click={() => {params.rules[ruleId].subRules[i].enabled =! params.rules[ruleId].subRules[i].enabled;}}>{params.rules[ruleId].subRules[i].enabled ? "disable" : "enable"}</button>
+						<Switch bind:value={params.rules[ruleId].subRules[i].enabled}/>
 					</div>
 
 					{#if params.rules[ruleId].subRules[i].enabled && params.kernels[i].enabled}

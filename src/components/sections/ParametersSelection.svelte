@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
 	import { automaton, callbacks } from "../../stores";	
     import type { Params } from "../../types/types";
+	import ParameterContainer from "../ui/ParameterContainer.svelte";
 	let fileInput:HTMLInputElement|any;
 	
 	let presets:any[] = [];
@@ -60,28 +61,25 @@
 
 </script>
 
-
-<label title="save file">
-	Save 
+<ParameterContainer label="Save ">
 	<button 
 		title="save file"
 		on:click={() => saveScene()}>save as json file
 	</button>
-</label>
+</ParameterContainer>
 
-<label title="load file">
-	Load from file
+
+<ParameterContainer label="Load from file">
 	<label title="load file" class="button">
 		load from file
 		<input 
-		hidden
+			hidden
 			bind:this={fileInput} 
 			on:change={() => loadScene()}
 			type="file" 
 			accept="application/JSON"/>
 	</label>
-</label>
-
+</ParameterContainer>
 <div style="color:grey;">OR</div>
 <div  style="flex-direction: column;">
 	Select from presets:
@@ -117,6 +115,7 @@
 .presets > .list{
 	border:1px solid var(--bg2);
 	padding: 10px;
+	gap:4px;
 	display: flex;
 	flex-direction: column;
 	max-height: 100px;

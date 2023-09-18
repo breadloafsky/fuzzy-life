@@ -12,10 +12,11 @@ uniform int uKernelRadius;
 uniform float uTextureDims[2];
 uniform float uDebug;
 uniform float uDelta;
+uniform int uReset;
 uniform float uRules[64];
 
-uniform int uNumberOfKernels;
-uniform int uNumberOfRules;
+// uniform int uNumberOfKernels;
+// uniform int uNumberOfRules;
 
 uniform int isPaused;
 uniform float brush[4];
@@ -132,17 +133,28 @@ void main(void) {
     if(brush[3] != 0.){
         vec2 pos = vec2((vTextureCoord.x-brush[0])*uTextureDims[0],(vTextureCoord.y-brush[1])*uTextureDims[1]);
         if(distance(vec2(0.,0.),pos) < brush[2])
-            {
-                if(brush[3] == 1.)
-                {
-                    //tex.rg = vec2(sin(atan(pos.x,pos.y)*9.)*0.4+0.6);
-                    tex.rg = vec2(1.0);
-                }
-                else if(brush[3] == 2.)
-                    tex.rg = vec2(0);
-                
-            }
+        {
+            if(brush[3] == 1.)
+                tex.rg = vec2(1.0);
+                //tex.rg = vec2(sin(atan(pos.x,pos.y)*9.)*0.4+0.6);
+            else if(brush[3] == 2.)
+                tex.rg = vec2(0);
+        }
     }
+    if(uReset != 0)
+    {
+        if(uReset == 1)
+        {
+            tex = vec4(0);
+        }
+        else{
+            float x = vTextureCoord.x;
+            float y = vTextureCoord.y;
+            tex = vec4(cos(x*sin(cos(y*2.*PI/4.)*8.*PI)*2.*PI)*0.5+0.5);
+        }
+        
+    }
+        
     
 
 

@@ -1,33 +1,26 @@
 #define PI 3.1415926538
 precision mediump float;
-
+varying lowp vec2 vTextureCoord;
 uniform mediump float uTextureDims[2];
 uniform sampler2D uSampler;
-varying lowp vec2 vTextureCoord;
-
-
+uniform int uGradient;
 
 
 
 vec4 getColor0(float v){
-  vec4 c = vec4(1.-(v),1,1,1);
-  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-  c = vec4(c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y),1);
-  c.rgb *= clamp((v*1.5),0.,1.);  
-  return c;
-}
-
-vec4 getColor1(float v){
   vec3 a = vec3(
-    -cos(1.*PI*v),
-    -cos(1.*PI*v*3.),
-    -cos(1.*PI* v*2.)
-  )*0.5+0.5;
+    cos(v*2.*PI),
+    cos(v*2.*PI+2.*PI/3.),
+    cos(v*2.*PI-2.*PI/3.)
+  );
+  a += 0.5;
+  a = clamp(a,vec3(0,0,0),vec3(1,1,1));
+  a.rgb *= clamp((v*1.5),0.,1.);  
   return vec4(a,1);
 }
 
-vec4 getColor2(float v){
+vec4 getColor1(float v){
+  v = v * clamp((v*2.),0.,1.);
   return vec4(v);
 }
 
@@ -44,6 +37,7 @@ void main(void) {
 
   mediump vec4 tex = vec4(0,0,0,0);
 
+  // simple filter
   for(int i = -1; i < 1; i++){
     for(int j = -1; j < 1; j++){
       mediump float i_f = float(i) / uTextureDims[0];
@@ -54,9 +48,11 @@ void main(void) {
   tex.rgba /= 4.;
 
   tex.r = (tex.r+tex.g)/2.; // reduce the high frequency blinking
-  
 
-  tex = getColor0(tex.r);
+  if(uGradient == 0)
+    tex = getColor0(tex.r);
+  else
+    tex = getColor1(tex.r);
   
   gl_FragColor = tex;
 }

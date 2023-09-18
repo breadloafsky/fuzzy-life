@@ -83,7 +83,9 @@ export const glUtils = {
 		shaders.frame.attributes.aTextureCoord.value = texCoordBuffer;
 		shaders.frame.attributes.aVertexPosition.value = positionBuffer;
 	},	
-	loadTexture: function(gl, dims, textureP, url=null) {
+
+	
+	loadTexture: function(gl, dims, textureP, filtering = 0, url=null) {
 		gl.bindTexture(gl.TEXTURE_2D, textureP);
 		const level = 0;
 		const internalFormat = gl.RGB;
@@ -93,41 +95,27 @@ export const glUtils = {
 		const srcFormat = gl.RGB;
 		const srcType = gl.UNSIGNED_BYTE;
 		
-		
-
-
+		// kernel image
 		if(url)
 		{
 			const image = new Image();
 			image.onload = () => {
 				gl.bindTexture(gl.TEXTURE_2D, textureP);
 				gl.texImage2D(
-				gl.TEXTURE_2D,
-				level,
-				internalFormat,
-				srcFormat,
-				srcType,
-				image,
+					gl.TEXTURE_2D,
+					level,
+					internalFormat,
+					srcFormat,
+					srcType,
+					image,
 				);
-				//gl.generateMipmap(gl.TEXTURE_2D);
-
-				setParams(gl);
+				gl.generateMipmap(gl.TEXTURE_2D);
 			};
 			image.src = url;
-			
 		}
+		// empty texture
 		else{
-			let arr = [];
-			const test = Math.random();
-			for(let j = 0; j < height; j++)
-			{
-				for(let i = 0; i < width; i++)
-				{
-					const a = 0;//j/height;
-					[a, a, a].forEach((e) => arr.push((e)*255));
-				}
-			}
-			const pixel = new Uint8Array(arr);
+			const pixel = new Uint8Array(new Array(width*height*4).fill(0));
 			gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 			gl.texImage2D(
 				gl.TEXTURE_2D,
@@ -140,24 +128,14 @@ export const glUtils = {
 				srcType,
 				pixel,
 			);
-			setParams(gl);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+			// gl.LINEAR gl.NEAREST
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering  == 0 ? gl.LINEAR : gl.NEAREST);	
 		}
 	},
-
-	
-
-	
 };
 
-function setParams(gl){
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-	// gl.LINEAR gl.NEAREST
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);	
-}
-
-function isPowerOf2(value) {
-	return (value & (value - 1)) === 0;
-  }

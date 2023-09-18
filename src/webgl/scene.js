@@ -26,7 +26,7 @@ function setAttribute(gl, attrib, num=2, type=null, normalize=false, stride=0, o
 // create scene
 export function Scene(canvas, shaders, automaton) {
 	this.automaton = automaton;
-	this.quality = 2;
+	this.canvas = canvas;
 	this.initialized = false;
 	this.fb = [];	//	frame buffers
 	this.textures = [];
@@ -43,24 +43,11 @@ export function Scene(canvas, shaders, automaton) {
 		alert("WebGL ERROR.");
 		return;
 	}
-	const resize = () =>{
-		screen = [
-			window.innerWidth,
-			window.innerHeight,
-		];
-		canvas.setAttribute("width", screen[0]);
-		canvas.setAttribute("height", screen[1]);
-		this.gl.viewport( 0, 0, screen[0], screen[1] );
-		textureDims = [
-			(screen[0]/this.quality),  
-			(screen[1]/this.quality)
-		];
-		this.clear();
-	}
-	window.addEventListener("resize",() => resize());
-	resize();
+
+	this.resize();
 	return this;
 }
+
 
 
 // initialize the scene
@@ -80,10 +67,9 @@ Scene.prototype.init = function(){
 	for(let i = 0; i < 2; i++)
 	{
 		const texture = gl.createTexture();
-		glUtils.loadTexture(gl, textureDims, texture);
+		glUtils.loadTexture(gl, textureDims, texture, this.automaton.settings.textureFilter);
 		this.textures.push(texture);
-
-		let fb  = gl.createFramebuffer();
+		const fb  = gl.createFramebuffer();
 		this.fb.push(fb);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textures[i], 0);
@@ -93,16 +79,40 @@ Scene.prototype.init = function(){
 }
 
 
-// create a texture
-Scene.prototype.clear = function(){
+// resize
+Scene.prototype.resize = function(){
+	screen = [
+		window.innerWidth,
+		window.innerHeight,
+	];
+	const [a,b] = screen
+	this.canvas.setAttribute("width", a);
+	this.canvas.setAttribute("height", b);
+	this.gl.viewport( 0, 0, a, b );
+
+	const multiplier = Math.sqrt(1/(a*b))*Math.sqrt(this.automaton.settings.textureSize * 1000000)
+	textureDims = [
+		Math.round(a * multiplier),  
+		Math.round(b * multiplier)
+	];
+	// update texture size
 	this.textures.forEach((tex,i) => {
-		glUtils.loadTexture(this.gl, textureDims, tex);
+		glUtils.loadTexture(this.gl, textureDims, tex, this.automaton.settings.textureFilter);
+	});
+}
+
+Scene.prototype.setTextureFilter = function(){
+	const gl = this.gl;
+	this.textures.forEach((tex,i) => {
+		gl.bindTexture(gl.TEXTURE_2D, tex);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.automaton.settings.textureFilter == 0 ? gl.LINEAR : gl.NEAREST);	
 	});
 }
 
 
+
 Scene.prototype.setKernels = function(url){
-	glUtils.loadTexture(this.gl, [64,64], this.kern,url);
+	glUtils.loadTexture(this.gl, [64,64], this.kern,0,url);
 }
 
 
@@ -125,10 +135,6 @@ Scene.prototype.drawScene = function (time)  {
 	const fb = this.fb;
 
 	gl.enable(gl.CULL_FACE);
-	//  clear scene
-	//gl.clearColor(0.0, 0.0, 0.0, 0.0);  
-	//gl.clear(gl.COLOR_BUFFER_BIT );  
-
 
 	// use the shader
 	let shader = shaders.frame;
@@ -148,16 +154,13 @@ Scene.prototype.drawScene = function (time)  {
 
 		gl.uniform1fv(shader.uniforms.uRules.location, formattedParams.rules);
 
-		gl.uniform1i(shader.uniforms.uNumberOfRules.location, params.numberOfRules);
-		gl.uniform1i(shader.uniforms.uNumberOfKernels.location, params.kernels.length);
 
 		gl.uniform1i(shader.uniforms.uKernelRadius.location, params.convRadius);
-
-		
 		gl.uniform1f(shader.uniforms.uDelta.location, params.dt);
 		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
-		
 
+		gl.uniform1i(shader.uniforms.uReset.location, formattedParams.resetTexture);
+		
 		
 		gl.uniform1i(shader.uniforms.uSampler.location, 0);  // texture unit 0
 		gl.uniform1i(shader.uniforms.uKern.location, 1);  // texture unit 0
@@ -177,9 +180,6 @@ Scene.prototype.drawScene = function (time)  {
 		gl.viewport(0, 0, textureDims[0],textureDims[1]);
 
 		
-		
-		
-		
 		drawScreen(gl);
 	}
 
@@ -187,12 +187,10 @@ Scene.prototype.drawScene = function (time)  {
 	shader = shaders.screen;
 	gl.useProgram(shader.program);
 	
-	
-
-	//	render to screen
-	//if(fbCurrent == 0)
+	// render the result
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
+		gl.uniform1i(shader.uniforms.uGradient.location, settings.gradient);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 

@@ -1,9 +1,11 @@
 
 <script  lang="ts">
-	import type { FormattedParams,  Params } from "../../types/types";
     import KernelGraph from "../graphs/KernelGraph.svelte";
+	import ParameterContainer from "../ui/ParameterContainer.svelte";
+	import Switch from "../ui/Switch.svelte";
 	import {automaton ,callbacks} from "../../stores";
     import { onMount } from "svelte";
+	
 	let edit:boolean = false;
 	let selectedKernel:number|any = null;
 	const hue:number[]=[50, 200, 270];
@@ -23,29 +25,18 @@
 		--kern-size:{convRadius*2-1};
 		--bg-size:{32/((convRadius*2-1)/2)};
 		">
-	<div>
-		<label for="dt">Δt multiplier:</label><br />
-		<div style="display: flex;">
-			<input bind:value={$automaton.params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
-			<div style="padding-left: 20px;">{$automaton.params.dt}</div>
-		</div>
-		
-	</div>
-	<div>
-		<label for="convRadius">kernel radius:</label><br />
-		<div style="display: flex;">
-			<input bind:value={$automaton.params.convRadius} on:input={() => {$callbacks.updateKernelTextures(); $automaton = $automaton;}} type="range"  name="convRadius"  step="1" min="2" max="16" />
-			<div style="padding-left: 20px;">{convRadius}</div>
-		</div>
-		
-	</div>
-	
-
+	<ParameterContainer label="Δt multiplier">
+		<input bind:value={$automaton.params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
+		<div style="width: 40px; text-align: center;">{$automaton.params.dt}</div>
+	</ParameterContainer>
+	<ParameterContainer label="kernel radius">
+		<input bind:value={$automaton.params.convRadius} on:input={() => {$callbacks.updateKernelTextures(); $automaton = $automaton;}} type="range"  name="convRadius"  step="1" min="2" max="16" />
+		<div style="width: 40px; text-align: center;">{convRadius}px</div>
+	</ParameterContainer>
 	
 
 	<div>Kernel Preview {selectedKernel==null ? "(Combined)":""}</div>
 	<div style="width: 100%; height: 240px; display: flex; justify-content: center; position: relative;">
-
 		{#if $automaton.formattedParams.kernelsPreview != null}
 			<div style="height: 240px; width: 240px;">
 				{#if selectedKernel != null}
@@ -108,7 +99,7 @@
 						</div>
 					{/if}
 				</div>
-				<div>
+				<div style="display: flex; gap:20px;">
 				{#if edit}
 					
 					{#if selectedKernel == i}
@@ -116,9 +107,12 @@
 					{/if}
 
 				{:else}
+					<Switch 
+						bind:value={k.enabled} 
+						on:click={() =>{selectedKernel=null; $callbacks.updateKernelGraphs();}}
+					/>
 					<button disabled={!k.enabled} on:click={()=> {edit = true; selectedKernel=i}}>Edit</button>
-					<button on:click={() =>{k.enabled =! k.enabled; selectedKernel=null; $callbacks.updateKernelGraphs();}}>{k.enabled ? "disable": "enable" }</button>
-		
+					
 				{/if}
 					
 				</div>	

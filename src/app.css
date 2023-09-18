@@ -1,13 +1,8 @@
 body{
-	/* --color1:aqua;
-	--color0:rgb(179, 255, 0); */
 	--color0: #ffcb00;
 	--color1: #61e9ff;
-
 	--color2: #ab61ff;
-	
 	--color3: #12ff0a;
-
 	--color4: rgb(255, 123, 0);
 	--color5: #ff61dd;
 	--bg0: #111111dc;
@@ -20,7 +15,6 @@ body{
 	overflow:hidden;
 	max-height: 100vh;
 }
-
 
 div {
 	user-select: none;

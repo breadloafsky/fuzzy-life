@@ -7,32 +7,38 @@
     import Rules from "./sections/Rules.svelte";
 	import {automaton, callbacks} from "../stores";
     import ParametersSelection from "./sections/ParametersSelection.svelte";
+    import TextureSettings from "./sections/TextureSettings.svelte";
 	
-	export let scene:any;
-	let kc:KernelCanvas;
+	let kc:KernelCanvas;	// an auxiliary canvas that renders kernel textures
 	let paramsHidden = false;
+	let currentTab = 1;
 	
 
-	$callbacks.updateKernelTextures = updateKernels;
-	$callbacks.formatRules = formatRules;
+	$callbacks.updateKernelTextures = ()=>updateKernels();
+	$callbacks.formatRules = ()=>formatRules();
 
 	onMount(() => {
 		updateKernels();
 		document.body.onkeyup = (e) => {
-			if (e.key == " " || e.code == "Space")
-				$automaton.settings.paused = ! $automaton.settings.paused;
-			if (e.key.toLowerCase() == "c")
-				scene.clear();
+			switch (e.key.toLowerCase()) {
+				case " ":
+					$automaton.settings.paused = ! $automaton.settings.paused;
+					break;
+				case "c":
+					$automaton.formattedParams.resetTexture = 1;
+					break;
+				case "x":
+					$automaton.formattedParams.resetTexture = 2;
+					break;
+			}
 			
 			//	randomise values
 			if (e.key.toLowerCase() == "r"){
 				for(let i = 0; i < $automaton.params.rules.length; i++) {
 					const rule = $automaton.params.rules[i];
 					for(let j = 0; j < rule.subRules.length; j++){
-						
 						const r = 1.0;
 						const w = 0.4;	//width
-
 						const centre = Math.random()*r/2+0.3;
 						let vals = [centre-Math.random()*w,centre+Math.random()*w];
 
@@ -45,6 +51,7 @@
 					}
 				}
 				console.log($automaton.params); //debug
+				$automaton.formattedParams.resetTexture = 2;
 				formatRules();
 			}
 		}
@@ -95,18 +102,30 @@
 <div class="controls-container">
 	<div class="params-container" data-hidden={paramsHidden} style="pointer-events: {$automaton.brush[3] != 0 ? "none" : "all"};">
 		<div class="params-header">
+			<div class="tabs">
+				<button disabled={currentTab == 0} on:click={()=> currentTab=0}>preferences</button>
+				<button disabled={currentTab == 1} on:click={()=> currentTab=1}>simulation</button>
+			</div>
 			<button on:click={ ()=> paramsHidden = !paramsHidden}>{paramsHidden ? ">" : "<"}</button>
 		</div>
 		<div class="params-window">
-			<SectionContainer label="Save / Load Parameters">
-				<ParametersSelection/>
-			</SectionContainer>
-			<SectionContainer label="Convolution Properties">
-				<ConvolutionProperties/>
-			</SectionContainer>
-			<SectionContainer label="Rules">
-				<Rules/>
-			</SectionContainer>
+			<div hidden={currentTab!=0}>
+				<SectionContainer label="Texture Settings">
+					<TextureSettings/>
+				</SectionContainer>
+			</div>
+			<div hidden={currentTab!=1}>
+				<SectionContainer label="Save / Load Parameters">
+					<ParametersSelection/>
+				</SectionContainer>
+				<SectionContainer label="Convolution Properties">
+					<ConvolutionProperties/>
+				</SectionContainer>
+				<SectionContainer label="Rules">
+					<Rules/>
+				</SectionContainer>
+			</div>
+			
 		</div>
 	</div>
 
@@ -129,41 +148,41 @@
 	.controls-container > div{
 		z-index: 1;
 	} 
-	.params-container{
-	
-		/* opacity: 0.6; */
-		background-color: var(--bg0); 
-	} 
-	
 
+	.params-container{
+		background-color:rgba(0, 0, 0, 0.8); 
+		transition: 0.4s;
+		
+	}
+
+	.controls-container:hover .params-container{
+		background-color: black;
+		
+	}
+	
 	
 
 	.params-window{
 		min-width: 340px;
 		max-height: calc( 100vh - 40px);
-		z-index: 1;
 		display: flex;
 		flex-direction: column;
 		padding-inline: 20px;
-		margin-top: 10px;
-		
 		overflow: auto;
-		resize: both;
-	}  
+		resize: both;	
+	} 
 
 	.params-header{
-		z-index: 1;
 		display: flex;
-		flex-direction: row-reverse;
-		border-bottom: 1px solid rgb(109, 109, 109);
+		justify-content: end;
+		background-color: var(--bg1); 
+		border-bottom: 1px solid var(--bg3);
 	}   
 	.params-header > button{
 		width: 40px;
-		height: 30px;
+		height: 40px;
+		border-radius: 0;
 	}  
-
-	
-
 	.params-container[data-hidden="true"] .params-window  {
 		min-width: 0px !important;
 		width: 0px !important;
@@ -172,10 +191,26 @@
 		margin-top: 0px;
 		visibility: hidden;
 	}
+	.tabs{
+		border-top-right-radius: 22px;
+		display: flex;
+		justify-content: center;
+	}
+	.params-container[data-hidden="true"] .tabs  {
+		visibility: hidden;
+		width: 0px;
+	}
+	.tabs > button{
+		outline: none;
+		border-radius: 0;
+	}
+	.tabs > button:disabled{
+		transform: translateY(1px);
+		border-inline: 1px solid var(--bg3);
+		background-color: black;
+		color:wheat;
+	}
 
-	/* .params-container[data-hidden="true"] .params-toggle > button {
-		height: 40px;
-	} */
 
 
 </style>

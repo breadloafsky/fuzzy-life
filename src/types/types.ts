@@ -40,22 +40,24 @@ export class FormattedParams{
 	rules:number[] = [0];
 	kernelTexture:any=null;
 	kernelsPreview:any=null;
+	resetTexture:number=0;	// tells the shader if reset needed	
+	
 }
 
 export class Settings{
     paused:boolean=false;
-	quality:number=2;
-	debugVal:number=0;
+	textureSize:number=0.1;
+	textureFilter:number=0;
+	gradient:number=0;
 }
-
-
-
 
 
 export class Callbacks  {
 	updateKernelGraphs:any;
 	updateKernelTextures:any;
 	formatRules:any;
+	resizeTexture:any;
+	setTextureFilter:any;
 }
 
 export class Automaton{

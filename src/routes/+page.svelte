@@ -14,6 +14,7 @@
 			uniforms: {
 				uSampler: {value:null},
 				uTextureDims:{value:null},
+				uGradient:{value:null},
 			},
 		},
 		
@@ -25,19 +26,13 @@
 				
 			},
 			uniforms: {
-				uSampler: {value:null},
+				uSampler: {value:null},	
 				uTextureDims:{value:null},
-
 				uKernelRadius:{value:null},
-				uKern:{value:null},
-				
+				uKern:{value:null},	// kernel texture
 				uRules:{value:null},
-
-				uDelta: {value:null},
-
-				uNumberOfRules:{value:null},
-				uNumberOfKernels:{value:null},
-
+				uDelta: {value:null},	// dt of integration
+				uReset: {value:null},	// reset the texture
 				uDebug:{value:null},	// DEBUG
 				isPaused:{value:null},
 				brush:{value:null},	// paint brush
