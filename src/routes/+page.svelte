@@ -2,46 +2,9 @@
 	import "../app.css"
 
     import { browser } from "$app/environment";
+	import { shaders } from "../webgl/shaders";
 	import Main from "../components/Main.svelte";
- 
-	const shaders:any ={
-		screen:{
-			program: {},
-			attributes: {
-				aTextureCoord: {value:null},
-				aVertexPosition: {value:null},
-			},
-			uniforms: {
-				uSampler: {value:null},
-				uTextureDims:{value:null},
-				uGradient:{value:null},
-			},
-		},
-		
-		frame:{
-			program: {},
-			attributes: {
-				aTextureCoord: {value:null},
-				aVertexPosition: {value:null},
-				
-			},
-			uniforms: {
-				uSampler: {value:null},	
-				uTextureDims:{value:null},
-				uKernelRadius:{value:null},
-				uKern:{value:null},	// kernel texture
-				uRules:{value:null},
-				uDelta: {value:null},	// dt of integration
-				uReset: {value:null},	// reset the texture
-				uDebug:{value:null},	// DEBUG
-				isPaused:{value:null},
-				brush:{value:null},	// paint brush
-			},
-		},
-	};
-
-
-
+	
 
 	// preload the shaders
 	async function loadShaderFiles(){
@@ -54,7 +17,7 @@
 					return response.text();
 				});
 				Promise.all(shaderFiles).then(data => {
-						const shader = shaders[shaderName];
+						const shader = (shaders as any)[shaderName];
 						shader.program = data;
 						resolve();
 				});

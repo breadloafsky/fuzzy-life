@@ -1,13 +1,7 @@
 
 <script lang="ts">
-    import { onMount } from "svelte";
-    import type { FormattedParams, Params, Settings } from "../../types/types";
     import RuleComponent from "./RuleComponent.svelte";
-	import {automaton, callbacks} from "../../stores";
-
-
-
-	$:params = $automaton.params;
+	import {params} from "../../stores";
 </script>
 
 
@@ -32,7 +26,7 @@
 	{/each}
 	{")"} -->
 </div>
-{#each params.rules as r,i}
+{#each $params.rules as r,i}
 	<RuleComponent ruleId={i}/>
 {/each}
 

@@ -1,217 +1,6 @@
 [
 	{
-		"name": "blobs",
-		"kernels": [
-			{
-				"points": [
-					[
-						0,
-						0
-					],
-					[
-						0.251,
-						0.998
-					],
-					[
-						0.495,
-						0
-					]
-				],
-				"previewImage": null,
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.498,
-						0
-					],
-					[
-						0.753,
-						1
-					],
-					[
-						1,
-						0
-					],
-					[
-						1,
-						0
-					]
-				],
-				"previewImage": null,
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.5,
-						0.5
-					]
-				],
-				"previewImage": null,
-				"enabled": false
-			}
-		],
-		"rules": [
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.413,
-							0.638
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.381,
-							0.736
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.278,
-							0.464
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.234,
-							0.375
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.195,
-							0.327
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.086,
-							0.639
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.641,
-							0.906
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.207,
-							0.791
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.439,
-							0.919
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.281,
-							0.719
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.456,
-							0.923
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.066,
-							0.787
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			}
-		],
-		"convRadius": 12,
-		"dt": 0.3
-	},
-	{
-		"name": "branching life",
+		"name": "glider spawners",
 		"kernels": [
 			{
 				"points": [
@@ -220,16 +9,16 @@
 						0.754
 					],
 					[
-						0.175,
-						0.32799999999999996
+						0.213,
+						0.504
 					],
 					[
-						0.34,
-						0.75
+						0.426,
+						0.742
 					],
 					[
-						0.491,
-						0
+						0.44,
+						0.016000000000000014
 					]
 				],
 				"enabled": true
@@ -266,8 +55,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.19,
-							0.37
+							0.171,
+							0.386
 						],
 						"slopes": [
 							0.02,
@@ -277,8 +66,8 @@
 					},
 					{
 						"thersholds": [
-							0.15,
-							0.22
+							0.044,
+							0.096
 						],
 						"slopes": [
 							0.041,
@@ -304,23 +93,23 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.442,
-							0.645
+							0.299,
+							0.4
 						],
 						"slopes": [
-							0.021,
-							0.021
+							0.02,
+							0.02
 						],
 						"enabled": true
 					},
 					{
 						"thersholds": [
-							0.084,
-							0.614
+							0.044,
+							0.466
 						],
 						"slopes": [
-							0.021,
-							0.021
+							0.02,
+							0.02
 						],
 						"enabled": true
 					},
@@ -417,6 +206,441 @@
 		],
 		"convRadius": 12,
 		"dt": 0.5
+	},
+	{
+		"name": "gliders0",
+		"kernels": [
+			{
+				"points": [
+					[
+						0,
+						0.754
+					],
+					[
+						0.175,
+						0.32799999999999996
+					],
+					[
+						0.34,
+						0.75
+					],
+					[
+						0.491,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.491,
+						0.020000000000000018
+					],
+					[
+						0.749,
+						0.725
+					],
+					[
+						1,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.5,
+						0.5
+					]
+				],
+				"enabled": false
+			}
+		],
+		"rules": [
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.171,
+							0.386
+						],
+						"slopes": [
+							0.02,
+							0.02
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.044,
+							0.096
+						],
+						"slopes": [
+							0.041,
+							0.031
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.465,
+							0.711
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.171,
+							0.386
+						],
+						"slopes": [
+							0.021,
+							0.021
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.044,
+							0.096
+						],
+						"slopes": [
+							0.021,
+							0.021
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.014,
+							0.64
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.315,
+							0.613
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.54,
+							1
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.247,
+							0.523
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.3,
+							0.896
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.511,
+							0.936
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.346,
+							0.714
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			}
+		],
+		"convRadius": 12,
+		"dt": 0.39
+	},
+	{
+		"name": "gliders1",
+		"kernels": [
+			{
+				"points": [
+					[
+						0,
+						0
+					],
+					[
+						0.251,
+						0.998
+					],
+					[
+						0.495,
+						0
+					],
+					[
+						0.75,
+						0.496
+					],
+					[
+						1,
+						0
+					]
+				],
+				"previewImage": null,
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0,
+						0
+					],
+					[
+						0.25,
+						0.496
+					],
+					[
+						0.498,
+						0
+					],
+					[
+						0.753,
+						1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						0
+					]
+				],
+				"previewImage": null,
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.5,
+						0.5
+					]
+				],
+				"previewImage": null,
+				"enabled": false
+			}
+		],
+		"rules": [
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.291,
+							0.649
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.187,
+							0.331
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.197,
+							0.519
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.203,
+							0.239
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.484,
+							0.893
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0,
+							0.459
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.435,
+							0.557
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.3,
+							0.688
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.577,
+							0.945
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.32,
+							0.478
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.4,
+							0.844
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.192,
+							0.658
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			}
+		],
+		"convRadius": 12,
+		"dt": 0.4
 	},
 	{
 		"name": "life0",
@@ -1057,7 +1281,7 @@
 		"dt": 0.5
 	},
 	{
-		"name": "life3",
+		"name": "blobs",
 		"kernels": [
 			{
 				"points": [
@@ -1066,446 +1290,11 @@
 						0
 					],
 					[
-						0,
-						0.766
-					],
-					[
-						0.488,
-						0.5369999999999999
+						0.251,
+						0.998
 					],
 					[
 						0.495,
-						0
-					]
-				],
-				"previewImage": null,
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.498,
-						0
-					],
-					[
-						0.502,
-						0.5329999999999999
-					],
-					[
-						1,
-						0
-					],
-					[
-						1,
-						0
-					]
-				],
-				"previewImage": null,
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.5,
-						0.5
-					]
-				],
-				"previewImage": null,
-				"enabled": false
-			}
-		],
-		"rules": [
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.319,
-							0.833
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.406,
-							0.54
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.155,
-							0.479
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.356,
-							0.825
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.17,
-							0.34
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.444,
-							0.736
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.292,
-							0.927
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.113,
-							0.496
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.479,
-							0.952
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.429,
-							0.703
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.425,
-							0.666
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.14,
-							0.46
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			}
-		],
-		"convRadius": 12,
-		"dt": 0.5
-	},
-	{
-		"name": "dynamic pattern",
-		"kernels": [
-			{
-				"enabled": true,
-				"points": [
-					[
-						0,
-						0
-					],
-					[
-						0.20699999999999996,
-						0.8109999999999999
-					],
-					[
-						0.41800000000000004,
-						0.10199999999999998
-					],
-					[
-						0.698,
-						0.7989999999999999
-					],
-					[
-						0.89,
-						0.32299999999999995
-					]
-				]
-			},
-			{
-				"enabled": true,
-				"points": [
-					[
-						0,
-						0
-					],
-					[
-						0.475,
-						1
-					],
-					[
-						1,
-						0
-					]
-				]
-			},
-			{
-				"enabled": false,
-				"points": [
-					[
-						0.244,
-						0.495
-					],
-					[
-						0.45199999999999996,
-						0.17100000000000004
-					],
-					[
-						0.677,
-						0.471
-					]
-				]
-			}
-		],
-		"rules": [
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.024,
-							0.441
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0,
-							0.795
-						],
-						"slopes": [
-							0.131,
-							0.091
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0,
-							0.716
-						],
-						"slopes": [
-							0.181,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.122,
-							0.811
-						],
-						"slopes": [
-							0.231,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.263,
-							0.983
-						],
-						"slopes": [
-							0.001,
-							0.251
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.052,
-							0.842
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.3,
-							0.5
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.3,
-							0.5
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.3,
-							0.5
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.3,
-							0.5
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.3,
-							0.5
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.3,
-							0.5
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			}
-		],
-		"convRadius": 12,
-		"dt": 0.5
-	},
-	{
-		"name": "connections",
-		"kernels": [
-			{
-				"points": [
-					[
-						0,
-						1
-					],
-					[
-						0.368,
-						0.5489999999999999
-					],
-					[
-						0.605,
 						0
 					]
 				],
@@ -1537,20 +1326,12 @@
 			{
 				"points": [
 					[
-						0,
-						0
-					],
-					[
-						0.46,
-						0.602
-					],
-					[
-						1,
-						0
+						0.5,
+						0.5
 					]
 				],
 				"previewImage": null,
-				"enabled": true
+				"enabled": false
 			}
 		],
 		"rules": [
@@ -1558,8 +1339,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.371,
-							0.602
+							0.413,
+							0.638
 						],
 						"slopes": [
 							0.001,
@@ -1569,8 +1350,8 @@
 					},
 					{
 						"thersholds": [
-							0.255,
-							0.621
+							0.381,
+							0.736
 						],
 						"slopes": [
 							0.001,
@@ -1580,8 +1361,8 @@
 					},
 					{
 						"thersholds": [
-							0.271,
-							0.482
+							0.278,
+							0.464
 						],
 						"slopes": [
 							0.001,
@@ -1596,8 +1377,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.295,
-							0.785
+							0.234,
+							0.375
 						],
 						"slopes": [
 							0.001,
@@ -1607,8 +1388,8 @@
 					},
 					{
 						"thersholds": [
-							0.537,
-							1
+							0.195,
+							0.327
 						],
 						"slopes": [
 							0.001,
@@ -1618,8 +1399,8 @@
 					},
 					{
 						"thersholds": [
-							0.267,
-							0.924
+							0.086,
+							0.639
 						],
 						"slopes": [
 							0.001,
@@ -1634,8 +1415,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.276,
-							0.89
+							0.641,
+							0.906
 						],
 						"slopes": [
 							0.001,
@@ -1645,8 +1426,8 @@
 					},
 					{
 						"thersholds": [
-							0.477,
-							0.662
+							0.207,
+							0.791
 						],
 						"slopes": [
 							0.001,
@@ -1656,8 +1437,8 @@
 					},
 					{
 						"thersholds": [
-							0.201,
-							0.579
+							0.439,
+							0.919
 						],
 						"slopes": [
 							0.001,
@@ -1672,7 +1453,188 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.65,
+							0.281,
+							0.719
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.456,
+							0.923
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.066,
+							0.787
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			}
+		],
+		"convRadius": 12,
+		"dt": 0.3
+	},
+	{
+		"name": "branching_life",
+		"kernels": [
+			{
+				"points": [
+					[
+						0,
+						0.754
+					],
+					[
+						0.175,
+						0.32799999999999996
+					],
+					[
+						0.34,
+						0.75
+					],
+					[
+						0.491,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.491,
+						0.020000000000000018
+					],
+					[
+						0.749,
+						0.725
+					],
+					[
+						1,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.5,
+						0.5
+					]
+				],
+				"enabled": false
+			}
+		],
+		"rules": [
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.19,
+							0.37
+						],
+						"slopes": [
+							0.02,
+							0.02
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.15,
+							0.22
+						],
+						"slopes": [
+							0.041,
+							0.031
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.465,
+							0.711
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.442,
+							0.645
+						],
+						"slopes": [
+							0.021,
+							0.021
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.084,
+							0.614
+						],
+						"slopes": [
+							0.021,
+							0.021
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.014,
+							0.64
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.315,
+							0.613
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.54,
 							1
 						],
 						"slopes": [
@@ -1683,8 +1645,24 @@
 					},
 					{
 						"thersholds": [
-							0.363,
-							0.69
+							0.247,
+							0.523
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.3,
+							0.896
 						],
 						"slopes": [
 							0.001,
@@ -1694,8 +1672,227 @@
 					},
 					{
 						"thersholds": [
-							0.102,
-							0.524
+							0.511,
+							0.936
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.346,
+							0.714
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			}
+		],
+		"convRadius": 12,
+		"dt": 0.5
+	},
+	{
+		"name": "chains",
+		"kernels": [
+			{
+				"points": [
+					[
+						0,
+						0
+					],
+					[
+						0.491,
+						0.725
+					],
+					[
+						1,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0,
+						0.746
+					],
+					[
+						0.339,
+						0
+					],
+					[
+						0.671,
+						1
+					],
+					[
+						1,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.5,
+						0.5
+					]
+				],
+				"enabled": false
+			}
+		],
+		"rules": [
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.167,
+							0.288
+						],
+						"slopes": [
+							0.02,
+							0.02
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.13,
+							0.182
+						],
+						"slopes": [
+							0.041,
+							0.031
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.418,
+							0.744
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.167,
+							0.403
+						],
+						"slopes": [
+							0.021,
+							0.021
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.291,
+							0.787
+						],
+						"slopes": [
+							0.021,
+							0.021
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.356,
+							0.696
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.161,
+							0.68
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0,
+							0.161
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.396,
+							0.764
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.13,
+							0.473
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.278,
+							0.543
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.542,
+							0.79
 						],
 						"slopes": [
 							0.001,
@@ -1711,7 +1908,7 @@
 		"dt": 0.4
 	},
 	{
-		"name": "gliders0",
+		"name": "creatures",
 		"kernels": [
 			{
 				"points": [
@@ -1919,442 +2116,7 @@
 		"dt": 0.4
 	},
 	{
-		"name": "gliders1",
-		"kernels": [
-			{
-				"points": [
-					[
-						0,
-						0
-					],
-					[
-						0.251,
-						0.998
-					],
-					[
-						0.495,
-						0
-					],
-					[
-						0.75,
-						0.496
-					],
-					[
-						1,
-						0
-					]
-				],
-				"previewImage": null,
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0,
-						0
-					],
-					[
-						0.25,
-						0.496
-					],
-					[
-						0.498,
-						0
-					],
-					[
-						0.753,
-						1
-					],
-					[
-						1,
-						0
-					],
-					[
-						1,
-						0
-					]
-				],
-				"previewImage": null,
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.5,
-						0.5
-					]
-				],
-				"previewImage": null,
-				"enabled": false
-			}
-		],
-		"rules": [
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.291,
-							0.649
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.187,
-							0.331
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.197,
-							0.519
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.203,
-							0.239
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.484,
-							0.893
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0,
-							0.459
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.435,
-							0.557
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.3,
-							0.688
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.577,
-							0.945
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.32,
-							0.478
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.4,
-							0.844
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.192,
-							0.658
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			}
-		],
-		"convRadius": 12,
-		"dt": 0.4
-	},
-	{
-		"name": "gliders2",
-		"kernels": [
-			{
-				"points": [
-					[
-						0,
-						0.754
-					],
-					[
-						0.175,
-						0.32799999999999996
-					],
-					[
-						0.34,
-						0.75
-					],
-					[
-						0.491,
-						0
-					]
-				],
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.491,
-						0.020000000000000018
-					],
-					[
-						0.749,
-						0.725
-					],
-					[
-						1,
-						0
-					]
-				],
-				"enabled": true
-			},
-			{
-				"points": [
-					[
-						0.5,
-						0.5
-					]
-				],
-				"enabled": false
-			}
-		],
-		"rules": [
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.171,
-							0.386
-						],
-						"slopes": [
-							0.02,
-							0.02
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.044,
-							0.096
-						],
-						"slopes": [
-							0.041,
-							0.031
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.465,
-							0.711
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": true
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.171,
-							0.386
-						],
-						"slopes": [
-							0.021,
-							0.021
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.044,
-							0.096
-						],
-						"slopes": [
-							0.021,
-							0.021
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.014,
-							0.64
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.315,
-							0.613
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.54,
-							1
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.247,
-							0.523
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			},
-			{
-				"subRules": [
-					{
-						"thersholds": [
-							0.3,
-							0.896
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.511,
-							0.936
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.346,
-							0.714
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				],
-				"enabled": false
-			}
-		],
-		"convRadius": 12,
-		"dt": 0.39
-	},
-	{
-		"name": "glider spawners",
+		"name": "dynamic_pattern",
 		"kernels": [
 			{
 				"points": [
@@ -2409,8 +2171,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.171,
-							0.386
+							0.116,
+							0.758
 						],
 						"slopes": [
 							0.02,
@@ -2420,8 +2182,8 @@
 					},
 					{
 						"thersholds": [
-							0.044,
-							0.096
+							0.448,
+							0.731
 						],
 						"slopes": [
 							0.041,
@@ -2431,8 +2193,8 @@
 					},
 					{
 						"thersholds": [
-							0.465,
-							0.711
+							0.184,
+							0.603
 						],
 						"slopes": [
 							0.001,
@@ -2447,8 +2209,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.299,
-							0.4
+							0.075,
+							0.483
 						],
 						"slopes": [
 							0.02,
@@ -2458,8 +2220,8 @@
 					},
 					{
 						"thersholds": [
-							0.044,
-							0.466
+							0.135,
+							0.472
 						],
 						"slopes": [
 							0.02,
@@ -2469,8 +2231,8 @@
 					},
 					{
 						"thersholds": [
-							0.014,
-							0.64
+							0.307,
+							0.523
 						],
 						"slopes": [
 							0.001,
@@ -2485,8 +2247,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.315,
-							0.613
+							0.381,
+							0.885
 						],
 						"slopes": [
 							0.001,
@@ -2496,7 +2258,7 @@
 					},
 					{
 						"thersholds": [
-							0.54,
+							0.613,
 							1
 						],
 						"slopes": [
@@ -2507,8 +2269,8 @@
 					},
 					{
 						"thersholds": [
-							0.247,
-							0.523
+							0.236,
+							0.728
 						],
 						"slopes": [
 							0.001,
@@ -2523,8 +2285,8 @@
 				"subRules": [
 					{
 						"thersholds": [
-							0.3,
-							0.896
+							0.193,
+							0.73
 						],
 						"slopes": [
 							0.001,
@@ -2534,8 +2296,8 @@
 					},
 					{
 						"thersholds": [
-							0.511,
-							0.936
+							0.491,
+							0.86
 						],
 						"slopes": [
 							0.001,
@@ -2545,8 +2307,8 @@
 					},
 					{
 						"thersholds": [
-							0.346,
-							0.714
+							0.408,
+							1
 						],
 						"slopes": [
 							0.001,
@@ -2979,5 +2741,432 @@
 		],
 		"convRadius": 12,
 		"dt": 0.4
+	},
+	{
+		"name": "transmitters",
+		"kernels": [
+			{
+				"points": [
+					[
+						0,
+						1
+					],
+					[
+						0.368,
+						0.5489999999999999
+					],
+					[
+						0.605,
+						0
+					]
+				],
+				"previewImage": null,
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.498,
+						0
+					],
+					[
+						0.753,
+						1
+					],
+					[
+						1,
+						0
+					],
+					[
+						1,
+						0
+					]
+				],
+				"previewImage": null,
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0,
+						0
+					],
+					[
+						0.46,
+						0.602
+					],
+					[
+						1,
+						0
+					]
+				],
+				"previewImage": null,
+				"enabled": true
+			}
+		],
+		"rules": [
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.371,
+							0.602
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.255,
+							0.621
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.271,
+							0.482
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.295,
+							0.785
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.537,
+							1
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.267,
+							0.924
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.276,
+							0.89
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.477,
+							0.662
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.201,
+							0.579
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.65,
+							1
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.363,
+							0.69
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.102,
+							0.524
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			}
+		],
+		"convRadius": 12,
+		"dt": 0.4
+	},
+	{
+		"name": "cellular_machine",
+		"kernels": [
+			{
+				"points": [
+					[
+						0,
+						0.885
+					],
+					[
+						0.313,
+						0.885
+					],
+					[
+						0.52,
+						0.754
+					],
+					[
+						0.539,
+						0
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.5,
+						0
+					],
+					[
+						0.563,
+						0.766
+					],
+					[
+						1,
+						0.725
+					]
+				],
+				"enabled": true
+			},
+			{
+				"points": [
+					[
+						0.5,
+						0.5
+					]
+				],
+				"enabled": false
+			}
+		],
+		"rules": [
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0,
+							0.42
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.189,
+							0.761
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.465,
+							0.711
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.019,
+							0.371
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.129,
+							0.292
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.014,
+							0.64
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": true
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.315,
+							0.613
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.54,
+							1
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.247,
+							0.523
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			},
+			{
+				"subRules": [
+					{
+						"thersholds": [
+							0.3,
+							0.896
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.511,
+							0.936
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.346,
+							0.714
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				],
+				"enabled": false
+			}
+		],
+		"convRadius": 2,
+		"dt": 0.68
 	}
 ]

@@ -20,7 +20,6 @@ export class Kernel  {
 	enabled:boolean = true;
 }
 
-
 export class Params{
 	kernels:Kernel[]=[
 		new Kernel(),
@@ -36,33 +35,7 @@ export class Params{
     convRadius:number=12;	//	the radius of kernel/convolution radius
 	dt:number = 0.5;		// dt multiplier
 }
-export class FormattedParams{
-	rules:number[] = [0];
-	kernelTexture:any=null;
-	kernelsPreview:any=null;
-	resetTexture:number=0;	// tells the shader if reset needed	
-	
-}
-
-export class Settings{
-    paused:boolean=false;
-	textureSize:number=0.1;
-	textureFilter:number=0;
-	gradient:number=0;
-}
 
 
-export class Callbacks  {
-	updateKernelGraphs:any;
-	updateKernelTextures:any;
-	formatRules:any;
-	resizeTexture:any;
-	setTextureFilter:any;
-}
 
-export class Automaton{
-	params:Params = new Params();
-	formattedParams:FormattedParams = new FormattedParams();
-	settings:Settings = new Settings();
-	brush:number[]|any[] = [0.5 ,0.5 ,16, 0];		//	[x, y, radius(in pixels), type]
-};
+

@@ -37,7 +37,8 @@ li {
 	justify-content: space-between;
 }
 
-button, .button{
+
+button:not(.custom), .button{
 	background-color:#2b2b2b;
 	color:white;
 	border: none;

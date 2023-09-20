@@ -2,7 +2,7 @@
 <script lang="ts">
  	import { onMount } from "svelte";
 	import { utils } from "../../utils";
-    import type { Kernel, Params } from "../../types/types";
+    import type { Kernel } from "../../types/params";
     let canvas : HTMLCanvasElement;
 	let ctx : CanvasRenderingContext2D|any;
 
@@ -54,7 +54,6 @@
 
 			for(let i = 0; i < size; i++){
 				for(let j = 0; j < size; j++){
-
 					let dist = Math.sqrt(((radius-i))**2+((radius-j))**2);
 					if(dist < radius)
 					{

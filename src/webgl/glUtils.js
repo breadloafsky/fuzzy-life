@@ -133,7 +133,7 @@ export const glUtils = {
 
 			// gl.LINEAR gl.NEAREST
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering  == 0 ? gl.LINEAR : gl.NEAREST);	
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering  == 0 ? gl.NEAREST : gl.LINEAR);	
 		}
 	},
 };

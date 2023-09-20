@@ -24,27 +24,30 @@ function setAttribute(gl, attrib, num=2, type=null, normalize=false, stride=0, o
 
 
 // create scene
-export function Scene(canvas, shaders, automaton) {
-	this.automaton = automaton;
+export function Scene(canvas, shaders, params, tempParams, settings) {
+	this.params = params;
+	this.tempParams = tempParams;
+	this.settings = settings;
 	this.canvas = canvas;
 	this.initialized = false;
 	this.fb = [];	//	frame buffers
 	this.textures = [];
 	this.kern = {};	//kernel texture
 	this.shaders = shaders;
-	const params = {
+	const glParams = {
 		premultipliedAlpha: false, 
 		antialias: true,
 		depth:true,
 	};
 	this.gl =
-		canvas.getContext("webgl",params) || canvas.getContext("experimental-webgl",params);
+		canvas.getContext("webgl",glParams) || canvas.getContext("experimental-webgl",glParams);
 	if (!this.gl) {
 		alert("WebGL ERROR.");
 		return;
 	}
 
-	this.resize();
+
+	this.init();
 	return this;
 }
 
@@ -63,11 +66,11 @@ Scene.prototype.init = function(){
 	this.kern = gl.createTexture();
 	glUtils.loadTexture(gl, [64,64], this.kern);
 	
-	// create main textures
+	// create main textures and framebuffers
 	for(let i = 0; i < 2; i++)
 	{
 		const texture = gl.createTexture();
-		glUtils.loadTexture(gl, textureDims, texture, this.automaton.settings.textureFilter);
+		glUtils.loadTexture(gl, textureDims, texture, this.settings.textureFilter);
 		this.textures.push(texture);
 		const fb  = gl.createFramebuffer();
 		this.fb.push(fb);
@@ -90,14 +93,14 @@ Scene.prototype.resize = function(){
 	this.canvas.setAttribute("height", b);
 	this.gl.viewport( 0, 0, a, b );
 
-	const multiplier = Math.sqrt(1/(a*b))*Math.sqrt(this.automaton.settings.textureSize * 1000000)
+	const multiplier = Math.sqrt(1/(a*b))*Math.sqrt(this.settings.textureSize * 1000000)
 	textureDims = [
 		Math.round(a * multiplier),  
 		Math.round(b * multiplier)
 	];
 	// update texture size
 	this.textures.forEach((tex,i) => {
-		glUtils.loadTexture(this.gl, textureDims, tex, this.automaton.settings.textureFilter);
+		glUtils.loadTexture(this.gl, textureDims, tex, this.settings.textureFilter);
 	});
 }
 
@@ -105,7 +108,7 @@ Scene.prototype.setTextureFilter = function(){
 	const gl = this.gl;
 	this.textures.forEach((tex,i) => {
 		gl.bindTexture(gl.TEXTURE_2D, tex);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.automaton.settings.textureFilter == 0 ? gl.LINEAR : gl.NEAREST);	
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.settings.textureFilter == 0 ? gl.NEAREST : gl.LINEAR);	
 	});
 }
 
@@ -125,11 +128,7 @@ Scene.prototype.drawScene = function (time)  {
 		return;
 
 
-
-	const {params, formattedParams, settings, brush} = this.automaton;
-
-
-
+	const brush = [this.tempParams.brush.x,this.tempParams.brush.y,this.tempParams.brush.r,this.tempParams.brush.type];
 	const gl = this.gl;
 	const shaders =  this.shaders;
 	const fb = this.fb;
@@ -150,16 +149,16 @@ Scene.prototype.drawScene = function (time)  {
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 		
-		gl.uniform1fv(shader.uniforms.brush.location, brush);
+		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 
-		gl.uniform1fv(shader.uniforms.uRules.location, formattedParams.rules);
+		gl.uniform1fv(shader.uniforms.uRules.location, this.tempParams.rules);
 
 
-		gl.uniform1i(shader.uniforms.uKernelRadius.location, params.convRadius);
-		gl.uniform1f(shader.uniforms.uDelta.location, params.dt);
-		gl.uniform1i(shader.uniforms.isPaused.location, settings.paused);
+		gl.uniform1i(shader.uniforms.uKernelRadius.location, this.params.convRadius);
+		gl.uniform1f(shader.uniforms.uDelta.location, this.params.dt);
+		gl.uniform1i(shader.uniforms.isPaused.location, this.tempParams.paused);
 
-		gl.uniform1i(shader.uniforms.uReset.location, formattedParams.resetTexture);
+		gl.uniform1i(shader.uniforms.uReset.location, this.tempParams.resetTexture);
 		
 		
 		gl.uniform1i(shader.uniforms.uSampler.location, 0);  // texture unit 0
@@ -190,7 +189,8 @@ Scene.prototype.drawScene = function (time)  {
 	// render the result
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-		gl.uniform1i(shader.uniforms.uGradient.location, settings.gradient);
+		gl.uniform1i(shader.uniforms.uGradient.location, this.settings.gradient);
+		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 

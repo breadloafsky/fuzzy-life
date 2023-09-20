@@ -1,11 +1,5 @@
 
 <script lang="ts">
-	import { onMount } from "svelte";    
-    import type { Kernel, Params } from "../../types/types";
-	import {utils} from "../../utils";
-
-	import {callbacks} from "../../stores";
-
 	export let width:number = 400;
 	export let height:number = 240;
 	export let x = 10;
@@ -16,6 +10,7 @@
 	export let ySub = 1;
 	export let xName:string = "";
 	export let yName:string = "";
+
 </script>
 
 <g>
@@ -26,17 +21,12 @@
 			height={height}
 			x={i*width/xDiv}
 		/>
-
-			<text 
-				x={i*width/xDiv} 
-				y={height+10} 
-				>
-				{i*x/xDiv}
-			</text>
-		
-
-		
-		
+		<text 
+			x={i*width/xDiv} 
+			y={height+10} 
+			>
+			{i*x/xDiv}
+		</text>
 	{/each}
 	<!-- Y axis -->
 	{#each Array(yDiv+1) as a,i}
@@ -44,19 +34,14 @@
 			height="1" 
 			width={width}
 			y={height-i*height/yDiv}
-			
-
 		/>
-		
-			<text 
-				transform="translate(20, {(height / 2)} ) rotate(-90)"
-				x={i*height/yDiv - height/2} 
-				y={-28}
-				
-				>
-				{i*y/yDiv}
-				
-			</text>
+		<text 
+			transform="translate(20, {(height / 2)} ) rotate(-90)"
+			x={i*height/yDiv - height/2} 
+			y={-28}
+			>
+			{i*y/yDiv}
+		</text>
 	
 	{/each}
 

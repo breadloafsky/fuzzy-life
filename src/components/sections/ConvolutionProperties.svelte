@@ -3,19 +3,16 @@
     import KernelGraph from "../graphs/KernelGraph.svelte";
 	import ParameterContainer from "../ui/ParameterContainer.svelte";
 	import Switch from "../ui/Switch.svelte";
-	import {automaton ,callbacks} from "../../stores";
+	import {params ,callbacks, tempParams} from "../../stores";
     import { onMount } from "svelte";
 	
 	let edit:boolean = false;
 	let selectedKernel:number|any = null;
 	const hue:number[]=[50, 200, 270];
 
-	$:kernImg = $automaton.formattedParams.kernelsPreview;
-	$:kernels = $automaton.params.kernels;
-	$:convRadius = $automaton.params.convRadius;
-
-	onMount(()=>{$automaton = $automaton; });
-
+	$:kernImg = $tempParams.kernelsPreview;
+	$:kernels = $params.kernels;
+	$:convRadius = $params.convRadius;
 </script>
 <!-- svelte-ignore a11y-missing-attribute -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -23,21 +20,19 @@
 <div class="properties" 
 	style="
 		--kern-size:{convRadius*2-1};
-		--bg-size:{32/((convRadius*2-1)/2)};
+
 		">
 	<ParameterContainer label="Δt multiplier">
-		<input bind:value={$automaton.params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
-		<div style="width: 40px; text-align: center;">{$automaton.params.dt}</div>
+		<input bind:value={$params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
+		<div style="width: 40px; text-align: center;">{$params.dt}</div>
 	</ParameterContainer>
-	<ParameterContainer label="kernel radius">
-		<input bind:value={$automaton.params.convRadius} on:input={() => {$callbacks.updateKernelTextures(); $automaton = $automaton;}} type="range"  name="convRadius"  step="1" min="2" max="16" />
+	<ParameterContainer label="Kernel radius">
+		<input bind:value={$params.convRadius} on:input={() => $callbacks.updateKernelTextures()} type="range"  name="convRadius"  step="1" min="2" max="16" />
 		<div style="width: 40px; text-align: center;">{convRadius}px</div>
 	</ParameterContainer>
-	
-
 	<div>Kernel Preview {selectedKernel==null ? "(Combined)":""}</div>
 	<div style="width: 100%; height: 240px; display: flex; justify-content: center; position: relative;">
-		{#if $automaton.formattedParams.kernelsPreview != null}
+		{#if $tempParams.kernelsPreview != null}
 			<div style="height: 240px; width: 240px;">
 				{#if selectedKernel != null}
 					<div 
@@ -75,11 +70,10 @@
 		edit={edit}
 		selectedKernel={selectedKernel}
 	/>
-
 	<div>
 		<div>Kernels</div>
 		<ul class="kern-list">
-			{#each $automaton.params.kernels as k,i}
+			{#each $params.kernels as k,i}
 			<li
 				on:mouseenter={()=> !edit && (selectedKernel = k.enabled ? i : null)} 
 				on:mouseleave={()=> !edit && (selectedKernel = null)}
@@ -109,7 +103,7 @@
 				{:else}
 					<Switch 
 						bind:value={k.enabled} 
-						on:click={() =>{selectedKernel=null; $callbacks.updateKernelGraphs();}}
+						on:click={() => selectedKernel=null}
 					/>
 					<button disabled={!k.enabled} on:click={()=> {edit = true; selectedKernel=i}}>Edit</button>
 					

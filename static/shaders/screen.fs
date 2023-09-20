@@ -4,7 +4,7 @@ varying lowp vec2 vTextureCoord;
 uniform mediump float uTextureDims[2];
 uniform sampler2D uSampler;
 uniform int uGradient;
-
+uniform float uBrush[4];
 
 
 vec4 getColor0(float v){
@@ -20,7 +20,7 @@ vec4 getColor0(float v){
 }
 
 vec4 getColor1(float v){
-  v = v * clamp((v*2.),0.,1.);
+  v = clamp((v*1.5),0.,1.);
   return vec4(v);
 }
 
@@ -47,12 +47,23 @@ void main(void) {
   }
   tex.rgba /= 4.;
 
-  tex.r = (tex.r+tex.g)/2.; // reduce the high frequency blinking
+  tex.r = (tex.r+tex.g)/2.; // filter the high frequency blinking
 
+  // chose colouring method
   if(uGradient == 0)
     tex = getColor0(tex.r);
   else
     tex = getColor1(tex.r);
+
+  // display brush
+  if(uBrush[3] != 0.){
+        vec2 pos = vec2((vTextureCoord.x-uBrush[0])*uTextureDims[0],(vTextureCoord.y-uBrush[1])*uTextureDims[1]);
+        float d = distance(vec2(0.,0.),pos);
+        if(d > uBrush[2]-0.5 && d < uBrush[2]+0.5)
+        {
+            tex.rgb = vec3(1);
+        }
+    }
   
   gl_FragColor = tex;
 }

@@ -1,15 +1,14 @@
 
 <script lang="ts">
-	import { onMount } from "svelte";    
-    import type { Params } from "../../types/types";
+	import { params } from "../../stores";
     import Coordinates from "./Coordinates.svelte";
-	export let params:Params;
 	export let ruleId:number;
-
-
 	let graphPath:string[] = [];
+	let containerWidth:any;
 	let width:number = 400;
 	let height:number = 140;
+	let repaintTimer:any = 0;
+	
 
 
 	// sigmoid function
@@ -25,30 +24,27 @@
 	}
 	
 	
-
-	onMount(() => {
-		repaint();
-	});
-
-	
-	$:[params,width], repaint();
+	$:$params, repaint();
+	$:containerWidth, (()=>{
+		clearTimeout(repaintTimer);
+		repaintTimer = setTimeout(() => {width = containerWidth;repaint();}, 100)
+	})();
 
 	
 	function repaint(){
 		graphPath = [];
-		for(let i = 0; i < params.kernels.length; i++)
+		for(let i = 0; i < $params.kernels.length; i++)
 		{
-			const kern = params.kernels[i];
-			if(params.kernels[i].enabled){
+			if($params.kernels[i].enabled){
 				graphPath[i] = `M -10 ${height} `;
 				for(let j = 0; j < width; j++){
 					graphPath[i]+=`L ${j} ${ 
 						getY(	
 							j/width,
-								params.rules[ruleId].subRules[i].thersholds[0], 
-								params.rules[ruleId].subRules[i].thersholds[1],
-								params.rules[ruleId].subRules[i].slopes[0],
-								params.rules[ruleId].subRules[i].slopes[1], 
+								$params.rules[ruleId].subRules[i].thersholds[0], 
+								$params.rules[ruleId].subRules[i].thersholds[1],
+								$params.rules[ruleId].subRules[i].slopes[0],
+								$params.rules[ruleId].subRules[i].slopes[1], 
 							)
 						*height} `;
 				}
@@ -62,7 +58,7 @@
 	}
 
 </script>
-<div class="graph-container" bind:clientWidth={width} >
+<div class="graph-container" bind:clientWidth={containerWidth} style="height: {height}px;" >
 	<svg viewBox="0 0 {width} {height}">
 		<Coordinates
 			width={width}
@@ -77,7 +73,7 @@
 
 		<svg class="main" viewBox="0 0 {width} {height}" >
 			{#each graphPath as g,i}
-			{#if params.rules[ruleId].subRules[i].enabled}
+			{#if $params.rules[ruleId].subRules[i].enabled}
 			<path d={g} style={`--color: var(--color${i});`}/>
 			{/if}
 				

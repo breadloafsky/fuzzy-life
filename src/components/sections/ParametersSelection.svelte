@@ -1,29 +1,30 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-	import { automaton, callbacks } from "../../stores";	
-    import type { Params } from "../../types/types";
+	import { params, callbacks } from "../../stores";	
 	import ParameterContainer from "../ui/ParameterContainer.svelte";
+    import Icon from "../ui/Icon.svelte";
+    import type { Params } from "../../types/params";
+
 	let fileInput:HTMLInputElement|any;
-	
 	let presets:any[] = [];
-
 	let expanded = false;
-
 
 	onMount( async() => {
 		presets = await( await fetch("presets.json") ).json();
+		setScene(presets[0]);
 	});
 	
-
+	// remove unnecessary properties
 	function filterProperty(k:any,v:any){
 		if(k == "name")
 			return undefined;
 		return v;
 	}
-
+	
+	// save scene parameters to file
 	function saveScene() {
-    	var file = new Blob([JSON.stringify({...$automaton.params},filterProperty,"\t")], {type: "json"});
+    	var file = new Blob([JSON.stringify({...$params},filterProperty,"\t")], {type: "json"});
 		var a = document.createElement("a"),
 				url = URL.createObjectURL(file);
 		a.href = url;
@@ -36,7 +37,7 @@
 		}, 0); 
 	}
 
-
+	// load scene parameters from file
 	function loadScene() {
 		const file = fileInput.files[0];
 		if (file) {
@@ -51,28 +52,42 @@
 		alert("File error");
 	}
 
-
+	// set the current scene parameters
 	function setScene(params:Params|any) {
-		Object.assign($automaton, { ...$automaton, params:structuredClone(params) });
+		Object.assign($params, structuredClone(params));
 		$callbacks.updateKernelTextures();
+		$params = $params;
 	}
 
 
 
 </script>
 
-<ParameterContainer label="Save ">
-	<button 
+<ParameterContainer label="Save">
+	<button
+		style="display: flex; justify-content: space-between; width: 140px;"
 		title="save file"
-		on:click={() => saveScene()}>save as json file
+		on:click={() => saveScene()}>
+		Save as JSON
+		<div style="padding-left: 4px; width: 20px;">
+			<Icon name="save"/>
+		</div>
+	
 	</button>
+
 </ParameterContainer>
-
-
-<ParameterContainer label="Load from file">
-	<label title="load file" class="button">
-		load from file
+<ParameterContainer label="Load">
+	<label for="upload" class="upload" title="load file">
+		<button
+			style="display: flex; justify-content: space-between; pointer-events: none;"
+			>
+			Upload from file
+			<div style="padding-left: 4px; width: 20px;">
+				<Icon name="file"/>
+			</div>
+		</button>	
 		<input 
+			id="upload"
 			hidden
 			bind:this={fileInput} 
 			on:change={() => loadScene()}
@@ -80,11 +95,11 @@
 			accept="application/JSON"/>
 	</label>
 </ParameterContainer>
+
 <div style="color:grey;">OR</div>
 <div  style="flex-direction: column;">
 	Select from presets:
 	<div class="presets" data-expanded={expanded}>
-		
 		<div class="list">
 			{#each presets as p,i}
 				<button on:click={()=>{setScene(p);}}>
@@ -94,20 +109,27 @@
 			{/each}
 		</div>
 		<button on:click={() => expanded = !expanded}>{expanded ? "collapse" : "expand"}</button>
-		
 	</div>
-	
 </div>
 
 
 <style>
 
+.upload{
+	width: 140px;
+	cursor: pointer;
+	background-color:#2b2b2b;
+}
+.upload:hover{
+	background-color:#383838;
+}
+.upload > button{
+	background-color: transparent;
+	width: 100%;
+}
 .presets{
 	border:1px solid var(--bg2);
 	margin-top: 10px;
-	
-	/* max-height: 100px;
-	overflow: auto; */
 }
 .presets > button{
 	width: 100%;
