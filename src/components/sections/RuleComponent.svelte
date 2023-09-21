@@ -1,9 +1,10 @@
 
 <script  lang="ts">
     import SigmoidGraph from "../graphs/SigmoidGraph.svelte";
-    import SliderDouble from "../SliderDouble.svelte";
+    import SliderDouble from "../ui/SliderDouble.svelte";
 	import Switch from "../ui/Switch.svelte";
 	import {params, callbacks} from "../../stores";
+    import NumberInput from "../ui/NumberInput.svelte";
 	export let ruleId:number;	
 	let ruleContainer:HTMLDivElement;
 
@@ -11,12 +12,10 @@
 </script>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div bind:this={ruleContainer} class="rule-container">
-
 	<div class="header">
 		<div>Rule {ruleId}</div>
 		<Switch bind:value={$params.rules[ruleId].enabled}/>
 	</div>
-	
 	{#if $params.rules[ruleId].enabled}
 	<div class="body">
 		<div style="padding-top: 10px;">
@@ -34,15 +33,39 @@
 
 					{#if $params.rules[ruleId].subRules[i].enabled && $params.kernels[i].enabled}
 						<SliderDouble bind:val0={$params.rules[ruleId].subRules[i].thersholds[0]} bind:val1={$params.rules[ruleId].subRules[i].thersholds[1]} color="var(--color{i})"/>
-						<div style="display: flex; justify-content: space-between; padding-top: 10px;">
-							<input bind:value={$params.rules[ruleId].subRules[i].thersholds[0]}  type="number" step="0.01" min="0.0" max="1" />
+						<div class="input_fields">
+							<NumberInput 
+								bind:value={$params.rules[ruleId].subRules[i].thersholds[0]}  
+								step={0.001} 
+								min={0.0} 
+								max={$params.rules[ruleId].subRules[i].thersholds[1]}
+							/>
+							<hr/>
 							<div style="color:var(--color{i});">thresholds</div>
-							<input bind:value={$params.rules[ruleId].subRules[i].thersholds[1]}  type="number" step="0.01" min="0.0" max="1" />
+							<hr/>
+							<NumberInput 
+								bind:value={$params.rules[ruleId].subRules[i].thersholds[1]}  
+								step={0.001} 
+								min={$params.rules[ruleId].subRules[i].thersholds[0]} 
+								max={1.0}
+							/>
 						</div>
-						<div style="display: flex; justify-content: space-between; padding-bottom: 20px; padding-top: 4px;">
-							<input bind:value={$params.rules[ruleId].subRules[i].slopes[0]}  type="number" step="0.01" min="0.001" max="1" />
+						<div class="input_fields">
+							<NumberInput 
+								bind:value={$params.rules[ruleId].subRules[i].slopes[0]}  
+								step={0.01} 
+								min={0.001} 
+								max={1.0}
+							/>
+							<hr/>
 							<div style="color:var(--color{i});">slopes</div>
-							<input bind:value={$params.rules[ruleId].subRules[i].slopes[1]}  type="number" step="0.01" min="0.001" max="1" />
+							<hr/>
+							<NumberInput 
+								bind:value={$params.rules[ruleId].subRules[i].slopes[1]}  
+								step={0.01} 
+								min={0.001} 
+								max={1.0}
+							/>
 						</div>
 					{/if}
 				</div>
@@ -50,30 +73,27 @@
 		{/each}
 	</div>
 	{/if}
-	
-	
-	
-	
 </div>
 
 <style>
-
+	hr{
+		width: 100%;
+		margin-inline: 10px;
+		border: 0;
+		border-bottom: 2px dotted #636363;
+	}
 	
-
 	.rule-container{
 		border: 4px solid var(--bg2);
 		background-color: var(--bg2);
 		margin-inline: 0px;
 		margin-block: 10px;
-
 	}
 
 	.header{
 		display: flex; 
 		justify-content: space-between; 
 		padding: 4px;
-		
-
 	}
 
 	.body{
@@ -83,17 +103,18 @@
 	}
 
 	.subrule{
-		
 		background-color: var(--bg2);
 		border: 1px solid;
 		margin-block: 10px;
 		padding: 4px;
-
+	}
+	.input_fields{
+		display: flex; 
+		justify-content: space-between; 
+		padding-top: 10px;
 	}
 
-	input[type=number]{
-		width: 60px;
-	}
+	
 
 	
 </style>

@@ -76,7 +76,6 @@
 			else if(e.button == 2 && selectedPoint != null && kernels[selectedKernel].points.length > 1)
 			{
 				kernels[selectedKernel].points.splice(kernels[selectedKernel].points.findIndex(p => p == selectedPoint), 1);
-		
 				selectedPoint = null;
 				$callbacks.updateKernelTextures();	// update the kernel texture
 				repaint();
@@ -114,6 +113,7 @@
 			}
 			graphPath[j] += `L ${width+100} ${height} `;
 		}
+		$params = $params;
 	}
 
 </script>
@@ -157,7 +157,6 @@
 				{/each}
 			{/if}
 		</svg>
-		
 	  </svg>
 </div>
 

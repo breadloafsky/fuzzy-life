@@ -1,11 +1,25 @@
 <script lang="ts">
 	import "../app.css"
-
+	import { onMount } from "svelte";
     import { browser } from "$app/environment";
 	import { shaders } from "../webgl/shaders";
+	import { settings } from "../stores"
 	import Main from "../components/Main.svelte";
 	
+	let isLoaded = false;
 
+	onMount( async() => {
+		await preload();
+		if(localStorage)
+		{
+			const s = localStorage.getItem("settings");
+			if(s)
+			{
+				$settings = JSON.parse(s+"");
+			}
+		}
+		isLoaded = true;
+	});
 	// preload the shaders
 	async function loadShaderFiles(){
 		let promises = [];
@@ -37,9 +51,12 @@
 	}
 
 </script>
-{#await preload() then _}
+<!-- {#await preload() then _}
 	<Main shaders={shaders} />
-{/await}
+{/await} -->
+{#if isLoaded}
+	<Main shaders={shaders} />
+{/if}
 
 <style>
 	:global(body){

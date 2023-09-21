@@ -43,7 +43,7 @@
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", function () {
-				const result =JSON.parse(reader.result+"");
+				const result = JSON.parse(reader.result+"");
 				setScene(result);
 			});
 			reader.readAsText(file);
@@ -102,7 +102,7 @@
 	<div class="presets" data-expanded={expanded}>
 		<div class="list">
 			{#each presets as p,i}
-				<button on:click={()=>{setScene(p);}}>
+				<button class="btn1" on:click={()=>{setScene(p);}}>
 					<div style="color:dimgray; width: 10px;">{i}</div>
 					<div>{p.name}</div>
 				</button>
@@ -134,10 +134,8 @@
 .presets > button{
 	width: 100%;
 }
-.presets > .list{
+.list{
 	border:1px solid var(--bg2);
-	padding: 10px;
-	gap:4px;
 	display: flex;
 	flex-direction: column;
 	max-height: 100px;
@@ -149,7 +147,7 @@
 	max-height: none;
 }
 
-.presets > .list > button{
+.list > button{
 	display: flex;
 	flex-direction: row;
 	gap: 20px;

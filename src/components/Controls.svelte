@@ -1,8 +1,8 @@
 
 <script lang="ts">
 	import { onMount } from "svelte";
-	import KernelCanvas from "./graphs/KernelCanvas.svelte";
-    import SectionContainer from "./sections/SectionContainer.svelte";
+	import KernelCanvas from "./misc/KernelCanvas.svelte";
+    import SectionContainer from "./ui/SectionContainer.svelte";
     import ConvolutionProperties from "./sections/ConvolutionProperties.svelte";
     import Rules from "./sections/Rules.svelte";
 	import {params, tempParams, callbacks} from "../stores";
@@ -131,7 +131,7 @@
 		</button>
 		<div class="actions">
 			<button on:click={()=>pause( )} title="{$tempParams.paused ? "activate":"pause"} the simulation (SPACEBAR)">
-				<Icon name={$tempParams.paused ? "pause":"play"}/>
+				<Icon name={$tempParams.paused ? "play":"pause"}/>
 			</button>
 			<button on:click={()=>clear(1)} title="pattern fill (X)">
 				<Icon name="gradient"/>

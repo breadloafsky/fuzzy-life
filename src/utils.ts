@@ -1,16 +1,14 @@
-import type KernelCanvas from "./components/graphs/KernelCanvas.svelte";
+import type KernelCanvas from "./components/misc/KernelCanvas.svelte";
 import type { Kernel, Params } from "./types/params";
 import type { TempParams } from "./types/tempParams";
 
 export const utils = {
-	// Calculate Catmull–Rom spline value
+	// calculate Catmull–Rom spline value
 	// x : radius
 	getKernelValue: function(kernel:Kernel,x:number):number{
 		let px:number[] = [];
 		let py:number[] = [];
-
 		const pts = kernel.points;
-
 		let id = 0;
 		for(let i = 0; i < pts.length+1; i++){
 			if(i < pts.length && x < pts[i][0]){
@@ -95,8 +93,4 @@ export const utils = {
 		tempParams.kernelTexture = kc.renderTexture(params.kernels, params.convRadius);
 		tempParams.kernelsPreview = kc.renderPreview(params.kernels, params.convRadius);
 	},
-
-
-
-
 };

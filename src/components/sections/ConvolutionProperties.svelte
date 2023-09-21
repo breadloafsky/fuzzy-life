@@ -4,7 +4,6 @@
 	import ParameterContainer from "../ui/ParameterContainer.svelte";
 	import Switch from "../ui/Switch.svelte";
 	import {params ,callbacks, tempParams} from "../../stores";
-    import { onMount } from "svelte";
 	
 	let edit:boolean = false;
 	let selectedKernel:number|any = null;

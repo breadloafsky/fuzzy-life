@@ -3,7 +3,6 @@
    	import { Scene } from "../webgl/scene.js";
 	import { params, callbacks, settings, tempParams } from "../stores"
     import Controls from "../components/Controls.svelte";
-	
 	export let shaders:any;
 	let canvas : HTMLCanvasElement;
 	let scene : Scene;
@@ -13,7 +12,13 @@
 	$callbacks.resizeTexture = () => resize();
 	$callbacks.setTextureFilter = () => scene.setTextureFilter();
 
-	onMount( async() => {
+
+	$:$settings,(()=>{
+		if(localStorage)
+			localStorage.setItem("settings",JSON.stringify($settings));
+	})()
+
+	onMount(() => {
 		scene = new Scene(canvas, shaders, $params, $tempParams, $settings);	//init scene
 		window.addEventListener("resize",resize);
 		resize();
@@ -43,7 +48,7 @@
 		}
 		scene.drawScene(time * 0.001);	
 		$tempParams.resetTexture = 0;
-		previousTime = time;	
+		previousTime = time;
    }
 
 </script>

@@ -7,13 +7,12 @@ import { TempParams } from './types/tempParams';
 export const callbacks = writable<Callbacks>({
 	...new Callbacks()
 })
-export const settings = writable<Settings>({
-	...new Settings()
-})
 export const params = writable<Params>({
 	...new Params()
 })
 export const tempParams = writable<TempParams>({
 	...new TempParams()
 })
-
+export const settings = writable<Settings>({
+	...new Settings()
+})
