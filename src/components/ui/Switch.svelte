@@ -4,11 +4,8 @@
 	export let value:number|boolean;
 	export let fieldNames:string[] = ["off","on"];
 	export let width:number = 50;
-	export let onClick:any = ()=>{};
-
-	const dispatch = createEventDispatcher();
-
 	
+	const dispatch = createEventDispatcher();
 </script>
 
 
@@ -33,7 +30,8 @@
 	overflow: hidden;
 	border-radius: 5px;
 	padding: 0;
-	color:white
+	color:white;
+	height: 22px;
 }
 .switch > div{
 	transition: 0.1s all;

@@ -163,7 +163,9 @@
 <style>
 
 .graph-container{
-	padding-block: 10px;
+	padding-top: 20px;
+	padding-bottom: 30px;
+	padding-inline: 4px;
 }
 
 svg.main{

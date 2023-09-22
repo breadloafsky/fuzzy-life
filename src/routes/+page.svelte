@@ -1,59 +1,34 @@
 <script lang="ts">
 	import "../app.css"
 	import { onMount } from "svelte";
-    import { browser } from "$app/environment";
 	import { shaders } from "../webgl/shaders";
-	import { settings } from "../stores"
 	import Main from "../components/Main.svelte";
 	
 	let isLoaded = false;
 
 	onMount( async() => {
-		await preload();
-		if(localStorage)
-		{
-			const s = localStorage.getItem("settings");
-			if(s)
-			{
-				$settings = JSON.parse(s+"");
-			}
-		}
-		isLoaded = true;
-	});
-	// preload the shaders
-	async function loadShaderFiles(){
-		let promises = [];
+		// preload shader files
 		for (let shaderName in shaders)
 		{	
-			const promise = new Promise<void>((resolve, reject) => {
-				const shaderFiles = ["vs","fs"].map(async (e) => {
-					const response = await fetch(`shaders/${shaderName}.${e}`);
-					return response.text();
-				});
-				Promise.all(shaderFiles).then(data => {
-						const shader = (shaders as any)[shaderName];
-						shader.program = data;
-						resolve();
-				});
-			});
-			promises.push(promise);	
+			const shader = (shaders as any)[shaderName];
+			shader.program = [];
+			for(let i = 0; i < 2; i++){
+				const e = ["vertex.vs",`${shaderName}.fs`][i];
+				const response = await fetch(`shaders/${e}`);
+				shader.program[i] = await  response.text();
+			}
 		}	
-		return promises;
-	}
-
-	async function preload() {
-		if(browser)
-		return new Promise<void>(async function(resolve) {
-			Promise.all(await loadShaderFiles()).then(()=>{
-				resolve();
-			});
-		})
-	}
+		// get settings from the local storage
+		// if(localStorage)
+		// {
+		// 	const s = localStorage.getItem("settings");
+		// 	if(s)
+		// 		$settings = {...$settings, ...JSON.parse(s+"")};
+		// }
+		isLoaded = true;
+	});
 
 </script>
-<!-- {#await preload() then _}
-	<Main shaders={shaders} />
-{/await} -->
 {#if isLoaded}
 	<Main shaders={shaders} />
 {/if}
@@ -62,6 +37,7 @@
 	:global(body){
 		color: aliceblue;
 		background-color: black;
+		font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 	}
 
 </style>

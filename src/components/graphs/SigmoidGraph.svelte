@@ -3,6 +3,7 @@
 	import { params } from "../../stores";
     import Coordinates from "./Coordinates.svelte";
 	export let ruleId:number;
+	export let highlightedKernel:any;
 	let graphPath:string[] = [];
 	let containerWidth:any;
 	let width:number = 400;
@@ -52,9 +53,7 @@
 			}
 			else
 				graphPath[i] = "";
-			
 		}
-		
 	}
 
 </script>
@@ -74,7 +73,11 @@
 		<svg class="main" viewBox="0 0 {width} {height}" >
 			{#each graphPath as g,i}
 			{#if $params.rules[ruleId].subRules[i].enabled}
-			<path d={g} style={`--color: var(--color${i});`}/>
+			<path 
+				d={g} 
+				style={`--color: var(--color${i});`} 
+				stroke-opacity={(highlightedKernel == i) ? 1 :  0.5 }
+			/>
 			{/if}
 				
 			{/each}
@@ -86,6 +89,8 @@
 
 .graph-container{
 	padding-block: 10px;
+	padding-top: 20px;
+	padding-inline: 10px;
 }
 
 path{
@@ -93,7 +98,7 @@ path{
 	mix-blend-mode:normal;
 	stroke: var(--color);
 	fill: var(--color);
-	fill-opacity: 0.2;
+	fill-opacity: 0.1;
 }
 
 

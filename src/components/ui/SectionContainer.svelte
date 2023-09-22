@@ -28,17 +28,20 @@
 	padding: 10px;
 	transform:translateY(2);
 	margin: 0;
-
 }
-
 
 .body {
 	background-color: var(--bg1);
 	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+	padding-bottom: 0px;
 }
+.body > :global(div > div){
+	padding-block: 10px;
+}
+.body > :global(div > div:not(:last-child)){
+	border-bottom: 1px solid #3d3d3d;
+}
+
 
 
 </style>

@@ -1,32 +1,36 @@
 
 <script  lang="ts">
-    import SigmoidGraph from "../graphs/SigmoidGraph.svelte";
-    import SliderDouble from "../ui/SliderDouble.svelte";
-	import Switch from "../ui/Switch.svelte";
-	import {params, callbacks} from "../../stores";
-    import NumberInput from "../ui/NumberInput.svelte";
+    import SigmoidGraph from "../../graphs/SigmoidGraph.svelte";
+    import SliderDouble from "../../ui/SliderDouble.svelte";
+	import Switch from "../../ui/Switch.svelte";
+	import {params, callbacks} from "../../../stores";
+    import NumberInput from "../../ui/NumberInput.svelte";
 	export let ruleId:number;	
-	let ruleContainer:HTMLDivElement;
 
+	let highlightedKernel:number|null=null;	//	highlight kernel
 
 </script>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div bind:this={ruleContainer} class="rule-container">
+<div data-enabled={$params.rules[ruleId].enabled} class="rule-container">
 	<div class="header">
-		<div>Rule {ruleId}</div>
+		<h3>Rule {ruleId}</h3>
 		<Switch bind:value={$params.rules[ruleId].enabled}/>
 	</div>
 	{#if $params.rules[ruleId].enabled}
 	<div class="body">
-		<div style="padding-top: 10px;">
-			<SigmoidGraph 
-				ruleId={ruleId}
-			/>
-		</div>
+		<SigmoidGraph 
+			highlightedKernel={highlightedKernel}
+			ruleId={ruleId}
+		/>
 		{#each $params.kernels as r,i}
 			{#if $params.kernels[i].enabled}
-				<div class="subrule" style="border-color:var(--color{i});">
-					<div style="display: flex; justify-content: space-between;  padding-block:4px;">
+				<div
+					on:mouseenter={()=>highlightedKernel = i}
+					on:mouseleave={()=>highlightedKernel = null}
+				 	class="subrule" 
+				 	style="border-color:var(--color{i});"
+				 >
+					<div style="display: flex; justify-content: space-between;  padding:4px;">
 						<div style="color:var(--color{i});">{["A","B","C","D"][i]} {ruleId}</div>
 						<Switch bind:value={$params.rules[ruleId].subRules[i].enabled}/>
 					</div>
@@ -76,6 +80,13 @@
 </div>
 
 <style>
+	h3{
+		margin: 0;
+	}
+	[ data-enabled="false"] h3{
+		color:#636363
+
+	}
 	hr{
 		width: 100%;
 		margin-inline: 10px;
@@ -84,21 +95,21 @@
 	}
 	
 	.rule-container{
-		border: 4px solid var(--bg2);
-		background-color: var(--bg2);
+
 		margin-inline: 0px;
-		margin-block: 10px;
+
 	}
 
 	.header{
 		display: flex; 
 		justify-content: space-between; 
 		padding: 4px;
+		margin-block: 10px;
 	}
 
 	.body{
-		background-color: var(--bg1);
-		padding-inline: 14px;
+		background-color: var(--bg0);
+		padding-inline: 10px;
 		padding-bottom: 10px;
 	}
 
@@ -106,7 +117,8 @@
 		background-color: var(--bg2);
 		border: 1px solid;
 		margin-block: 10px;
-		padding: 4px;
+		padding-block: 8px;
+		padding-inline: 10px;
 	}
 	.input_fields{
 		display: flex; 

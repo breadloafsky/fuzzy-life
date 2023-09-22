@@ -8,8 +8,9 @@ export const shaders ={
 		uniforms: {
 			uSampler: {value:null},
 			uTextureDims:{value:null},
-			uGradient:{value:null},
+			uGradient:{value:null},	// colouring
 			uBrush:{value:null},	// paint brush
+			uPostProcessing:{value:null},	// post-processing values
 		},
 	},
 	

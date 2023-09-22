@@ -84,8 +84,8 @@ export const glUtils = {
 		shaders.frame.attributes.aVertexPosition.value = positionBuffer;
 	},	
 
-	
-	loadTexture: function(gl, dims, textureP, filtering = 0, url=null) {
+	// load main textures
+	loadTexture: function(gl, dims, textureP, filtering = 0) {
 		gl.bindTexture(gl.TEXTURE_2D, textureP);
 		const level = 0;
 		const internalFormat = gl.RGB;
@@ -95,47 +95,56 @@ export const glUtils = {
 		const srcFormat = gl.RGB;
 		const srcType = gl.UNSIGNED_BYTE;
 		
-		// kernel image
-		if(url)
-		{
-			const image = new Image();
-			image.onload = () => {
-				gl.bindTexture(gl.TEXTURE_2D, textureP);
-				gl.texImage2D(
-					gl.TEXTURE_2D,
-					level,
-					internalFormat,
-					srcFormat,
-					srcType,
-					image,
-				);
-				gl.generateMipmap(gl.TEXTURE_2D);
-			};
-			image.src = url;
-		}
-		// empty texture
-		else{
-			const pixel = new Uint8Array(new Array(width*height*4).fill(0));
-			gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+		const pixel = new Uint8Array(new Array(width*height*4).fill(0));
+		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+		gl.texImage2D(
+			gl.TEXTURE_2D,
+			level,
+			internalFormat,
+			width,
+			height,
+			border,
+			srcFormat,
+			srcType,
+			pixel,
+		);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+		// gl.LINEAR gl.NEAREST
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering  == 0 ? gl.NEAREST : gl.LINEAR);	
+		
+	},
+	// load kernel
+	loadKernel: function(gl, dims, textureP, url, callback=()=>{}){
+
+		gl.bindTexture(gl.TEXTURE_2D, textureP);
+		const level = 0;
+		const internalFormat = gl.RGB;
+		const width = dims[0];
+		const height = dims[1];
+		const border = 0;
+		const srcFormat = gl.RGB;
+		const srcType = gl.UNSIGNED_BYTE;
+
+		const image = new Image();
+		image.onload = () => {
+			gl.bindTexture(gl.TEXTURE_2D, textureP);
 			gl.texImage2D(
 				gl.TEXTURE_2D,
 				level,
 				internalFormat,
-				width,
-				height,
-				border,
 				srcFormat,
 				srcType,
-				pixel,
+				image,
 			);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-			// gl.LINEAR gl.NEAREST
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering  == 0 ? gl.NEAREST : gl.LINEAR);	
-		}
-	},
+			gl.generateMipmap(gl.TEXTURE_2D);
+			callback();
+		};
+		image.src = url;
+		
+	}
 };
 
 

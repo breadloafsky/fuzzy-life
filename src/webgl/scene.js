@@ -114,8 +114,8 @@ Scene.prototype.setTextureFilter = function(){
 
 
 
-Scene.prototype.setKernels = function(url){
-	glUtils.loadTexture(this.gl, [64,64], this.kern,0,url);
+Scene.prototype.setKernels = function(url, callback){
+	glUtils.loadKernel(this.gl, [64,64], this.kern,url, callback);
 }
 
 
@@ -123,10 +123,9 @@ Scene.prototype.setKernels = function(url){
 let fbCurrent = 0;
 
 // draw
-Scene.prototype.drawScene = function (time)  {
+Scene.prototype.drawScene = function (process)  {
 	if(!this.initialized)
 		return;
-
 
 	const brush = [this.tempParams.brush.x,this.tempParams.brush.y,this.tempParams.brush.r,this.tempParams.brush.type];
 	const gl = this.gl;
@@ -148,47 +147,36 @@ Scene.prototype.drawScene = function (time)  {
 	{
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-		
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
-
-		gl.uniform1fv(shader.uniforms.uRules.location, this.tempParams.rules);
-
-
-		gl.uniform1i(shader.uniforms.uKernelRadius.location, this.params.convRadius);
+		gl.uniform1i(shader.uniforms.uKernelRadius.location, this.tempParams.convRadius);
 		gl.uniform1f(shader.uniforms.uDelta.location, this.params.dt);
-		gl.uniform1i(shader.uniforms.isPaused.location, this.tempParams.paused);
-
-		gl.uniform1i(shader.uniforms.uReset.location, this.tempParams.resetTexture);
-		
+		gl.uniform1fv(shader.uniforms.uRules.location, this.tempParams.rules);
+		gl.uniform1i(shader.uniforms.isPaused.location, this.tempParams.paused || !process);
+		gl.uniform1i(shader.uniforms.uReset.location, this.tempParams.resetTexture);		
 		
 		gl.uniform1i(shader.uniforms.uSampler.location, 0);  // texture unit 0
 		gl.uniform1i(shader.uniforms.uKern.location, 1);  // texture unit 0
 
-
-
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
-
 
 		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, this.kern); // bind kernel texture
 		gl.viewport(0, 0, 64,64);
 
-
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);	// bind main texture
 		gl.viewport(0, 0, textureDims[0],textureDims[1]);
-
 		
 		drawScreen(gl);
 	}
 
 
+	// render the result
 	shader = shaders.screen;
 	gl.useProgram(shader.program);
-	
-	// render the result
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
+		gl.uniform1iv(shader.uniforms.uPostProcessing.location, [this.settings.aa, this.settings.frameSmoothing]);
 		gl.uniform1i(shader.uniforms.uGradient.location, this.settings.gradient);
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);

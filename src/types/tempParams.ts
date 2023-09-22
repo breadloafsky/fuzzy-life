@@ -11,6 +11,6 @@ export class TempParams{
 	kernelsPreview:any=null;	// preview textures
 	resetTexture:number=0;		// tells the shader if reset (1) or filling with the gradient (2) is needed	
 	paused:boolean=false;
-	graphRepaint:any[] = []; // repaint callbacks for each graph
 	brush:Brush = new Brush;		//	[x, y, radius(in pixels), type]	
+	convRadius:number=12;	//	the radius of kernel/convolution radius
 }

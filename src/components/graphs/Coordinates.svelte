@@ -68,11 +68,13 @@ rect{
 	fill: #2e2e2e;
 }
 text{
-	fill: #797979;
-	stroke: #797979;
+	fill: #aaaaaa;
+	stroke: #aaaaaa;
 	text-anchor: middle;
 	dominant-baseline: central;
 	font-size: small;
+	font-family:Arial, Helvetica, sans-serif;
+	letter-spacing: 1px;
 }
 
 

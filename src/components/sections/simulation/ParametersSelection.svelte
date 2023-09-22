@@ -1,10 +1,10 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-	import { params, callbacks } from "../../stores";	
-	import ParameterContainer from "../ui/ParameterContainer.svelte";
-    import Icon from "../ui/Icon.svelte";
-    import type { Params } from "../../types/params";
+	import { params, callbacks } from "../../../stores";	
+	import ParameterContainer from "../../ui/ParameterContainer.svelte";
+    import Icon from "../../ui/Icon.svelte";
+    import type { Params } from "../../../types/params";
 
 	let fileInput:HTMLInputElement|any;
 	let presets:any[] = [];
@@ -62,55 +62,58 @@
 
 
 </script>
-
-<ParameterContainer label="Save">
-	<button
-		style="display: flex; justify-content: space-between; width: 140px;"
-		title="save file"
-		on:click={() => saveScene()}>
-		Save as JSON
-		<div style="padding-left: 4px; width: 20px;">
-			<Icon name="save"/>
-		</div>
-	
-	</button>
-
-</ParameterContainer>
-<ParameterContainer label="Load">
-	<label for="upload" class="upload" title="load file">
+<div>
+	<ParameterContainer label="Save">
 		<button
-			style="display: flex; justify-content: space-between; pointer-events: none;"
-			>
-			Upload from file
+			style="display: flex; justify-content: space-between; width: 140px;"
+			title="save file"
+			on:click={() => saveScene()}>
+			Save as JSON
 			<div style="padding-left: 4px; width: 20px;">
-				<Icon name="file"/>
+				<Icon name="save"/>
 			</div>
-		</button>	
-		<input 
-			id="upload"
-			hidden
-			bind:this={fileInput} 
-			on:change={() => loadScene()}
-			type="file" 
-			accept="application/JSON"/>
-	</label>
-</ParameterContainer>
-
-<div style="color:grey;">OR</div>
-<div  style="flex-direction: column;">
-	Select from presets:
-	<div class="presets" data-expanded={expanded}>
-		<div class="list">
-			{#each presets as p,i}
-				<button class="btn1" on:click={()=>{setScene(p);}}>
-					<div style="color:dimgray; width: 10px;">{i}</div>
-					<div>{p.name}</div>
-				</button>
-			{/each}
+		</button>
+	</ParameterContainer>
+	<div style="line-height: 2em;">
+		<ParameterContainer label="Load">
+			<label for="upload" class="upload" title="load file">
+				<button
+					style="display: flex; justify-content: space-between; pointer-events: none;"
+					>
+					Upload from file
+					<div style="padding-left: 4px; width: 20px;">
+						<Icon name="file"/>
+					</div>
+				</button>	
+				<input 
+					id="upload"
+					hidden
+					bind:this={fileInput} 
+					on:change={() => loadScene()}
+					type="file" 
+					accept="application/JSON"/>
+			</label>
+		</ParameterContainer>
+		
+		<div style="color:grey; padding-top: 10px;">OR</div>
+		<div  style="flex-direction: column;">
+			Select from presets:
+			<div class="presets" data-expanded={expanded}>
+				<div class="list">
+					{#each presets as p,i}
+						<button class="btn1" on:click={()=>{setScene(p);}}>
+							<div style="color:dimgray; width: 10px;">{i}</div>
+							<div>{p.name}</div>
+						</button>
+					{/each}
+				</div>
+				<button on:click={() => expanded = !expanded}>{expanded ? "collapse" : "expand"}</button>
+			</div>
 		</div>
-		<button on:click={() => expanded = !expanded}>{expanded ? "collapse" : "expand"}</button>
 	</div>
+	
 </div>
+
 
 
 <style>
@@ -133,12 +136,13 @@
 }
 .presets > button{
 	width: 100%;
+	padding-block: 7px !important;
 }
 .list{
 	border:1px solid var(--bg2);
 	display: flex;
 	flex-direction: column;
-	max-height: 100px;
+	max-height: 200px;
 	overflow: auto;
 	background-color: var(--bg0);
 }
@@ -151,14 +155,10 @@
 	display: flex;
 	flex-direction: row;
 	gap: 20px;
-	height: 25px;
-	padding: 10px;
-	
+	min-height: 30px;
+	padding: 10px;	
+	align-items: center;
 }
-
-/* .preset-list > div{
-	background-color: var(--bg2);
-} */
 
 label{
 	display: flex;

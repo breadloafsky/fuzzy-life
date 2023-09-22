@@ -7,16 +7,15 @@
 	let canvas : HTMLCanvasElement;
 	let scene : Scene;
 	let previousTime = 0;
-	let fpsLimit = 80; 
 
 	$callbacks.resizeTexture = () => resize();
 	$callbacks.setTextureFilter = () => scene.setTextureFilter();
 
-
-	$:$settings,(()=>{
-		if(localStorage)
-			localStorage.setItem("settings",JSON.stringify($settings));
-	})()
+	// save settings in the local storage
+	// $:$settings,(()=>{
+	// 	if(localStorage && $settings.saveSettings)
+	// 		localStorage.setItem("settings",JSON.stringify($settings));
+	// })()
 
 	onMount(() => {
 		scene = new Scene(canvas, shaders, $params, $tempParams, $settings);	//init scene
@@ -38,15 +37,18 @@
 		requestAnimationFrame(update);
 		const delta = time - previousTime;
 		// limit fps
-		if (fpsLimit && delta < 1000 / fpsLimit)
-			return;
-		// set new kernel texture(s)
+		
+		// update kernel texture
 		if($tempParams.kernelTexture)
 		{
-			scene.setKernels($tempParams.kernelTexture);
-			$tempParams.kernelTexture = null;
+			//	update kernel and set the callback for kernel radius update to avoid texture "drift" (when the kernel radius changed before the texture)
+			scene.setKernels($tempParams.kernelTexture, () => $tempParams.convRadius = $params.convRadius);
+			$tempParams.kernelTexture = null; //remove temporary kernel texture		
 		}
-		scene.drawScene(time * 0.001);	
+		const process = (delta > 1000 / $settings.fpsLimit);
+		scene.drawScene(process);	
+		if (!process)
+			return;
 		$tempParams.resetTexture = 0;
 		previousTime = time;
    }

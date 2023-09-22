@@ -4,7 +4,9 @@ varying lowp vec2 vTextureCoord;
 uniform mediump float uTextureDims[2];
 uniform sampler2D uSampler;
 uniform int uGradient;
+uniform int uPostProcessing[2];
 uniform float uBrush[4];
+
 
 
 vec4 getColor0(float v){
@@ -21,7 +23,7 @@ vec4 getColor0(float v){
 
 vec4 getColor1(float v){
   v = clamp((v*1.5),0.,1.);
-  return vec4(v);
+  return vec4(vec3(v),1.);
 }
 
 
@@ -35,19 +37,27 @@ highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
 
 void main(void) {
 
+  float aa = float(uPostProcessing[0]); // anti-aliasing blur value
+  float frameSmooth = float(uPostProcessing[1]);
+
   mediump vec4 tex = vec4(0,0,0,0);
 
-  // simple filter
-  for(int i = -1; i < 1; i++){
-    for(int j = -1; j < 1; j++){
-      mediump float i_f = float(i) / uTextureDims[0];
-      mediump float j_f = float(j) / uTextureDims[1];
-      tex += getPixel(vTextureCoord ,i_f, j_f );
+  // simple anti-aliasing blur
+  for(int i = 0; i < 4; i++){
+    for(int j = 0; j < 4; j++){
+      float i_f = float(i);
+      float j_f = float(j);
+      if(aa > i_f && aa > j_f){
+        i_f = (i_f-aa/2.) / uTextureDims[0];
+        j_f = (j_f-aa/2.) / uTextureDims[1];
+        tex += getPixel(vTextureCoord ,i_f, j_f );
+      } 
     }
   }
-  tex.rgba /= 4.;
+  tex.rgba /= aa*aa;
 
-  tex.r = (tex.r+tex.g)/2.; // filter the high frequency blinking
+  
+  tex.r = (tex.r+tex.g*frameSmooth)/(1.+frameSmooth); // filter the high frequency blinking
 
   // chose colouring method
   if(uGradient == 0)

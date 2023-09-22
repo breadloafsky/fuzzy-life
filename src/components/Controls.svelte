@@ -3,13 +3,14 @@
 	import { onMount } from "svelte";
 	import KernelCanvas from "./misc/KernelCanvas.svelte";
     import SectionContainer from "./ui/SectionContainer.svelte";
-    import ConvolutionProperties from "./sections/ConvolutionProperties.svelte";
-    import Rules from "./sections/Rules.svelte";
+    import ConvolutionProperties from "./sections/simulation/ConvolutionProperties.svelte";
+    import Rules from "./sections/simulation/Rules.svelte";
 	import {params, tempParams, callbacks} from "../stores";
-    import ParametersSelection from "./sections/ParametersSelection.svelte";
-    import TextureSettings from "./sections/TextureSettings.svelte";
+    import ParametersSelection from "./sections/simulation/ParametersSelection.svelte";
+    import TextureSettings from "./sections/preferences/TextureSettings.svelte";
     import { utils } from "../utils";
     import Icon from "./ui/Icon.svelte";
+    import GeneralSettings from "./sections/preferences/GeneralSettings.svelte";
 	
 	export let canvas : HTMLCanvasElement;
 	let kc:KernelCanvas;	// an auxiliary canvas that renders kernel textures
@@ -102,13 +103,16 @@
 	<div class="params-container" >
 		<div class="params-header">
 			<div class="tabs">
-				<button disabled={currentTab == 0} on:click={()=> currentTab=0}>preferences</button>
+				<button disabled={currentTab == 0} on:click={()=> currentTab=0}>settings</button>
 				<button disabled={currentTab == 1} on:click={()=> currentTab=1}>simulation</button>
 			</div>
 		</div>
 		<div class="params-body">
 			<div hidden={currentTab!=0}>
-				<SectionContainer label="Texture Settings">
+				<SectionContainer label="General">
+					<GeneralSettings/>
+				</SectionContainer>
+				<SectionContainer label="Texture & Graphics">
 					<TextureSettings/>
 				</SectionContainer>
 			</div>
@@ -176,7 +180,7 @@
 	}	
 	.params-body{
 		min-width: 340px;
-		width: 340px;
+		width: 400px;
 		min-height: 200px;
 		max-height: calc( 100vh - 40px);
 		
@@ -205,7 +209,6 @@
 	}
 	
 	.tabs{
-		border-top-right-radius: 22px;
 		display: flex;
 		justify-content: center;
 	}
@@ -215,10 +218,11 @@
 	.tabs > button{
 		outline: none;
 		border-radius: 0;
+		border: 1px solid var(--bg3);
+		border-bottom: 0;
 	}
 	.tabs > button:disabled{
 		transform: translateY(1px);
-		border-inline: 1px solid var(--bg3);
 		background-color: black;
 		color:wheat;
 	}
