@@ -20,15 +20,15 @@
 	style="--kern-size:{convRadius*2-1};">
 	<ParameterContainer vertical label="Δt Multiplier">
 		<input bind:value={$params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
-		<div style="width: 40px; text-align: center;">{$params.dt}</div>
+		<div>{$params.dt}</div>
 	</ParameterContainer>
 	<ParameterContainer vertical label="Kernel Radius">
 		<input bind:value={$params.convRadius} on:input={() => $callbacks.updateKernelTextures()} type="range"  name="convRadius"  step="1" min="2" max="16" />
-		<div style="width: 40px; text-align: center;">{convRadius}px</div>
+		<div>{convRadius}px</div>
 	</ParameterContainer>
 	<div>
 		<div>Kernel Preview {selectedKernel==null ? "(Combined)":""}</div>
-		<div style="width: 100%; height: 240px; display: flex; justify-content: center; position: relative; padding-top: 20px;">
+		<div class="preview">
 			{#if $tempParams.kernelsPreview != null}
 				<div style="height: 240px; width: 240px;">
 					{#if selectedKernel != null}
@@ -125,20 +125,9 @@
 
 <style>
 
+	
 
-
-	li[data-enabled="true"]:hover{
-		background-color:  var(--bg2);
-	}
-
-	li[data-enabled="false"]{
-		background-color: var(--bg3);
-	}
-
-	li[data-enabled="false"] .kern-img{
-		filter: grayscale(1) !important;
-	}
-
+	
 	.kern-img {
 		background-image: var(--kern-img);
 		background-origin: border-box;
@@ -149,6 +138,15 @@
 		width:var(--size);
 		background-position: calc( var(--size)   / var(--t) )  calc( -1 * var(--size) / var(--t) );
 		background-size: calc( var(--size) * 1 / var(--t) ) calc( var(--size)   / var(--t) );
+	}
+
+	.preview{
+		width: 100%; 
+		height: 240px; 
+		display: flex; 
+		justify-content: center; 
+		position: relative; 
+		padding-top: 20px;
 	}
 
 	
@@ -171,6 +169,17 @@
 		display: flex; 
 		gap: 10px;
 		align-items: center;
+	}
+	li[data-enabled="true"]:hover{
+		background-color:  var(--bg2);
+	}
+
+	li[data-enabled="false"]{
+		background-color: var(--bg3);
+	}
+
+	li[data-enabled="false"] .kern-img{
+		filter: grayscale(1) !important;
 	}
 
 

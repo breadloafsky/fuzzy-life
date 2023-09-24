@@ -11,7 +11,7 @@
 			bind:value={$settings.textureSize} on:change={() => $callbacks.resizeTexture()}  
 			type="range"  step="0.1" min="0.1" max="1" 
 		/>
-		<div style="width: 60px; text-align: center;">{$settings.textureSize}MP</div>
+		<div>{$settings.textureSize}MP</div>
 	</ParameterContainer>
 	
 	<ParameterContainer label="GL Linear Interpolation">
@@ -25,7 +25,7 @@
 			bind:value={$settings.aa}  
 			type="range"  step="1" min="1" max="4" 
 		/>
-		<div style="width: 60px; text-align: center;">{$settings.aa == 1 ? "off" : $settings.aa+"x"}</div>
+		<div>{$settings.aa == 1 ? "off" : $settings.aa+"x"}</div>
 	</ParameterContainer>
 	
 	<ParameterContainer label="Flickering Reduction">
@@ -43,8 +43,6 @@
 
 
 <style>
-
-
 
 
 </style>

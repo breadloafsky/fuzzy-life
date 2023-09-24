@@ -32,9 +32,10 @@
 	padding: 0;
 	color:white;
 	height: 22px;
+	background-color:  var(--bg0);
 }
 .switch > div{
-	transition: 0.1s all;
+	transition: 0.2s all;
 }
 .switch > div:first-child{
 	display: flex;
@@ -44,7 +45,7 @@
 	background-color: rgb(172, 172, 172);
 	border-radius: 25%;
 	width: 20px;
-	height: 100%;
+	/* height: 100%; */
 }
 .switch[data-enabled=false] {
 	background-color: rgb(185, 185, 185);

@@ -1,7 +1,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-	import { params, callbacks } from "../../../stores";	
+	import { params, callbacks, tempParams } from "../../../stores";	
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
     import Icon from "../../ui/Icon.svelte";
     import type { Params } from "../../../types/params";
@@ -56,6 +56,7 @@
 	function setScene(params:Params|any) {
 		Object.assign($params, structuredClone(params));
 		$callbacks.updateKernelTextures();
+		$tempParams.resetTexture = 2;
 		$params = $params;
 	}
 
@@ -80,7 +81,7 @@
 				<button
 					style="display: flex; justify-content: space-between; pointer-events: none;"
 					>
-					Upload from file
+					Load file
 					<div style="padding-left: 4px; width: 20px;">
 						<Icon name="file"/>
 					</div>
@@ -95,9 +96,9 @@
 			</label>
 		</ParameterContainer>
 		
-		<div style="color:grey; padding-top: 10px;">OR</div>
+		<div style="color:gray; padding-top: 2px;">OR</div>
 		<div  style="flex-direction: column;">
-			Select from presets:
+			Select from example presets:
 			<div class="presets" data-expanded={expanded}>
 				<div class="list">
 					{#each presets as p,i}
@@ -136,7 +137,9 @@
 }
 .presets > button{
 	width: 100%;
-	padding-block: 7px !important;
+	padding-block: 8px !important;
+	outline:none !important;
+	color: #c0c0c0;
 }
 .list{
 	border:1px solid var(--bg2);

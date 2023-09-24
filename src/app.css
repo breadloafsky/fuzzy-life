@@ -9,12 +9,31 @@ body{
 	--bg1: #222222;
 	--bg2: #383838;
 	--bg3: #4d4d4d;
-	
+	--h0:#fffcce;
 	margin: 0;
 	padding: 0;
 	overflow:hidden;
 	max-height: 100vh;
 }
+
+* {
+    scrollbar-color: #5a5a5a#83838342 ;
+}
+::-webkit-scrollbar {
+    height: 12px;
+    width: 18px;
+    background: #61616142;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #96969633;
+}
+
+::-webkit-scrollbar-corner {
+    background: #5a5a5a;
+}
+
+
 
 div {
 	user-select: none;
@@ -26,6 +45,15 @@ input{
 }
 input[type=number]{
 	border: solid 1px rgb(97, 97, 97);
+	background-color: #1b1b1b;
+	font-size: 0.9rem;
+}
+select{
+	cursor: pointer;
+	border-radius: 5px;
+	border: solid 1px rgb(97, 97, 97);
+	background-color: var(--bg0);
+	color: white;
 }
 input[type=number]:focus{
 	outline: solid 2px rgb(121, 121, 121);	
@@ -70,5 +98,9 @@ button.btn1{
 	background-color:#1b1b1b;
 }
 
+
+input[type="range"] + *{
+	width: 60px; text-align: center;
+}
 
   

@@ -22,7 +22,7 @@ vec4 getColor0(float v){
 }
 
 vec4 getColor1(float v){
-  v = clamp((v*1.5),0.,1.);
+  v = clamp((v*1.2),0.,1.);
   return vec4(vec3(v),1.);
 }
 

@@ -28,9 +28,6 @@ highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
 }
 
 
-
-
-
 // sigmoid
 float s0(float x,float a,float alpha) 
 { 
@@ -42,20 +39,16 @@ float s1(float x,float a,float b,float alpha0, float alpha1)
     return s0(x,a,alpha0) 
         * ( 1.0-s0(x,b,alpha1) );
 }
+// transition function
 float t(float m,float n, float o)
 {
     float result = 0.0;
     for(int i = 0; i < 4; i++){
-
-        // if(i < uNumberOfRules)
-        // {
-            float 
-            a = s1( m, uRules[i*12+0], uRules[i*12+1], uRules[i*12+2], uRules[i*12+3]);
-            a = min(a, s1( n, uRules[i*12+4], uRules[i*12+5], uRules[i*12+6], uRules[i*12+7]));
-            a = min(a, s1( o, uRules[i*12+8], uRules[i*12+9], uRules[i*12+10], uRules[i*12+11]));
-            result = max(result, a);
-        //}
-        
+        float 
+        a = s1( m, uRules[i*12+0], uRules[i*12+1], uRules[i*12+2], uRules[i*12+3]);
+        a = min(a, s1( n, uRules[i*12+4], uRules[i*12+5], uRules[i*12+6], uRules[i*12+7]));
+        a = min(a, s1( o, uRules[i*12+8], uRules[i*12+9], uRules[i*12+10], uRules[i*12+11]));
+        result = max(result, a);   
     }
     return result;
 }
@@ -79,11 +72,12 @@ float processPixel(){
 
 
 
-
+    //  convolution
     for(float i = -15.; i < 16.; i++){
         for(float j = -15.; j < 16.; j++){
             
             float dist = distance(vec2(i,j), vec2(0.,0.));
+            
             if( dist < r)
             {
                 float i_f = (i) / uTextureDims[0];

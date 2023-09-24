@@ -6,8 +6,8 @@
 	export let y = 10;
 	export let xDiv = 1; 
 	export let yDiv = 1;
-	export let xSub = 1;
-	export let ySub = 1;
+	// export let xSub = 1;
+	// export let ySub = 1;
 	export let xName:string = "";
 	export let yName:string = "";
 
@@ -55,8 +55,7 @@
 	<text 
 		transform="translate(20, {(height / 2)} ) rotate(90)"
 		x={0} 
-		y={12-width} 
-		>
+		y={12-width}>
 		{yName}
 	</text>
 </g>

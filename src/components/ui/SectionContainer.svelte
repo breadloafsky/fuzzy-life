@@ -21,6 +21,7 @@
 }
 
 .header{
+	color: var(--h0);
 	z-index: 3;
 	position: sticky;
 	background-color: var(--bg2);
@@ -36,7 +37,7 @@
 	padding-bottom: 0px;
 }
 .body > :global(div > div){
-	padding-block: 10px;
+	padding-block: 15px;
 }
 .body > :global(div > div:not(:last-child)){
 	border-bottom: 1px solid #3d3d3d;

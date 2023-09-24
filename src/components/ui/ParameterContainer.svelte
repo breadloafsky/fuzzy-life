@@ -37,7 +37,7 @@ label{
 	width: 300px;
 	
 }
-[data-vertical="true"] label{
+[data-vertical="true"] .title{
 	padding-bottom: 10px;
 }
 .control{

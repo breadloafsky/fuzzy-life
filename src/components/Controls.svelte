@@ -49,27 +49,27 @@
 			}
 			
 			//	randomise values
-			if (e.key.toLowerCase() == "r"){
-				for(let i = 0; i < $params.rules.length; i++) {
-					const rule = $params.rules[i];
-					for(let j = 0; j < rule.subRules.length; j++){
-						const r = 1.0;
-						const w = 0.4;	//width
-						const centre = Math.random()*r/2+0.3;
-						let vals = [centre-Math.random()*w,centre+Math.random()*w];
+			// if (e.key.toLowerCase() == "r"){
+			// 	for(let i = 0; i < $params.rules.length; i++) {
+			// 		const rule = $params.rules[i];
+			// 		for(let j = 0; j < rule.subRules.length; j++){
+			// 			const r = 1.0;
+			// 			const w = 0.4;	//width
+			// 			const centre = Math.random()*r/2+0.3;
+			// 			let vals = [centre-Math.random()*w,centre+Math.random()*w];
 
-						vals.forEach((val,i) => {
-							vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
-						});
+			// 			vals.forEach((val,i) => {
+			// 				vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
+			// 			});
 
-						rule.subRules[j].thersholds[0] = Math.round(vals[0]*1000)/1000;
-						rule.subRules[j].thersholds[1] = Math.round(vals[1]*1000)/1000;
-					}
-				}
-				console.log($params); //debug
-				$tempParams.resetTexture = 2;
-				formatRules();
-			}
+			// 			rule.subRules[j].thersholds[0] = Math.round(vals[0]*1000)/1000;
+			// 			rule.subRules[j].thersholds[1] = Math.round(vals[1]*1000)/1000;
+			// 		}
+			// 	}
+			// 	console.log($params); //debug
+			// 	$tempParams.resetTexture = 2;
+			// 	formatRules();
+			// }
 		};
 		// brush radius change
 		canvas.addEventListener("wheel", (e:MouseEvent|any) => {
@@ -102,8 +102,9 @@
 <div class="controls-container" data-hidden={paramsHidden}>
 	<div class="params-container" >
 		<div class="params-header">
+			<a title="github repo" href="https://github.com/breadloafsky/fuzzy-life"><Icon name="github"/></a>
 			<div class="tabs">
-				<button disabled={currentTab == 0} on:click={()=> currentTab=0}>settings</button>
+				<button disabled={currentTab == 0} on:click={()=> currentTab=0}>preferences</button>
 				<button disabled={currentTab == 1} on:click={()=> currentTab=1}>simulation</button>
 			</div>
 		</div>
@@ -130,7 +131,7 @@
 		</div>
 	</div>
 	<div>
-		<button title="collapse" class="toggle" on:click={ ()=> paramsHidden = !paramsHidden}>
+		<button title="hide/show sidebar" class="toggle" on:click={ ()=> paramsHidden = !paramsHidden}>
 			{paramsHidden ? ">" : "<"}
 		</button>
 		<div class="actions">
@@ -176,14 +177,13 @@
 		background-color:rgba(0, 0, 0, 0.8); 
 	}
 	.controls-container:hover .params-container{
-		background-color: black;	
+		background-color: black;
 	}	
 	.params-body{
 		min-width: 340px;
 		width: 400px;
 		min-height: 200px;
 		max-height: calc( 100vh - 40px);
-		
 		display: flex;
 		flex-direction: column;
 		padding-inline: 5px;
@@ -194,32 +194,45 @@
 	.params-header{
 		height: 40px;
 		display: flex;
-		justify-content: end;
+		justify-content: space-between;
 		background-color: var(--bg1); 
 		border-bottom: 1px solid var(--bg3);
+		align-items: center;
 	}   
+	.params-header > a{
+		padding-left: 20px;
+		height: 20px;
+		width: 20px;
+		background-color: #303030;
+		border-top-right-radius: 20px;
+		border-bottom-right-radius: 20px;
+	}   
+	.params-header > a:hover{
+		background-color: #5a5a5a;
+	}   
+
 	.toggle{
 		width: 40px;
 		height: 40px;
 		border-radius: 0;
 	}  
 	
-	[data-hidden="true"] .params-body  {
+	[data-hidden="true"] .params-container  {
 		display: none;
 	}
 	
 	.tabs{
 		display: flex;
 		justify-content: center;
+		height: 100%;
 	}
-	[data-hidden="true"] .tabs  {
-		display: none;
-	}
+	
 	.tabs > button{
 		outline: none;
 		border-radius: 0;
 		border: 1px solid var(--bg3);
 		border-bottom: 0;
+		font-weight: bold;
 	}
 	.tabs > button:disabled{
 		transform: translateY(1px);

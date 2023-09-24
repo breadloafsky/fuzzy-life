@@ -114,7 +114,7 @@
 	}
 
 	.subrule{
-		background-color: var(--bg2);
+		background-color: #303030;
 		border: 1px solid;
 		margin-block: 10px;
 		padding-block: 8px;

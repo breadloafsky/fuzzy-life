@@ -31,7 +31,7 @@
 			bind:value={$settings.fpsLimit}
 			type="range"  step="1" min="10" max="100" 
 		/>
-		<div style="width: 60px; text-align: center;">{$settings.fpsLimit}</div>
+		<div>{$settings.fpsLimit}</div>
 	</ParameterContainer>
 	
 </div>
