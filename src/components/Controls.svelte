@@ -18,7 +18,7 @@
 	let currentTab = 1;
 	
 
-	const formatRules=()=>utils.formatRules($params, $tempParams);
+	const formatRules=()=>utils.formatConditions($params, $tempParams);
 	const updateKernels=()=>{utils.updateKernels($params,$tempParams,kc); formatRules()};
 
 	const clear=(n:number)=>$tempParams.resetTexture = n+1;
@@ -101,7 +101,7 @@
 				<SectionContainer label="Main Properties">
 					<ConvolutionProperties/>
 				</SectionContainer>
-				<SectionContainer label="Rules">
+				<SectionContainer label="Rule">
 					<Rules/>
 				</SectionContainer>
 			</div>

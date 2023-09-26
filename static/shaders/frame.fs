@@ -13,7 +13,7 @@ uniform float uTextureDims[2];
 uniform float uDebug;
 uniform float uDelta;
 uniform int uReset;
-uniform float uRules[64];
+uniform float uRule[64];
 uniform float uBrush[4];
 uniform int isPaused;
 
@@ -45,9 +45,9 @@ float t(float m,float n, float o)
     float result = 0.0;
     for(int i = 0; i < 4; i++){
         float 
-        a = s1( m, uRules[i*12+0], uRules[i*12+1], uRules[i*12+2], uRules[i*12+3]);
-        a = min(a, s1( n, uRules[i*12+4], uRules[i*12+5], uRules[i*12+6], uRules[i*12+7]));
-        a = min(a, s1( o, uRules[i*12+8], uRules[i*12+9], uRules[i*12+10], uRules[i*12+11]));
+        a = s1( m, uRule[i*12+0], uRule[i*12+1], uRule[i*12+2], uRule[i*12+3]);
+        a = min(a, s1( n, uRule[i*12+4], uRule[i*12+5], uRule[i*12+6], uRule[i*12+7]));
+        a = min(a, s1( o, uRule[i*12+8], uRule[i*12+9], uRule[i*12+10], uRule[i*12+11]));
         result = max(result, a);   
     }
     return result;

@@ -6,7 +6,7 @@ export class Brush {
 }
 
 export class TempParams{
-	rules:number[] = [0];
+	rule:number[] = [0];
 	kernelTexture:any=null;		// kernel RGB texture
 	kernelsPreview:any=null;	// preview textures
 	resetTexture:number=0;		// tells the shader if reset (1) or filling with the gradient (2) is needed	

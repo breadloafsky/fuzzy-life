@@ -49,9 +49,13 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.5,
+		"name": "life0",
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.364,
@@ -85,11 +89,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.315,
@@ -123,11 +127,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.315,
@@ -161,11 +165,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.3,
@@ -199,13 +203,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.5,
-		"name": "life0"
+		]
 	},
 	{
 		"name": "life1",
@@ -257,9 +257,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.5,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.483,
@@ -293,11 +296,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.364,
@@ -331,11 +334,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.23,
@@ -369,11 +372,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.36,
@@ -407,12 +410,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.5
+		]
 	},
 	{
 		"name": "life2",
@@ -476,9 +476,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 15,
+		"dt": 0.4,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.259,
@@ -512,11 +515,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.498,
@@ -550,11 +553,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.292,
@@ -588,11 +591,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.429,
@@ -626,12 +629,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 15,
-		"dt": 0.4
+		]
 	},
 	{
 		"name": "branching_life",
@@ -684,9 +684,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.5,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.19,
@@ -720,11 +723,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.442,
@@ -758,11 +761,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.315,
@@ -796,11 +799,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.3,
@@ -834,12 +837,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.5
+		]
 	},
 	{
 		"name": "blobs",
@@ -895,9 +895,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.3,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.413,
@@ -931,11 +934,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.234,
@@ -969,11 +972,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.641,
@@ -1007,11 +1010,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.281,
@@ -1045,12 +1048,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.3
+		]
 	},
 	{
 		"name": "chains",
@@ -1103,9 +1103,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.4,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.167,
@@ -1139,11 +1142,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.167,
@@ -1177,11 +1180,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.161,
@@ -1215,11 +1218,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.13,
@@ -1253,12 +1256,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.4
+		]
 	},
 	{
 		"name": "creatures",
@@ -1311,9 +1311,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.4,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.582,
@@ -1347,11 +1350,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.231,
@@ -1385,11 +1388,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.534,
@@ -1423,11 +1426,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.318,
@@ -1461,12 +1464,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.4
+		]
 	},
 	{
 		"name": "connections",
@@ -1530,9 +1530,12 @@
 				"enabled": true
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.4,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.371,
@@ -1566,11 +1569,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.295,
@@ -1604,11 +1607,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.276,
@@ -1642,11 +1645,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.65,
@@ -1680,12 +1683,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.4
+		]
 	},
 	{
 		"name": "dynamic_pattern",
@@ -1738,9 +1738,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.5,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.116,
@@ -1774,11 +1777,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.075,
@@ -1812,11 +1815,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.381,
@@ -1850,11 +1853,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.193,
@@ -1888,12 +1891,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.5
+		]
 	},
 	{
 		"kernels": [
@@ -1945,9 +1945,13 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.5,
+		"name": "gliders0",
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.167,
@@ -1981,11 +1985,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.232,
@@ -2019,11 +2023,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.315,
@@ -2057,11 +2061,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.3,
@@ -2095,13 +2099,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.5,
-		"name": "gliders0"
+		]
 	},
 	{
 		"kernels": [
@@ -2172,9 +2172,13 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.4,
+		"name": "gliders1",
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.172,
@@ -2208,11 +2212,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.216,
@@ -2246,11 +2250,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.247,
@@ -2284,11 +2288,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.052,
@@ -2322,13 +2326,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.4,
-		"name": "gliders1"
+		]
 	},
 	{
 		"kernels": [
@@ -2399,9 +2399,13 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.4,
+		"name": "axe_heads",
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.483,
@@ -2435,11 +2439,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.24,
@@ -2473,11 +2477,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.336,
@@ -2511,11 +2515,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.052,
@@ -2549,13 +2553,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.4,
-		"name": "axe_heads"
+		]
 	},
 	{
 		"kernels": [
@@ -2614,9 +2614,13 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.45,
+		"name": "worms",
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.525,
@@ -2650,11 +2654,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.317,
@@ -2688,11 +2692,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.23,
@@ -2726,11 +2730,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.36,
@@ -2764,13 +2768,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.45,
-		"name": "worms"
+		]
 	},
 	{
 		"name": "spirals",
@@ -2826,9 +2826,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 12,
+		"dt": 0.4,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.39,
@@ -2862,11 +2865,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.355,
@@ -2900,11 +2903,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.23,
@@ -2938,11 +2941,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.36,
@@ -2976,12 +2979,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 12,
-		"dt": 0.4
+		]
 	},
 	{
 		"kernels": [
@@ -3025,9 +3025,13 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 2,
+		"dt": 1,
+		"name": "conway's_game_of_life",
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.317,
@@ -3061,11 +3065,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.305,
@@ -3099,11 +3103,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.315,
@@ -3137,11 +3141,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.3,
@@ -3175,13 +3179,9 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 2,
-		"dt": 1,
-		"name": "conway's_game_of_life"
+		]
 	},
 	{
 		"name": "cellular_constructor",
@@ -3234,9 +3234,12 @@
 				"enabled": false
 			}
 		],
-		"rules": [
+		"convRadius": 2,
+		"dt": 0.68,
+		"conditions": [
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0,
@@ -3270,11 +3273,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": true,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.019,
@@ -3308,11 +3311,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": true
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.315,
@@ -3346,11 +3349,11 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			},
 			{
-				"subRules": [
+				"enabled": false,
+				"subConditions": [
 					{
 						"thersholds": [
 							0.3,
@@ -3384,11 +3387,8 @@
 						],
 						"enabled": true
 					}
-				],
-				"enabled": false
+				]
 			}
-		],
-		"convRadius": 2,
-		"dt": 0.68
+		]
 	}
 ]

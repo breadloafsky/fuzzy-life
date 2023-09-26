@@ -72,7 +72,15 @@
 		on:mousedown={e => mouseDown(e)}
 		class="slider" 
 		style="--val0:{val0}; --val1:{val1};">
-		<div class="bar" style="--color:{color};"/>
+		<div class="bar" style="--color:{color};">
+			<div>
+				<div/>
+			</div>
+			<div/>
+			<div>
+				<div/>
+			</div>
+		</div>
 	</button>
 </div>
 
@@ -81,7 +89,7 @@
 
 	button{
 		border:0;
-		padding: 0;
+		padding: 0 !important;
 		margin: 0;
 	}
 
@@ -98,7 +106,6 @@
 		--val0:0.5;
 		--val1:0.5;
 		background-color: #5c5c5c; 
-		
 		width: 100%;
 		height: 20px;
 		opacity: 0.8;
@@ -114,9 +121,26 @@
 	.bar{
 		display: flex;
 		justify-content: space-between;
-		background-color: var(--color);
 		width: calc( ( var(--val1) - var(--val0) ) * 100% );
 		margin-left: calc( var(--val0) * 100% );
+		height: 100%;
+	}
+	.bar div{
+		background-color: var(--color);
+	}
+	.bar > :nth-child(2){
+		height: 60%;
+		align-self:center ;
+		width: 100%;
+	}
+	.bar > :not(:nth-child(2)){
+		position: relative;
+		
+	}
+	.bar > :not(:nth-child(2)) > div{
+		position: absolute;
+		width: 2px;
+		left: -1px;
 		height: 100%;
 	}
 	

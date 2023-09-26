@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { params } from "../../stores";
     import Coordinates from "./Coordinates.svelte";
-	export let ruleId:number;
+	export let conditionId:number;
 	export let highlightedKernel:any;
 	let graphPath:string[] = [];
 	let containerWidth:any;
@@ -42,10 +42,10 @@
 					graphPath[i]+=`L ${j} ${ 
 						getY(	
 							j/width,
-								$params.rules[ruleId].subRules[i].thersholds[0], 
-								$params.rules[ruleId].subRules[i].thersholds[1],
-								$params.rules[ruleId].subRules[i].slopes[0],
-								$params.rules[ruleId].subRules[i].slopes[1], 
+								$params.conditions[conditionId].subConditions[i].thersholds[0], 
+								$params.conditions[conditionId].subConditions[i].thersholds[1],
+								$params.conditions[conditionId].subConditions[i].slopes[0],
+								$params.conditions[conditionId].subConditions[i].slopes[1], 
 							)
 						*height} `;
 				}
@@ -72,7 +72,7 @@
 
 		<svg class="main" viewBox="0 0 {width} {height}" >
 			{#each graphPath as g,i}
-			{#if $params.rules[ruleId].subRules[i].enabled}
+			{#if $params.conditions[conditionId].subConditions[i].enabled}
 			<path 
 				d={g} 
 				style={`--color: var(--color${i});`} 

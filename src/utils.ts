@@ -65,19 +65,19 @@ export const utils = {
 		}
 		return [pts, dists, count];
 	},
-	// format rules into 1d array
-	formatRules: function(params:Params, tempParams:TempParams){
-		tempParams.rules = [];
-		for(let i = 0; i < params.rules.length; i++)
+	// format conditions into 1d array
+	formatConditions: function(params:Params, tempParams:TempParams){
+		tempParams.rule = [];
+		for(let i = 0; i < params.conditions.length; i++)
 		{
 			let s:number[] = [];
-			if(params.rules[i].enabled)
+			if(params.conditions[i].enabled && Math.max(...params.conditions[i].subConditions.map((r,j) => r.enabled && params.kernels[j].enabled as any)))
 			{
 				for(let j = 0; j < params.kernels.length; j++){
-					if(params.kernels[j].enabled && params.rules[i].subRules[j].enabled)
+					if(params.kernels[j].enabled && params.conditions[i].subConditions[j].enabled)
 					{
-						s = s.concat(params.rules[i].subRules[j].thersholds)
-						s = s.concat(params.rules[i].subRules[j].slopes)
+						s = s.concat(params.conditions[i].subConditions[j].thersholds)
+						s = s.concat(params.conditions[i].subConditions[j].slopes)
 					}	
 					else
 						s = s.concat(-0.5,1.5,0.1,0.1);
@@ -85,7 +85,7 @@ export const utils = {
 			}
 			else
 				s = [0,0,0,0, 0,0,0,0, 0,0,0,0];
-			tempParams.rules = tempParams.rules.concat(s);
+			tempParams.rule = tempParams.rule.concat(s);
 		}
 	},
 	// regenerate kernel textures

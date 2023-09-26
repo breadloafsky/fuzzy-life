@@ -150,7 +150,7 @@ Scene.prototype.drawScene = function (process)  {
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 		gl.uniform1i(shader.uniforms.uKernelRadius.location, this.tempParams.convRadius);
 		gl.uniform1f(shader.uniforms.uDelta.location, this.params.dt);
-		gl.uniform1fv(shader.uniforms.uRules.location, this.tempParams.rules);
+		gl.uniform1fv(shader.uniforms.uRule.location, this.tempParams.rule);
 		gl.uniform1i(shader.uniforms.isPaused.location, this.tempParams.paused || !process);
 		gl.uniform1i(shader.uniforms.uReset.location, this.tempParams.resetTexture);		
 		
