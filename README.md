@@ -7,7 +7,7 @@ https://fuzzy-life.netlify.app
 
 ## About
 
-The application is based on SmoothLife paper ([https://arxiv.org/pdf/1111.1567.pdf](https://arxiv.org/pdf/1111.1567.pdf)) with some additions:
+The application is based on the SmoothLife paper by Stephan Rafler (https://arxiv.org/abs/1111.1567) with some additions:
 
 - Instead two neighbourghood fillings, the application uses weighted averages of convolution integral of the area and a kernel within the radius ***r*** :\
 \
