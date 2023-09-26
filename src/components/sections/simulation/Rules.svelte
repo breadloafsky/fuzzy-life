@@ -13,12 +13,12 @@
 	Rule Expression
 	<div class="rules-expression"  style="color: gray;">
 		{"max("}	
-		{#each  $params.conditions as r,i}
-			{#if r.enabled && Math.max(...r.subConditions.map((r,j) => boolAsNum(r.enabled && $params.kernels[j].enabled)))}
+		{#each  $params.rules as r,i}
+			{#if r.enabled && Math.max(...r.conditions.map((r,j) => boolAsNum(r.enabled && $params.kernels[j].enabled)))}
 				<div style="padding-left: 20px;">
 					{"min("}
 					{#each $params.kernels as k,j}
-						{#if k.enabled && $params.conditions[i].subConditions[j].enabled}
+						{#if k.enabled && $params.rules[i].conditions[j].enabled}
 							<span style="color:var(--color{j});">
 								{["A","B","C","D"][j]+i}
 							</span>
@@ -31,8 +31,8 @@
 		{")"}
 	</div>
 	
-	{#each $params.conditions as r,i}
-		<RuleComponent conditionId={i}/>
+	{#each $params.rules as r,i}
+		<RuleComponent ruleId={i}/>
 	{/each}
 </div>
 

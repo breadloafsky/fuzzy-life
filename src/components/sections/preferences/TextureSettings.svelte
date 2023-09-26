@@ -9,7 +9,7 @@
 	<ParameterContainer 
 		vertical 
 		label="Texture Size"
-		warning="Large texture size can affect the performance"
+		warning="Large texture size and kernel size can affect performance"
 	>
 		<input 
 			bind:value={$settings.textureSize} on:change={() => $callbacks.resizeTexture()}  

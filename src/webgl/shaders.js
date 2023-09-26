@@ -26,7 +26,7 @@ export const shaders ={
 			uTextureDims:{value:null},
 			uKernelRadius:{value:null},
 			uKern:{value:null},	// kernel texture
-			uRule:{value:null},
+			uRules:{value:null},
 			uDelta: {value:null},	// dt of integration
 			uReset: {value:null},	// reset the texture
 			uDebug:{value:null},	// DEBUG

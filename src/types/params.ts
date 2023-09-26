@@ -1,14 +1,14 @@
 
-export class SubCondition{
+export class Condition{
 	thersholds:number[] = [0.3, 0.5];
 	slopes:number[] = [0.001, 0.001];
 	enabled:boolean = true; 
 }
-export class Condition  {
-	subConditions:SubCondition[] = [
-		new SubCondition(),
-		new SubCondition(),
-		new SubCondition(),
+export class Rule  {
+	conditions:Condition[] = [
+		new Condition(),
+		new Condition(),
+		new Condition(),
 	];
 	enabled:boolean = true;
 }
@@ -26,11 +26,11 @@ export class Params{
 		new Kernel(),
 		{...new Kernel(), enabled:false},
 	];
-	conditions:Condition[] = [
-		new Condition(),
-		{...new Condition(), enabled:false},
-		{...new Condition(), enabled:false},
-		{...new Condition(), enabled:false},
+	rules:Rule[] = [
+		new Rule(),
+		{...new Rule(), enabled:false},
+		{...new Rule(), enabled:false},
+		{...new Rule(), enabled:false},
 	];
     convRadius:number=12;	//	the radius of kernel/convolution radius
 	dt:number = 0.5;		// dt multiplier
