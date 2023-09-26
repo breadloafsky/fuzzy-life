@@ -23,7 +23,7 @@
 		<div>{$params.dt}</div>
 	</ParameterContainer>
 	<ParameterContainer vertical label="Kernel Radius">
-		<input bind:value={$params.convRadius} on:input={() => $callbacks.updateKernelTextures()} type="range"  name="convRadius"  step="1" min="2" max="16" />
+		<input bind:value={$params.convRadius} on:input={() => $callbacks.updateKernelTextures()} type="range"  name="convRadius"  step="1" min="2" max="32" />
 		<div>{convRadius}px</div>
 	</ParameterContainer>
 	<div>

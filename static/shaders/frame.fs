@@ -73,8 +73,8 @@ float processPixel(){
 
 
     //  convolution
-    for(float i = -15.; i < 16.; i++){
-        for(float j = -15.; j < 16.; j++){
+    for(float i = -31.; i < 32.; i++){
+        for(float j = -31.; j < 32.; j++){
             
             float dist = distance(vec2(i,j), vec2(0.,0.));
             

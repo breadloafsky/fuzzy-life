@@ -3,6 +3,7 @@
 	import { onMount } from "svelte";
 	import { shaders } from "../webgl/shaders";
 	import Main from "../components/Main.svelte";
+    import Warning from "../components/misc/Warning.svelte";
 	
 	let isLoaded = false;
 
@@ -18,26 +19,48 @@
 				shader.program[i] = await  response.text();
 			}
 		}	
-		// get settings from the local storage
-		// if(localStorage)
-		// {
-		// 	const s = localStorage.getItem("settings");
-		// 	if(s)
-		// 		$settings = {...$settings, ...JSON.parse(s+"")};
-		// }
+
 		isLoaded = true;
 	});
 
 </script>
 {#if isLoaded}
-	<Main shaders={shaders} />
+	
+	<Warning>
+		<Main shaders={shaders} />
+	</Warning>
+	{:else}
+	<div class="loading">
+		<div/>
+	</div>
+	
 {/if}
 
 <style>
 	:global(body){
 		color: aliceblue;
-		background-color: black;
+		background-color: #000000;
 		font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	}
+
+	.loading{
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.loading > div{
+		width: 20vh;
+		height: 20vh;
+		border: 16px solid #000000; 
+		border-top: 16px solid #636363; 
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
 	}
 
 </style>

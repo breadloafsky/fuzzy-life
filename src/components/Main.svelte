@@ -4,7 +4,7 @@
 	import { params, callbacks, settings, tempParams } from "../stores"
     import Controls from "../components/Controls.svelte";
 	export let shaders:any;
-	let canvas : HTMLCanvasElement;
+	let canvas : HTMLCanvasElement; 
 	let scene : Scene;
 	let previousTime = 0;
 
@@ -36,8 +36,6 @@
 	function update(time:number){
 		requestAnimationFrame(update);
 		const delta = time - previousTime;
-		// limit fps
-		
 		// update kernel texture
 		if($tempParams.kernelTexture)
 		{
@@ -45,6 +43,7 @@
 			scene.setKernels($tempParams.kernelTexture, () => $tempParams.convRadius = $params.convRadius);
 			$tempParams.kernelTexture = null; //remove temporary kernel texture		
 		}
+		// limit fps
 		const process = (delta > 1000 / $settings.fpsLimit);
 		scene.drawScene(process);	
 		if (!process)

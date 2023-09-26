@@ -29,9 +29,9 @@
 
 	onMount(() => {
 		updateKernels();
-		// prevent button triggering when using spacebar
+		// prevent button triggering / scrolling when using spacebar
 		document.body.onkeydown = (e) => {
-			if((document.activeElement as any).nodeName == "BUTTON")
+			if(e.code == "Space")
 				e.preventDefault();
 		};
 		// key events setup
