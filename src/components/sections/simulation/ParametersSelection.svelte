@@ -1,20 +1,15 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-	import { params, callbacks, tempParams } from "../../../stores";	
+	import { params, callbacks, tempParams, presets } from "../../../stores";	
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
     import Icon from "../../ui/Icon.svelte";
     import type { Params } from "../../../types/params";
 
 	let fileInput:HTMLInputElement|any;
-	let presets:any[] = [];
 	let expanded = false;
 
-	onMount( async() => {
-		presets = await( await fetch("presets.json") ).json();
-		setScene(presets[0]);
-	});
-	
+
 	// remove unnecessary properties
 	function filterProperty(k:any,v:any){
 		if(k == "name")
@@ -101,7 +96,7 @@
 			Select from example presets:
 			<div class="presets" data-expanded={expanded}>
 				<div class="list">
-					{#each presets as p,i}
+					{#each $presets as p,i}
 						<button class="btn1" on:click={()=>{setScene(p);}}>
 							<div style="color:dimgray; width: 10px;">{i}</div>
 							<div>{p.name}</div>

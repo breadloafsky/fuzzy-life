@@ -103,8 +103,7 @@ path{
 
 
 svg{
-
-	height: 100%;
+	height: 98%;
 	max-width: 100%;
 	background-color: black;
 	overflow:visible;

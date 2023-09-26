@@ -6,35 +6,43 @@
 	export let y = 10;
 	export let xDiv = 1; 
 	export let yDiv = 1;
-	// export let xSub = 1;
-	// export let ySub = 1;
 	export let xName:string = "";
 	export let yName:string = "";
+	let xLabelSkip:number = 1;	// skip label
+
+	
+	$:[width, xDiv], (()=>{
+		xLabelSkip = Math.ceil(30/(width/xDiv));
+	})();
 
 </script>
 
 <g>
 	<!-- X axis -->
 	{#each Array(xDiv+1) as a,i}
-		<rect 
-			width="1" 
-			height={height}
-			x={i*width/xDiv}
-		/>
+		<line 
+			x1={i*width/xDiv}
+			x2={i*width/xDiv} 
+			y1={0} 
+			y2={height} 
+			/>
+		{#if i%xLabelSkip == 0}
 		<text 
 			x={i*width/xDiv} 
 			y={height+10} 
 			>
 			{i*x/xDiv}
 		</text>
+		{/if}
 	{/each}
 	<!-- Y axis -->
 	{#each Array(yDiv+1) as a,i}
-		<rect 
-			height="1" 
-			width={width}
-			y={height-i*height/yDiv}
-		/>
+		<line 
+			x1={0}
+			x2={width} 
+			y1={height-i*height/yDiv}
+			y2={height-i*height/yDiv}
+			/>
 		<text 
 			transform="translate(20, {(height / 2)} ) rotate(-90)"
 			x={i*height/yDiv - height/2} 
@@ -44,7 +52,6 @@
 		</text>
 	
 	{/each}
-
 	<text 
 		x={width/2} 
 		y={-10} 
@@ -63,8 +70,9 @@
 <style>
 
 
-rect{
-	fill: #2e2e2e;
+line{
+	stroke: #2e2e2e;
+	stroke-width: 2;
 }
 text{
 	fill: #aaaaaa;

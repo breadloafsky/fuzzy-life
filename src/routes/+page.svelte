@@ -2,6 +2,7 @@
 	import "../app.css"
 	import { onMount } from "svelte";
 	import { shaders } from "../webgl/shaders";
+	import { presets, params } from "../stores";
 	import Main from "../components/Main.svelte";
     import Warning from "../components/misc/Warning.svelte";
 	
@@ -18,8 +19,9 @@
 				const response = await fetch(`shaders/${e}`);
 				shader.program[i] = await  response.text();
 			}
-		}	
-
+		}
+		$presets = await( await fetch("presets.json") ).json();
+		Object.assign($params, structuredClone($presets[0]));
 		isLoaded = true;
 	});
 

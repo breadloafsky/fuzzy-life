@@ -36,40 +36,17 @@
 		};
 		// key events setup
 		document.body.onkeyup = (e) => {
-			switch (e.key.toLowerCase()) {
-				case " ":	// pause/play
+			switch (e.code) {
+				case "Space":	// pause/play
 					pause();
 					break;
-				case "c":	// clear the texture
+				case "KeyC":	// clear the texture
 					clear(0);
 					break;
-				case "x":	// fill the texture with gradient
+				case "KeyX":	// fill the texture with gradient
 					clear(1);
 					break;
 			}
-			
-			//	randomise values
-			// if (e.key.toLowerCase() == "r"){
-			// 	for(let i = 0; i < $params.rules.length; i++) {
-			// 		const rule = $params.rules[i];
-			// 		for(let j = 0; j < rule.subRules.length; j++){
-			// 			const r = 1.0;
-			// 			const w = 0.4;	//width
-			// 			const centre = Math.random()*r/2+0.3;
-			// 			let vals = [centre-Math.random()*w,centre+Math.random()*w];
-
-			// 			vals.forEach((val,i) => {
-			// 				vals[i] = val > 1 ? 1 : val < 0 ? 0 : val;
-			// 			});
-
-			// 			rule.subRules[j].thersholds[0] = Math.round(vals[0]*1000)/1000;
-			// 			rule.subRules[j].thersholds[1] = Math.round(vals[1]*1000)/1000;
-			// 		}
-			// 	}
-			// 	console.log($params); //debug
-			// 	$tempParams.resetTexture = 2;
-			// 	formatRules();
-			// }
 		};
 		// brush radius change
 		canvas.addEventListener("wheel", (e:MouseEvent|any) => {
@@ -121,7 +98,7 @@
 				<SectionContainer label="Save / Load Parameters">
 					<ParametersSelection/>
 				</SectionContainer>
-				<SectionContainer label="Convolution Properties">
+				<SectionContainer label="Main Properties">
 					<ConvolutionProperties/>
 				</SectionContainer>
 				<SectionContainer label="Rules">

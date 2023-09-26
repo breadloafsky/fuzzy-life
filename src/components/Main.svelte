@@ -3,6 +3,7 @@
    	import { Scene } from "../webgl/scene.js";
 	import { params, callbacks, settings, tempParams } from "../stores"
     import Controls from "../components/Controls.svelte";
+    import ToolTip from "./ui/ToolTip.svelte";
 	export let shaders:any;
 	let canvas : HTMLCanvasElement; 
 	let scene : Scene;
@@ -40,8 +41,11 @@
 		if($tempParams.kernelTexture)
 		{
 			//	update kernel and set the callback for kernel radius update to avoid texture "drift" (when the kernel radius changed before the texture)
-			scene.setKernels($tempParams.kernelTexture, () => $tempParams.convRadius = $params.convRadius);
-			$tempParams.kernelTexture = null; //remove temporary kernel texture		
+			scene.setKernels($tempParams.kernelTexture, () => {
+				$tempParams.kernelTexture = null; //remove temporary kernel texture	
+				$tempParams.convRadius = $params.convRadius;	// update kernel radius
+			});
+				
 		}
 		// limit fps
 		const process = (delta > 1000 / $settings.fpsLimit);
@@ -54,6 +58,7 @@
 
 </script>
 
+<ToolTip/>
 <div style="display: flex; overflow: hidden;">
 	{#if canvas}
 		<Controls bind:canvas/>

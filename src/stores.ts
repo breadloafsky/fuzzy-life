@@ -6,13 +6,16 @@ import { TempParams } from './types/tempParams';
 
 export const callbacks = writable<Callbacks>({
 	...new Callbacks()
-})
+});
 export const params = writable<Params>({
 	...new Params()
-})
+});
 export const tempParams = writable<TempParams>({
 	...new TempParams()
-})
+});
 export const settings = writable<Settings>({
 	...new Settings()
-})
+});
+export const presets = writable<Params[]|any[]>([]);
+
+export const toolTip = writable<string>("");

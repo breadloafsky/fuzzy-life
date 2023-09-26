@@ -1,10 +1,11 @@
 
 <script  lang="ts">
     import SigmoidGraph from "../../graphs/SigmoidGraph.svelte";
-    import SliderDouble from "../../ui/SliderDouble.svelte";
+	import NumberInput from "../../ui/NumberInput.svelte";
 	import Switch from "../../ui/Switch.svelte";
-	import {params, callbacks} from "../../../stores";
-    import NumberInput from "../../ui/NumberInput.svelte";
+	import {params} from "../../../stores";
+    import DoubleRange from "../../input/DoubleRange.svelte";
+    
 	export let ruleId:number;	
 
 	let highlightedKernel:number|null=null;	//	highlight kernel
@@ -36,7 +37,7 @@
 					</div>
 
 					{#if $params.rules[ruleId].subRules[i].enabled && $params.kernels[i].enabled}
-						<SliderDouble bind:val0={$params.rules[ruleId].subRules[i].thersholds[0]} bind:val1={$params.rules[ruleId].subRules[i].thersholds[1]} color="var(--color{i})"/>
+						<DoubleRange bind:val0={$params.rules[ruleId].subRules[i].thersholds[0]} bind:val1={$params.rules[ruleId].subRules[i].thersholds[1]} color="var(--color{i})"/>
 						<div class="input_fields">
 							<NumberInput 
 								bind:value={$params.rules[ruleId].subRules[i].thersholds[0]}  

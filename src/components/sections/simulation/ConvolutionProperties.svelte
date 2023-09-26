@@ -18,11 +18,13 @@
 {#if kernImg}
 <div class="properties" 
 	style="--kern-size:{convRadius*2-1};">
-	<ParameterContainer vertical label="Δt Multiplier">
+	<ParameterContainer vertical label="dt" labelStyle="font-style: italic;">
 		<input bind:value={$params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
 		<div>{$params.dt}</div>
 	</ParameterContainer>
-	<ParameterContainer vertical label="Kernel Radius">
+	<ParameterContainer vertical label="Kernel Radius"
+		warning="Large kernel size can affect the performance"
+	>
 		<input bind:value={$params.convRadius} on:input={() => $callbacks.updateKernelTextures()} type="range"  name="convRadius"  step="1" min="2" max="32" />
 		<div>{convRadius}px</div>
 	</ParameterContainer>
