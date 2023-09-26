@@ -9,7 +9,7 @@
 	let isLoaded = false;
 
 	onMount( async() => {
-		// preload shader files
+		//	preload shader files
 		for (let shaderName in shaders)
 		{	
 			const shader = (shaders as any)[shaderName];
@@ -20,7 +20,9 @@
 				shader.program[i] = await  response.text();
 			}
 		}
+		//	preload presets
 		$presets = await( await fetch("presets.json") ).json();
+		//	set the first preset as default
 		Object.assign($params, structuredClone($presets[0]));
 		isLoaded = true;
 	});
