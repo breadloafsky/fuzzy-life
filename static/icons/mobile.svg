@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<svg
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="mobile-svgrepo-com.svg"
+   xml:space="preserve"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs10" /><sodipodi:namedview
+     id="namedview8"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.73981047"
+     inkscape:cx="335.89684"
+     inkscape:cy="467.68735"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" /><path
+     d="M6 2.524v19.952A1.524 1.524 0 0 0 7.524 24h9.952A1.524 1.524 0 0 0 19 22.476V2.524A1.524 1.524 0 0 0 17.476 1H7.524A1.524 1.524 0 0 0 6 2.524zm12 19.953a.524.524 0 0 1-.524.523H14v-1h-3v1H7.524A.524.524 0 0 1 7 22.477V21h11zM18 20H7V4h11zm-.524-18a.524.524 0 0 1 .524.523V3H7v-.477A.524.524 0 0 1 7.524 2z"
+     id="path2" /><path
+     fill="none"
+     d="M0 0h24v24H0z"
+     id="path4" /><g
+     style="fill:#000000"
+     id="g146"
+     transform="matrix(0.15895749,0,0,0.15895749,7.4581635,7.0854031)"><path
+       d="M 32,61 A 29,29 0 1 1 61,32 29,29 0 0 1 32,61 Z M 32,5 A 27,27 0 1 0 59,32 27,27 0 0 0 32,5 Z M 48.75,42.67 A 1,1 0 0 0 48.67,41.25 L 48.14,40.78 C 45.34,38.25 40.65,34 32,34 23.35,34 18.66,38.25 15.86,40.78 l -0.53,0.47 a 1.0056838,1.0056838 0 1 0 1.34,1.5 L 17.2,42.26 C 19.79,39.92 24.12,36 32,36 c 7.88,0 12.21,3.92 14.8,6.26 l 0.53,0.49 A 1,1 0 0 0 48,43 1,1 0 0 0 48.75,42.67 Z M 48,22 a 1,1 0 0 0 -2,0 4,4 0 0 1 -8,0 1,1 0 0 0 -2,0 6,6 0 0 0 12,0 z m -20,0 a 1,1 0 0 0 -2,0 4,4 0 0 1 -8,0 1,1 0 0 0 -2,0 6,6 0 0 0 12,0 z"
+       id="path135" /></g></svg>

@@ -5,11 +5,31 @@
 	import { presets, params } from "../stores";
 	import Main from "../components/Main.svelte";
     import Warning from "../components/misc/Warning.svelte";
+    import MobileInfo from "../components/misc/MobileInfo.svelte";
+
 	
 	let isLoaded = false;
+	let isMobile = false;
+
+	function checkIfMobile(){
+        if (navigator.userAgent.match(/Android/i)
+         || navigator.userAgent.match(/webOS/i)
+         || navigator.userAgent.match(/iPhone/i)
+         || navigator.userAgent.match(/iPad/i)
+         || navigator.userAgent.match(/iPod/i)
+         || navigator.userAgent.match(/BlackBerry/i)
+         || navigator.userAgent.match(/Windows Phone/i)) {
+            return true;
+         }
+         else
+            return false;
+    }
 
 	onMount( async() => {
 		//	preload shader files
+		isMobile = checkIfMobile();
+		if(isMobile)
+			return;
 		for (let shaderName in shaders)
 		{	
 			const shader = (shaders as any)[shaderName];
@@ -27,18 +47,24 @@
 		isLoaded = true;
 	});
 
+	
+
+
 </script>
-{#if isLoaded}
-	
-	<Warning>
-		<Main shaders={shaders} />
-	</Warning>
+{#if !isMobile}
+	{#if isLoaded}
+		<Warning>
+			<Main shaders={shaders} />
+		</Warning>
+		{:else}
+		<div class="loading">
+			<div/>
+		</div>
+	{/if}
 	{:else}
-	<div class="loading">
-		<div/>
-	</div>
-	
+	<MobileInfo/>
 {/if}
+
 
 <style>
 	:global(body){
