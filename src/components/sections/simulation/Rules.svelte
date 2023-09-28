@@ -2,12 +2,8 @@
 <script lang="ts">
     import RuleComponent from "./RuleComponent.svelte";
 	import {params} from "../../../stores";
-
-	const boolAsNum = (e:any) => e as number;
+	const boolAsNum = (e:any):number => e;
 </script>
-
-
-
 
 <div>
 	Rules Expression
@@ -30,7 +26,6 @@
 		{/each}
 		{")"}
 	</div>
-	
 	{#each $params.rules as r,i}
 		<RuleComponent ruleId={i}/>
 	{/each}

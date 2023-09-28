@@ -9,12 +9,10 @@
 	export let xName:string = "";
 	export let yName:string = "";
 	let xLabelSkip:number = 1;	// skip label
-
 	
 	$:[width, xDiv], (()=>{
-		xLabelSkip = Math.ceil(30/(width/xDiv));
+		xLabelSkip = Math.ceil(28/(width/xDiv));
 	})();
-
 </script>
 
 <g>
@@ -50,7 +48,6 @@
 			>
 			{i*y/yDiv}
 		</text>
-	
 	{/each}
 	<text 
 		x={width/2} 

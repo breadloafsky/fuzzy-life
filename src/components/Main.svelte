@@ -56,7 +56,7 @@
 		<Controls bind:canvas bind:scene/>
 	{/if}
    	<!-- svelte-ignore a11y-no-static-element-interactions -->
-   	<div class="canvas-container flex"  
+   	<div class="canvas-container"  
 		on:contextmenu|preventDefault={()=>{return false;}}>
 	   	<canvas
 		   aria-hidden="true" bind:this={canvas} />
