@@ -2403,44 +2403,7 @@
 		"dt": 0.4,
 		"name": "gliders1",
 		"rules": [
-			{
-				"enabled": true,
-				"conditions": [
-					{
-						"thersholds": [
-							0.172,
-							0.478
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.411,
-							0.546
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					},
-					{
-						"thersholds": [
-							0.592,
-							0.955
-						],
-						"slopes": [
-							0.001,
-							0.001
-						],
-						"enabled": true
-					}
-				]
-			},
+			
 			{
 				"enabled": true,
 				"conditions": [
@@ -2517,6 +2480,44 @@
 					}
 				]
 			},
+			{
+				"enabled": false,
+				"conditions": [
+					{
+						"thersholds": [
+							0.172,
+							0.478
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.411,
+							0.546
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					},
+					{
+						"thersholds": [
+							0.592,
+							0.955
+						],
+						"slopes": [
+							0.001,
+							0.001
+						],
+						"enabled": true
+					}
+				]
+			},	
 			{
 				"enabled": false,
 				"conditions": [

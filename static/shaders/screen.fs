@@ -17,7 +17,7 @@ vec4 getColor0(float v){
   );
   a += 0.5;
   a = clamp(a,vec3(0,0,0),vec3(1,1,1));
-  a.rgb *= clamp((v*1.5),0.,1.);  
+  a.rgb *= clamp((v*1.5),0.,1.);
   return vec4(a,1);
 }
 
@@ -68,7 +68,7 @@ void main(void) {
   // display brush
   if(uBrush[3] != 0.){
         vec2 pos = vec2((vTextureCoord.x-uBrush[0])*uTextureDims[0],(vTextureCoord.y-uBrush[1])*uTextureDims[1]);
-        float d = distance(vec2(0.,0.),pos);
+        float d = distance(vec2(0.,0.),pos-0.5);
         if(d > uBrush[2]-0.5 && d < uBrush[2]+0.5)
         {
             tex.rgb = vec3(1);
