@@ -5,7 +5,7 @@
     import Icon from "../../ui/Icon.svelte";
     import NumberInput from "../../ui/NumberInput.svelte";
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
-    import Switch from "../../ui/Switch.svelte";
+    import Switch from "../../input/Switch.svelte";
 
 	function resetSettings(){
 		Object.assign($settings, new Settings()); 

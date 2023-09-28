@@ -48,12 +48,12 @@
 	/* height: 100%; */
 }
 .switch[data-enabled=false] {
-	background-color: rgb(185, 185, 185);
+	background-color: #9e9e9e;
 	color:black;
 }
 
 .switch[data-enabled=false] .square{
-	background-color: rgb(82, 82, 82);
+	background-color: #525252;
 }
 
 </style>

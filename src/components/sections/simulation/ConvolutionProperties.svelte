@@ -2,7 +2,7 @@
 <script  lang="ts">
     import KernelGraph from "../../graphs/KernelGraph.svelte";
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
-	import Switch from "../../ui/Switch.svelte";
+	import Switch from "../../input/Switch.svelte";
 	import {params ,callbacks, tempParams} from "../../../stores";
 	
 	let edit:boolean = false;

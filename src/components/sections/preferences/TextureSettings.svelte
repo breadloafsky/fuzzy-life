@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { settings, callbacks } from "../../../stores";	
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
-    import Switch from "../../ui/Switch.svelte";
+    import Switch from "../../input/Switch.svelte";
 </script>
 
 <div>
@@ -13,7 +13,7 @@
 	>
 		<input 
 			bind:value={$settings.textureSize} on:change={() => $callbacks.resizeTexture()}  
-			type="range"  step="0.1" min="0.1" max="1" 
+			type="range"  step="0.05" min="0.05" max="0.5" 
 		/>
 		<div>{$settings.textureSize}MP</div>
 	</ParameterContainer>

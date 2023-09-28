@@ -2,7 +2,7 @@
 <script lang="ts">
     import SigmoidGraph from "../../graphs/SigmoidGraph.svelte";
 	import NumberInput from "../../ui/NumberInput.svelte";
-	import Switch from "../../ui/Switch.svelte";
+	import Switch from "../../input/Switch.svelte";
 	import {params} from "../../../stores";
     import DoubleRange from "../../input/DoubleRange.svelte";
     

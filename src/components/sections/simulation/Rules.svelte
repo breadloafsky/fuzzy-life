@@ -10,7 +10,7 @@
 
 
 <div>
-	Rule Expression
+	Rules Expression
 	<div class="rules-expression"  style="color: gray;">
 		{"max("}	
 		{#each  $params.rules as r,i}
