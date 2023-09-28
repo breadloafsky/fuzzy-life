@@ -13,13 +13,22 @@
     import GeneralSettings from "./sections/preferences/GeneralSettings.svelte";
 	
 	export let canvas : HTMLCanvasElement;
+	export let scene:any;
 	let kc:KernelCanvas;	// an auxiliary canvas that renders kernel textures
 	let paramsHidden = false;
 	let currentTab = 1;
+	let timer:any = 0;	// timer for kernel reset
 	
-
 	const formatRules=()=>utils.formatRules($params, $tempParams);
-	const updateKernels=()=>{utils.updateKernels($params,$tempParams,kc); formatRules()};
+	const updateKernels=()=>{
+		// update kernel texture
+		utils.updateKernels($params,$tempParams,kc); 
+		// set kernel texture with a small delay
+		clearTimeout(timer);
+		timer = setTimeout(() => {scene.setKernels($tempParams.kernelTexture, () => {
+					$tempParams.convRadius = $params.convRadius;	// update kernel radius
+		});}, 10)
+	};
 
 	const clear=(n:number)=>$tempParams.resetTexture = n+1;
 	const pause=()=>$tempParams.paused = ! $tempParams.paused;

@@ -12,6 +12,8 @@
 	$callbacks.resizeTexture = () => resize();
 	$callbacks.setTextureFilter = () => scene.setTextureFilter();
 
+
+
 	// save settings in the local storage
 	// $:$settings,(()=>{
 	// 	if(localStorage && $settings.saveSettings)
@@ -37,19 +39,9 @@
 	function update(time:number){
 		requestAnimationFrame(update);
 		const delta = time - previousTime;
-		// update kernel texture
-		if($tempParams.kernelTexture)
-		{
-			//	update kernel and set the callback for kernel radius update to avoid texture "drift" (when the kernel radius changed before the texture)
-			scene.setKernels($tempParams.kernelTexture, () => {
-				$tempParams.kernelTexture = null; //remove temporary kernel texture	
-				$tempParams.convRadius = $params.convRadius;	// update kernel radius
-			});
-				
-		}
 		// limit fps
 		const process = (delta > 1000 / $settings.fpsLimit);
-		scene.drawScene(process);	
+		scene.drawScene(process);
 		if (!process)
 			return;
 		$tempParams.resetTexture = 0;
@@ -60,8 +52,8 @@
 
 <ToolTip/>
 <div style="display: flex; overflow: hidden;">
-	{#if canvas}
-		<Controls bind:canvas/>
+	{#if canvas && scene}
+		<Controls bind:canvas bind:scene/>
 	{/if}
    	<!-- svelte-ignore a11y-no-static-element-interactions -->
    	<div class="canvas-container flex"  

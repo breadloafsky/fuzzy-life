@@ -44,7 +44,7 @@
 	:global(body){
 		color: aliceblue;
 		background-color: #000000;
-		font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+		font-family: Arial, sans-serif;
 	}
 
 	.loading{

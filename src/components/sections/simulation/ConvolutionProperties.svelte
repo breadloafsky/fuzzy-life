@@ -12,6 +12,8 @@
 	$:kernImg = $tempParams.kernelsPreview;
 	$:kernels = $params.kernels;
 	$:convRadius = $params.convRadius;
+
+
 </script>
 <!-- svelte-ignore a11y-missing-attribute -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -22,10 +24,11 @@
 		<input bind:value={$params.dt}  type="range"  name="dt"  step="0.01" min="0.01" max="1" />
 		<div>{$params.dt}</div>
 	</ParameterContainer>
-	<ParameterContainer vertical label="Kernel Radius"
+	<ParameterContainer vertical 
+		label="Kernel Radius"
 		warning="Large kernel size and texture size can affect performance"
 	>
-		<input bind:value={$params.convRadius} on:input={() => $callbacks.updateKernelTextures()} type="range"  name="convRadius"  step="1" min="2" max="32" />
+		<input bind:value={$params.convRadius} on:input={$callbacks.updateKernelTextures} type="range"  name="convRadius"  step="1" min="2" max="32" />
 		<div>{convRadius}px</div>
 	</ParameterContainer>
 	<div>
