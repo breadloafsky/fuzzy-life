@@ -33,7 +33,6 @@
 				<div style="display: flex;  padding:4px;">
 					<div style="color:var(--color{i});">{["A","B"][i]} {ruleId}</div>
 				</div>
-
 				<DoubleRange bind:val0={$params.rules[ruleId].conditions[i].thersholds[0]} bind:val1={$params.rules[ruleId].conditions[i].thersholds[1]} color="var(--color{i})"/>
 				<div class="input_fields">
 					<NumberInput 
