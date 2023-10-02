@@ -36,23 +36,19 @@
 		graphPath = [];
 		for(let i = 0; i < $params.kernels.length; i++)
 		{
-			if($params.kernels[i].enabled){
-				graphPath[i] = `M -10 ${height} `;
-				for(let j = 0; j < width; j++){
-					graphPath[i]+=`L ${j} ${ 
-						getY(	
-							j/width,
-								$params.rules[ruleId].conditions[i].thersholds[0], 
-								$params.rules[ruleId].conditions[i].thersholds[1],
-								$params.rules[ruleId].conditions[i].slopes[0],
-								$params.rules[ruleId].conditions[i].slopes[1], 
-							)
-						*height} `;
-				}
-				graphPath[i] += `L ${width+10} ${height} `;
+			graphPath[i] = `M -10 ${height} `;
+			for(let j = 0; j < width; j++){
+				graphPath[i]+=`L ${j} ${ 
+					getY(	
+						j/width,
+							$params.rules[ruleId].conditions[i].thersholds[0], 
+							$params.rules[ruleId].conditions[i].thersholds[1],
+							$params.rules[ruleId].conditions[i].slopes[0],
+							$params.rules[ruleId].conditions[i].slopes[1], 
+						)
+					*height} `;
 			}
-			else
-				graphPath[i] = "";
+			graphPath[i] += `L ${width+10} ${height} `;
 		}
 	}
 
@@ -72,14 +68,11 @@
 
 		<svg class="main" viewBox="0 0 {width} {height}" >
 			{#each graphPath as g,i}
-			{#if $params.rules[ruleId].conditions[i].enabled}
-			<path 
-				d={g} 
-				style={`--color: var(--color${i});`} 
-				stroke-opacity={(highlightedKernel == i) ? 1 :  0.5 }
-			/>
-			{/if}
-				
+				<path 
+					d={g} 
+					style={`--color: var(--color${i});`} 
+					stroke-opacity={(highlightedKernel == i) ? 1 :  0.5 }
+				/>	
 			{/each}
 		</svg>
 	  </svg>

@@ -1,37 +1,20 @@
 
 export class Condition{
-	thersholds:number[] = [0.3, 0.5];
-	slopes:number[] = [0.001, 0.001];
-	enabled:boolean = true; 
+	thersholds:number[] = [];
+	slopes:number[] = [];
 }
 export class Rule  {
-	conditions:Condition[] = [
-		new Condition(),
-		new Condition(),
-		new Condition(),
-	];
-	enabled:boolean = true;
+	conditions:Condition[] = [];
+	enabled:boolean=false;
 }
 
 export class Kernel  {
-	points:number[][]=[
-			[0.5, 0.5],
-	];
-	enabled:boolean = true;
+	points:number[][]=[];
 }
 
 export class Params{
-	kernels:Kernel[]=[
-		new Kernel(),
-		new Kernel(),
-		{...new Kernel(), enabled:false},
-	];
-	rules:Rule[] = [
-		new Rule(),
-		{...new Rule(), enabled:false},
-		{...new Rule(), enabled:false},
-		{...new Rule(), enabled:false},
-	];
+	kernels:Kernel[]=[];
+	rules:Rule[] = [];
     convRadius:number=12;	//	the radius of kernel/convolution radius
 	dt:number = 0.5;		// dt multiplier
 }

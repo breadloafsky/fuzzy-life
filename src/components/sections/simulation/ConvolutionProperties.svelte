@@ -8,7 +8,7 @@
 	
 	let edit:boolean = false;
 	let selectedKernel:number|any = null;
-	const kernLetters=["A","B","C","D"]
+	const kernLetters=["A","B"];
 
 	$:kernImg = $tempParams.kernelsPreview;
 	$:kernels = $params.kernels;
@@ -39,25 +39,21 @@
 	<div>
 		<div>Kernel Preview ({selectedKernel==null ? "Combined":"Kernel "+kernLetters[selectedKernel]})</div>
 		<div class="preview">
-		
-				{#if selectedKernel != null}
+			{#if selectedKernel != null}
+			<KernelPreview
+				selectedKernel={selectedKernel}
+				size={240}
+			/>
+			{:else}
+				{#each kernels as k,i}
 				<KernelPreview
-					selectedKernel={selectedKernel}
+					selectedKernel={i}
 					size={240}
+					absolute
+					off
 				/>
-				{:else}
-					{#each kernels as k,i}
-						{#if k.enabled}
-						<KernelPreview
-							selectedKernel={i}
-							size={240}
-							absolute
-							off
-						/>
-						{/if}
-					{/each}
-				{/if}
-			
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<div>
@@ -79,18 +75,15 @@
 			{#each $params.kernels as k,i}
 			{#if !edit || (edit && selectedKernel==i)}
 			<li
-				on:mouseenter={()=> !edit && (selectedKernel = k.enabled ? i : null)} 
+				on:mouseenter={()=> !edit && (selectedKernel = i)} 
 				on:mouseleave={()=> !edit && (selectedKernel = null)}
-				data-enabled={k.enabled}
 			>
 				<div>
-					<div style="{k.enabled ? `color: var(--color${i}); `: "filter:grayscale(1);"} ">Kernel {kernLetters[i]}</div>
+					<div style="color: var(--color${i});">Kernel {kernLetters[i]}</div>
 					{#if kernImg != null}
-
 					<KernelPreview
 						selectedKernel={i}
 						size={20}
-						off={!k.enabled}
 					/>
 					{/if}
 				</div>
@@ -98,11 +91,7 @@
 				{#if edit}
 					<button on:click={()=> edit = false}>Stop Editing</button>
 				{:else}
-					<Switch 
-						bind:value={k.enabled} 
-						on:click={() => selectedKernel=null}
-					/>
-					<button disabled={!k.enabled} on:click={()=> {edit = true; selectedKernel=i}}>Edit</button>	
+					<button on:click={()=> {edit = true; selectedKernel=i}}>Edit</button>	
 				 {/if}
 				</div>	
 			</li>
@@ -144,24 +133,17 @@
 		max-width: 400px;
 		
 	}
+
+	li:hover{
+		background-color:  var(--bg2);
+	}
+
 	li > div:first-child{
 		display: flex; 
 		gap: 10px;
 		align-items: center;
 	}
-	li[data-enabled="true"]:hover{
-		background-color:  var(--bg2);
-	}
-
-	li[data-enabled="false"]{
-		background-color: var(--bg3);
-	}
-
-	li[data-enabled="false"] .kern-img{
-		filter: grayscale(1) !important;
-	}
-
-
+	
 	.properties{
 		--kern-index:0;
 		--kern-size:10;

@@ -13,12 +13,7 @@
 	let height:number = 240;
 	let graphPath:string[] = [];
 	let selectedPoint:any = null;
-
 	let repaintTimer:any = 0;
-	
-
-
-
 	
 	$:[$params,selectedKernel], repaint();
 
@@ -26,8 +21,6 @@
 		clearTimeout(repaintTimer);
 		repaintTimer = setTimeout(() => {width = containerWidth;repaint();}, 100)
 	})();
-	
-	
 
 	function cleanUp()
 	{
@@ -101,8 +94,6 @@
 		repaint();
 	}
 
-
-
 	function repaint(){
 		const kernels = $params.kernels;
 		for(let j = 0; j < kernels.length; j++)
@@ -137,12 +128,10 @@
 
 		<svg class="main" viewBox="0 0 {width} {height}" >
 			{#each $params.kernels as k,i}
-				{#if k.enabled}
 				<path 
 					d={graphPath[i]} 
 					style={`--color: var(--color${i});`} 
 					stroke-opacity={(selectedKernel == i) ? 1 : (selectedKernel== null) ? 0.5 : 0.2}/>
-				{/if}
 			{/each}
 			
 			{#if selectedKernel != null && edit}

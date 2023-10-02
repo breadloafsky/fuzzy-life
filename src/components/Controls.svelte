@@ -1,14 +1,14 @@
 
 <script lang="ts">
 	import { onMount } from "svelte";
+	import {params, tempParams, callbacks} from "../stores";
+	import { utils } from "../utils";
 	import KernelCanvas from "./misc/KernelCanvas.svelte";
     import SectionContainer from "./ui/SectionContainer.svelte";
     import ConvolutionProperties from "./sections/simulation/ConvolutionProperties.svelte";
     import Rules from "./sections/simulation/Rules.svelte";
-	import {params, tempParams, callbacks} from "../stores";
     import ParametersSelection from "./sections/simulation/ParametersSelection.svelte";
-    import TextureSettings from "./sections/preferences/TextureSettings.svelte";
-    import { utils } from "../utils";
+    import TextureSettings from "./sections/preferences/TextureSettings.svelte"; 
     import Icon from "./ui/Icon.svelte";
     import GeneralSettings from "./sections/preferences/GeneralSettings.svelte";
 	
@@ -20,18 +20,19 @@
 	let timer:any = 0;	// timer for kernel reset
 	
 	const formatRules=()=>utils.formatRules($params, $tempParams);
+	const clear=(n:number)=>$tempParams.resetTexture = n+1;
+	const pause=()=>$tempParams.paused = ! $tempParams.paused;
+	
 	const updateKernels=()=>{
 		// update kernel texture
 		utils.updateKernels($params,$tempParams,kc); 
 		// set kernel texture with a small delay
 		clearTimeout(timer);
-		timer = setTimeout(() => {scene.setKernels($tempParams.kernelTexture, () => {
+		timer = setTimeout(() => { scene.setKernels($tempParams.kernelTexture, () => {
 					$tempParams.convRadius = $params.convRadius;	// update kernel radius
 		});}, 10)
 	};
 
-	const clear=(n:number)=>$tempParams.resetTexture = n+1;
-	const pause=()=>$tempParams.paused = ! $tempParams.paused;
 	
 	$callbacks.updateKernelTextures = updateKernels;
 	$:$params, formatRules();
@@ -49,10 +50,10 @@
 				case "Space":	// pause/play
 					pause();
 					break;
-				case "KeyC":	// clear the texture
+				case "KeyC":	// clear texture
 					clear(0);
 					break;
-				case "KeyX":	// fill the texture with gradient
+				case "KeyX":	// fill texture with pattern
 					clear(1);
 					break;
 			}
@@ -82,6 +83,7 @@
 		canvas.addEventListener("mouseenter",()=> $tempParams.brush.type = 1);
 		canvas.addEventListener("mouseleave",()=> $tempParams.brush.type = 0);
 	});
+
 </script>
 
 <KernelCanvas bind:this={kc}/>
@@ -95,6 +97,7 @@
 			</div>
 		</div>
 		<div class="params-body">
+			<!-- preferences -->
 			<div hidden={currentTab!=0}>
 				<SectionContainer label="General">
 					<GeneralSettings/>
@@ -103,6 +106,7 @@
 					<TextureSettings/>
 				</SectionContainer>
 			</div>
+			<!-- parameters -->
 			<div hidden={currentTab!=1}>
 				<SectionContainer label="Save / Load Parameters">
 					<ParametersSelection/>

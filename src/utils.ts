@@ -71,20 +71,15 @@ export const utils = {
 		for(let i = 0; i < params.rules.length; i++)
 		{
 			let s:number[] = [];
-			if(params.rules[i].enabled && Math.max(...params.rules[i].conditions.map((r,j) => r.enabled && params.kernels[j].enabled as any)))
+			if(params.rules[i].enabled)
 			{
 				for(let j = 0; j < params.kernels.length; j++){
-					if(params.kernels[j].enabled && params.rules[i].conditions[j].enabled)
-					{
 						s = s.concat(params.rules[i].conditions[j].thersholds)
 						s = s.concat(params.rules[i].conditions[j].slopes)
-					}	
-					else
-						s = s.concat(-0.5,1.5,0.1,0.1);
 				}
 			}
 			else
-				s = [0,0,0,0, 0,0,0,0, 0,0,0,0];
+				s = [0,0,0,0, 0,0,0,0];
 			tempParams.rules = tempParams.rules.concat(s);
 		}
 	},

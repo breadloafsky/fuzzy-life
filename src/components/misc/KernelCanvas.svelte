@@ -72,9 +72,6 @@
 		console.log("kernel rendering error");
 	}
 
-	
-
-
 </script>
 <div class="canvas-container">
 	<canvas

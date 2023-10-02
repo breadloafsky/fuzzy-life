@@ -2,7 +2,6 @@
 <script lang="ts">
     import RuleComponent from "./RuleComponent.svelte";
 	import {params} from "../../../stores";
-	const boolAsNum = (e:any):number => e;
 </script>
 
 <div>
@@ -10,15 +9,13 @@
 	<div class="rules-expression"  style="color: gray;">
 		{"max("}	
 		{#each  $params.rules as r,i}
-			{#if r.enabled && Math.max(...r.conditions.map((r,j) => boolAsNum(r.enabled && $params.kernels[j].enabled)))}
+			{#if r.enabled}
 				<div style="padding-left: 20px;">
 					{"min("}
 					{#each $params.kernels as k,j}
-						{#if k.enabled && $params.rules[i].conditions[j].enabled}
-							<span style="color:var(--color{j});">
-								{["A","B","C","D"][j]+i}
-							</span>
-						{/if}
+						<span style="color:var(--color{j});">
+							{["A","B","C","D"][j]+i}
+						</span>
 					{/each}
 					{")"}
 				</div>

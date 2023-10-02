@@ -26,10 +26,10 @@
 	
 	<ParameterContainer vertical label="Anti-Aliasing Blur">
 		<input 
-			bind:value={$settings.aa}  
+			bind:value={$settings.blur}  
 			type="range"  step="1" min="1" max="4" 
 		/>
-		<div>{$settings.aa == 1 ? "off" : $settings.aa+"x"}</div>
+		<div>{$settings.blur == 1 ? "off" : $settings.blur+"x"}</div>
 	</ParameterContainer>
 	
 	<ParameterContainer label="Flickering Reduction">

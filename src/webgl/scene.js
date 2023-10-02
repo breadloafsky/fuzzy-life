@@ -176,7 +176,7 @@ Scene.prototype.drawScene = function (process)  {
 	gl.useProgram(shader.program);
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-		gl.uniform1iv(shader.uniforms.uPostProcessing.location, [this.settings.aa, this.settings.frameSmoothing]);
+		gl.uniform1iv(shader.uniforms.uPostProcessing.location, [this.settings.blur, this.settings.frameSmoothing]);
 		gl.uniform1i(shader.uniforms.uGradient.location, this.settings.gradient);
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);

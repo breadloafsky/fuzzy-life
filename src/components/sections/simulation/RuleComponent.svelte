@@ -24,57 +24,52 @@
 			ruleId={ruleId}
 		/>
 		{#each $params.kernels as r,i}
-			{#if $params.kernels[i].enabled}
-				<div
-					on:mouseenter={()=>highlightedKernel = i}
-					on:mouseleave={()=>highlightedKernel = null}
-				 	class="subcondition" 
-				 	style="border-color:var(--color{i});"
-				 >
-					<div style="display: flex; justify-content: space-between;  padding:4px;">
-						<div style="color:var(--color{i});">{["A","B","C","D"][i]} {ruleId}</div>
-						<Switch bind:value={$params.rules[ruleId].conditions[i].enabled}/>
-					</div>
-
-					{#if $params.rules[ruleId].conditions[i].enabled && $params.kernels[i].enabled}
-						<DoubleRange bind:val0={$params.rules[ruleId].conditions[i].thersholds[0]} bind:val1={$params.rules[ruleId].conditions[i].thersholds[1]} color="var(--color{i})"/>
-						<div class="input_fields">
-							<NumberInput 
-								bind:value={$params.rules[ruleId].conditions[i].thersholds[0]}  
-								step={0.001} 
-								min={0.0} 
-								max={$params.rules[ruleId].conditions[i].thersholds[1]}
-							/>
-							<hr/>
-							<div style="color:var(--color{i});">thresholds</div>
-							<hr/>
-							<NumberInput 
-								bind:value={$params.rules[ruleId].conditions[i].thersholds[1]}  
-								step={0.001} 
-								min={$params.rules[ruleId].conditions[i].thersholds[0]} 
-								max={1.0}
-							/>
-						</div>
-						<div class="input_fields">
-							<NumberInput 
-								bind:value={$params.rules[ruleId].conditions[i].slopes[0]}  
-								step={0.01} 
-								min={0.001} 
-								max={1.0}
-							/>
-							<hr/>
-							<div style="color:var(--color{i});">slopes</div>
-							<hr/>
-							<NumberInput 
-								bind:value={$params.rules[ruleId].conditions[i].slopes[1]}  
-								step={0.01} 
-								min={0.001} 
-								max={1.0}
-							/>
-						</div>
-					{/if}
+			<div
+				on:mouseenter={()=>highlightedKernel = i}
+				on:mouseleave={()=>highlightedKernel = null}
+				class="subcondition" 
+				style="border-color:var(--color{i});"
+				>
+				<div style="display: flex;  padding:4px;">
+					<div style="color:var(--color{i});">{["A","B"][i]} {ruleId}</div>
 				</div>
-			{/if}
+
+				<DoubleRange bind:val0={$params.rules[ruleId].conditions[i].thersholds[0]} bind:val1={$params.rules[ruleId].conditions[i].thersholds[1]} color="var(--color{i})"/>
+				<div class="input_fields">
+					<NumberInput 
+						bind:value={$params.rules[ruleId].conditions[i].thersholds[0]}  
+						step={0.001} 
+						min={0.0} 
+						max={$params.rules[ruleId].conditions[i].thersholds[1]}
+					/>
+					<hr/>
+					<div style="color:var(--color{i});">thresholds</div>
+					<hr/>
+					<NumberInput 
+						bind:value={$params.rules[ruleId].conditions[i].thersholds[1]}  
+						step={0.001} 
+						min={$params.rules[ruleId].conditions[i].thersholds[0]} 
+						max={1.0}
+					/>
+				</div>
+				<div class="input_fields">
+					<NumberInput 
+						bind:value={$params.rules[ruleId].conditions[i].slopes[0]}  
+						step={0.01} 
+						min={0.001} 
+						max={1.0}
+					/>
+					<hr/>
+					<div style="color:var(--color{i});">slopes</div>
+					<hr/>
+					<NumberInput 
+						bind:value={$params.rules[ruleId].conditions[i].slopes[1]}  
+						step={0.01} 
+						min={0.001} 
+						max={1.0}
+					/>
+				</div>
+			</div>
 		{/each}
 	</div>
 	{/if}
@@ -84,9 +79,8 @@
 	h3{
 		margin: 0;
 	}
-	[ data-enabled="false"] h3{
+	[data-enabled="false"] h3{
 		color:#636363
-
 	}
 	hr{
 		width: 100%;
@@ -96,9 +90,7 @@
 	}
 	
 	.condition-container{
-
 		margin-inline: 0px;
-
 	}
 
 	.header{
