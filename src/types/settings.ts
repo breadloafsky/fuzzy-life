@@ -6,5 +6,4 @@ export class Settings {
 	textureFilter:number=1;					// WebGL interpolation ( GL_LINEAR, GL_NEAREST )
 	blur:number=2;							// anti-aliasing blur
 	frameSmoothing:number=1;				// interframe smoothing
-	gradient:number=0;						// colouring gradient
 }

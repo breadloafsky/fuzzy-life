@@ -1,7 +1,7 @@
 
 <script lang="ts">
 	import { onMount } from "svelte";
-	import {params, tempParams, callbacks} from "../stores";
+	import {params, tempParams, callbacks, scene} from "../stores";
 	import { utils } from "../utils";
 	import KernelCanvas from "./misc/KernelCanvas.svelte";
     import SectionContainer from "./ui/SectionContainer.svelte";
@@ -11,9 +11,9 @@
     import TextureSettings from "./sections/preferences/TextureSettings.svelte"; 
     import Icon from "./ui/Icon.svelte";
     import GeneralSettings from "./sections/preferences/GeneralSettings.svelte";
+    import GradientSettings from "./sections/preferences/GradientSettings.svelte";
 	
 	export let canvas : HTMLCanvasElement;
-	export let scene:any;
 	let kc:KernelCanvas;	// an auxiliary canvas that renders kernel textures
 	let paramsHidden = false;
 	let currentTab = 1;
@@ -22,13 +22,15 @@
 	const formatRules=()=>utils.formatRules($params, $tempParams);
 	const clear=(n:number)=>$tempParams.resetTexture = n+1;
 	const pause=()=>$tempParams.paused = ! $tempParams.paused;
+
+
 	
 	const updateKernels=()=>{
 		// update kernel texture
 		utils.updateKernels($params,$tempParams,kc); 
 		// set kernel texture with a small delay
 		clearTimeout(timer);
-		timer = setTimeout(() => { scene.setKernels($tempParams.kernelTexture, () => {
+		timer = setTimeout(() => { $scene.setKernels($tempParams.kernelTexture, () => {
 					$tempParams.convRadius = $params.convRadius;	// update kernel radius
 		});}, 10)
 	};
@@ -104,6 +106,9 @@
 				</SectionContainer>
 				<SectionContainer label="Texture & Graphics">
 					<TextureSettings/>
+				</SectionContainer>
+				<SectionContainer label="Colour Gradient">
+					<GradientSettings/>
 				</SectionContainer>
 			</div>
 			<!-- parameters -->

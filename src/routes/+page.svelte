@@ -7,7 +7,6 @@
     import Warning from "../components/misc/Warning.svelte";
     import MobileInfo from "../components/misc/MobileInfo.svelte";
 
-	
 	let isLoaded = false;
 	let isMobile = false;
 

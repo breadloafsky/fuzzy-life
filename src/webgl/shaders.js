@@ -7,9 +7,9 @@ export const shaders ={
 		},
 		uniforms: {
 			uSampler: {value:null},
+			uGradient:{value:null},		// gradient
 			uTextureDims:{value:null},
-			uGradient:{value:null},	// colouring
-			uBrush:{value:null},	// paint brush
+			uBrush:{value:null},		// paint brush
 			uPostProcessing:{value:null},	// post-processing values
 		},
 	},
@@ -19,7 +19,6 @@ export const shaders ={
 		attributes: {
 			aTextureCoord: {value:null},
 			aVertexPosition: {value:null},
-			
 		},
 		uniforms: {
 			uSampler: {value:null},	

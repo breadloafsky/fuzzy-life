@@ -33,6 +33,7 @@ export function Scene(canvas, shaders, params, tempParams, settings) {
 	this.fb = [];	//	frame buffers
 	this.textures = [];
 	this.kern = {};	//kernel texture
+	this.gradient = {} // colour gradient texture
 	this.shaders = shaders;
 	const glParams = {
 		premultipliedAlpha: false, 
@@ -64,13 +65,16 @@ Scene.prototype.init = function(){
 	// create kernel textures
 
 	this.kern = gl.createTexture();
-	glUtils.loadTexture(gl, [64,64], this.kern);
+	glUtils.resetTexture(gl, [64,64], this.kern);
+
+	this.gradient = gl.createTexture();
+	glUtils.resetTexture(gl, [16,16], this.gradient);
 	
 	// create main textures and framebuffers
 	for(let i = 0; i < 2; i++)
 	{
 		const texture = gl.createTexture();
-		glUtils.loadTexture(gl, textureDims, texture, this.settings.textureFilter);
+		glUtils.resetTexture(gl, textureDims, texture, this.settings.textureFilter);
 		this.textures.push(texture);
 		const fb  = gl.createFramebuffer();
 		this.fb.push(fb);
@@ -100,7 +104,7 @@ Scene.prototype.resize = function(){
 	];
 	// update texture size
 	this.textures.forEach((tex,i) => {
-		glUtils.loadTexture(this.gl, textureDims, tex, this.settings.textureFilter);
+		glUtils.resetTexture(this.gl, textureDims, tex, this.settings.textureFilter);
 	});
 }
 
@@ -115,10 +119,11 @@ Scene.prototype.setTextureFilter = function(){
 
 
 Scene.prototype.setKernels = function(url, callback){
-	glUtils.loadKernel(this.gl, [64,64], this.kern,url, callback);
+	glUtils.loadTexture(this.gl, [64,64], this.kern,url, callback);
 }
-
-
+Scene.prototype.setGradient = function(url){
+	glUtils.loadTexture(this.gl, [64,64], this.gradient,url);
+}
 
 let fbCurrent = 0;
 
@@ -154,10 +159,13 @@ Scene.prototype.drawScene = function (process)  {
 		gl.uniform1i(shader.uniforms.isPaused.location, this.tempParams.paused || !process);
 		gl.uniform1i(shader.uniforms.uReset.location, this.tempParams.resetTexture);		
 		
-		gl.uniform1i(shader.uniforms.uSampler.location, 0);  // texture unit 0
-		gl.uniform1i(shader.uniforms.uKern.location, 1);  // texture unit 0
+		
 
 		gl.bindFramebuffer(gl.FRAMEBUFFER, fb[fbCurrent]);
+
+		//set texture units
+		gl.uniform1i(shader.uniforms.uSampler.location, 0);  
+		gl.uniform1i(shader.uniforms.uKern.location, 1);  
 
 		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, this.kern); // bind kernel texture
@@ -177,9 +185,18 @@ Scene.prototype.drawScene = function (process)  {
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 		gl.uniform1iv(shader.uniforms.uPostProcessing.location, [this.settings.blur, this.settings.frameSmoothing]);
-		gl.uniform1i(shader.uniforms.uGradient.location, this.settings.gradient);
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+		//set texture units
+		gl.uniform1i(shader.uniforms.uSampler.location, 0);  
+		gl.uniform1i(shader.uniforms.uGradient.location, 1);  
+
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, this.gradient); // bind gradient texture
+		gl.viewport(0, 0, 64,64);
+
+		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, this.textures[1-fbCurrent]);
 		gl.viewport(0, 0, screen[0],screen[1]);	 
 		drawScreen(gl);

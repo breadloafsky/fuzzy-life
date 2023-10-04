@@ -9,6 +9,7 @@ export class TempParams{
 	rules:number[] = [0];
 	kernelTexture:any=null;		// kernel RGB texture
 	kernelsPreview:any=null;	// preview textures
+	gradientTexture:any=null;
 	resetTexture:number=0;		// tells the shader if reset (1) or filling with the gradient (2) is needed	
 	paused:boolean=false;
 	brush:Brush = new Brush;		//	[x, y, radius(in pixels), type]	

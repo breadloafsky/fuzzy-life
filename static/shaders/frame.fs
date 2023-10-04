@@ -18,9 +18,6 @@ uniform float uBrush[4];
 uniform int isPaused;
 
 
-
-
-
 highp vec4 getPixel(mediump vec2 coord, float offsetX, float offsetY){
     coord.x = mod( coord.x	+ offsetX + 1.0, 1.0);
     coord.y = mod( coord.y	+ offsetY + 1.0, 1.0);
@@ -100,17 +97,15 @@ float processPixel(){
 }
 
 void main(void) {
-
     mediump vec4 tex = texture2D(uSampler, vTextureCoord);
-
     // get the next state
     if(isPaused == 0){
         float d = processPixel(); 
         tex.g = tex.r;  // shift the channels (needed for flickering reduction)
-        tex.r = clamp(tex.r + ((d*2.-1.) * uDelta), 0.0, 1.0);
+        tex.r = clamp(tex.r + (2.*(d-.5) * uDelta), 0.0, 1.0);
         //tex.b = max(tex.r, tex.b-0.05);
     }
-        
+    
     //draw
     if(uBrush[3] > 1.){
         vec2 pos = vec2((vTextureCoord.x-uBrush[0])*uTextureDims[0],(vTextureCoord.y-uBrush[1])*uTextureDims[1]);

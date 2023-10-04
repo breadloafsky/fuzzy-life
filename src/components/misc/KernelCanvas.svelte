@@ -80,7 +80,6 @@
 		height={size}
 		bind:this={canvas} 
 	/>
-	
 </div>
 	
 

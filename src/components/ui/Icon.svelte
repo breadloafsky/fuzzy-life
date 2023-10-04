@@ -2,9 +2,10 @@
 <script lang="ts">
 	export let color = "#a8a8a8";
 	export let name = "";
+    export let absolute = false;
 </script>
 
-<div class="icon" style={`--icon: url("/icons/${name}.svg"); background-color:${color};`}/>
+<div class="icon" style={`--icon: url("/icons/${name}.svg"); background-color:${color};${absolute && "position:absolute;"}`}/>
 
 <style>
 

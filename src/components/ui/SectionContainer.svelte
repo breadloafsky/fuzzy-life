@@ -22,7 +22,7 @@
 
 .header{
 	color: var(--h0);
-	z-index: 3;
+	z-index: 4;
 	position: sticky;
 	background-color: var(--bg2);
 	top: 0;
@@ -34,7 +34,7 @@
 .body {
 	background-color: var(--bg1);
 	padding: 10px;
-	padding-bottom: 0px;
+
 }
 .body > :global(div > div){
 	padding-block: 15px;

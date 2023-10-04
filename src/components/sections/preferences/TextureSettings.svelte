@@ -9,7 +9,7 @@
 	<ParameterContainer 
 		vertical 
 		label="Texture Size"
-		warning="Large texture size and kernel size can affect performance"
+		warning="Large texture and kernel size may affect performance"
 	>
 		<input 
 			bind:value={$settings.textureSize} on:change={() => $callbacks.resizeTexture()}  
@@ -35,13 +35,6 @@
 	<ParameterContainer label="Flickering Reduction">
 		<Switch 
 			bind:value={$settings.frameSmoothing}/>
-	</ParameterContainer>
-	
-	<ParameterContainer label="Colour Gradient">
-		<select bind:value={$settings.gradient}>
-			<option value={0}>RGB</option>
-			<option value={1}>B&W</option>
-		</select>	  
 	</ParameterContainer>
 </div>
 

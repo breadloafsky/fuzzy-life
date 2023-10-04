@@ -8,7 +8,7 @@ https://fuzzy-life.netlify.app
 
 The application is based on the SmoothLife paper (https://arxiv.org/abs/1111.1567) with some additions:
 
-- Instead neighbourghood fillings, the application uses two weighted averages of a convolution integral of the area and a kernel within the radius ***r*** :\
+- Instead of neighbourghood fillings, the application uses two weighted averages of a convolution integral of the area and a kernel within the radius ***r*** :\
 \
 ![equation](https://github.com/breadloafsky/fuzzy-life/blob/master/res/eq0.png?raw=true)
 

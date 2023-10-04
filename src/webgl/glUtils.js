@@ -84,8 +84,8 @@ export const glUtils = {
 		shaders.frame.attributes.aVertexPosition.value = positionBuffer;
 	},	
 
-	// load main textures
-	loadTexture: function(gl, dims, textureP, filtering = 0) {
+	// load empty texture
+	resetTexture: function(gl, dims, textureP, filtering = 0) {
 		gl.bindTexture(gl.TEXTURE_2D, textureP);
 		const level = 0;
 		const internalFormat = gl.RGB;
@@ -116,8 +116,8 @@ export const glUtils = {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtering  == 0 ? gl.NEAREST : gl.LINEAR);	
 		
 	},
-	// load kernel
-	loadKernel: function(gl, dims, textureP, url, callback=()=>{}){
+	// load kernel or gradient
+	loadTexture: function(gl, dims, textureP, url, callback=()=>{}){
 
 		gl.bindTexture(gl.TEXTURE_2D, textureP);
 		const level = 0;
@@ -139,7 +139,14 @@ export const glUtils = {
 				srcType,
 				image,
 			);
-			gl.generateMipmap(gl.TEXTURE_2D);
+
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+			// gl.LINEAR gl.NEAREST
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);	
+			//gl.generateMipmap(gl.TEXTURE_2D);
 			callback();
 		};
 		image.src = url;

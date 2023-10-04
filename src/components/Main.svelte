@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from "svelte";
    	import { Scene } from "../webgl/scene.js";
-	import { params, callbacks, settings, tempParams } from "../stores"
+	import { params, callbacks, settings, tempParams, scene } from "../stores"
     import Controls from "../components/Controls.svelte";
     import ToolTip from "./ui/ToolTip.svelte";
 	export let shaders:any;
 	let canvas : HTMLCanvasElement; 
-	let scene : Scene;
 	let previousTime = 0;
 
 	$callbacks.resizeTexture = () => resize();
-	$callbacks.setTextureFilter = () => scene.setTextureFilter();
+	$callbacks.setTextureFilter = () => $scene.setTextureFilter();
 
 
 
@@ -21,7 +20,7 @@
 	// })()
 
 	onMount(() => {
-		scene = new Scene(canvas, shaders, $params, $tempParams, $settings);	//init scene
+		$scene = new Scene(canvas, shaders, $params, $tempParams, $settings);	//init scene
 		window.addEventListener("resize",resize);
 		resize();
 		requestAnimationFrame(update);
@@ -29,7 +28,7 @@
 
 	// reset the textures to the new size
 	function resize(){
-		scene.resize();
+		$scene.resize();
 		setTimeout(function() {
 			$tempParams.resetTexture = 2;	// gradient fill
 		}, 1);
@@ -41,7 +40,7 @@
 		const delta = time - previousTime;
 		// limit fps
 		const process = (delta > 1000 / $settings.fpsLimit);
-		scene.drawScene(process);
+		$scene.drawScene(process);
 		if (!process)
 			return;
 		$tempParams.resetTexture = 0;
@@ -52,8 +51,8 @@
 
 <ToolTip/>
 <div style="display: flex; overflow: hidden;">
-	{#if canvas && scene}
-		<Controls bind:canvas bind:scene/>
+	{#if canvas && $scene}
+		<Controls bind:canvas/>
 	{/if}
    	<!-- svelte-ignore a11y-no-static-element-interactions -->
    	<div class="canvas-container"  

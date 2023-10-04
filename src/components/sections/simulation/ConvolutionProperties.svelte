@@ -2,13 +2,11 @@
 <script  lang="ts">
     import KernelGraph from "../../graphs/KernelGraph.svelte";
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
-	import Switch from "../../input/Switch.svelte";
 	import {params ,callbacks, tempParams} from "../../../stores";
     import KernelPreview from "../../ui/KernelPreview.svelte";
 	
 	let edit:boolean = false;
 	let selectedKernel:number|any = null;
-	const kernLetters=["A","B"];
 
 	$:kernImg = $tempParams.kernelsPreview;
 	$:kernels = $params.kernels;
@@ -30,14 +28,14 @@
 
 	<ParameterContainer vertical 
 		label="Kernel Radius"
-		warning="Large kernel size and texture size can affect performance"
+		warning="Large kernel and texture size may affect performance"
 	>
 		<input bind:value={$params.convRadius} on:input={$callbacks.updateKernelTextures} type="range"  name="convRadius"  step="1" min="2" max="32" />
 		<div>{convRadius}px</div>
 	</ParameterContainer>
 
 	<div>
-		<div>Kernel Preview ({selectedKernel==null ? "Combined":"Kernel "+kernLetters[selectedKernel]})</div>
+		<div>Kernel Preview ({selectedKernel==null ? "Combined":"Kernel "+["A","B"][selectedKernel]})</div>
 		<div class="preview">
 			{#if selectedKernel != null}
 			<KernelPreview
@@ -58,12 +56,15 @@
 	</div>
 	<div>
 		<div>Kernel Editor</div>
+			<p>
+				Kernel cross-section:
+			</p>
 			<KernelGraph
 				edit={edit}
 				selectedKernel={selectedKernel}
 			/>
 			
-			<p style="color: #b6b6b6; text-align: center;">
+			<p>
 				{#if edit}
 				{"LMB - add/move point, RMB - remove point"}
 				{:else}
@@ -79,7 +80,7 @@
 				on:mouseleave={()=> !edit && (selectedKernel = null)}
 			>
 				<div>
-					<div style="color: var(--color${i});">Kernel {kernLetters[i]}</div>
+					<div style="color: var(--color${i});">Kernel {["A","B"][i]}</div>
 					{#if kernImg != null}
 					<KernelPreview
 						selectedKernel={i}
