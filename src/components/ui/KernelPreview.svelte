@@ -1,24 +1,22 @@
 
 <script lang="ts">
-    import { tempParams } from "../../stores";
-	export let selectedKernel:number;
+	export let kernel:any;
+	export let i:any;
 	export let size:number;
 	export let off = false;
 	export let absolute = false;
 	const hue:number[]=[50, 200, 270];
-	
 </script>
 
 <div 
 	class="kern-img"
 	style="
 		{absolute ? "position:absolute;" : ""}
-		--kern-img:url({$tempParams.kernelsPreview[selectedKernel]}); 
+		--kern-img:url({kernel}); 
 		--size:{size}px;
 		
-		{off ? "opacity: 0.2; filter:grayscale(1.0);": "filter:hue-rotate("+hue[selectedKernel]+"deg);"}"
-		
-/>
+		{off ? "opacity: 0.2; filter:grayscale(1.0);": "filter:hue-rotate("+hue[i]+"deg);"}"
+	/>
 
 <style>
 .kern-img {

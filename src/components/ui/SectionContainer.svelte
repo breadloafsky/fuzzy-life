@@ -27,13 +27,13 @@
 	background-color: var(--bg2);
 	top: 0;
 	padding: 10px;
-	transform:translateY(2);
+
 	margin: 0;
 }
 
 .body {
 	background-color: var(--bg1);
-	padding: 10px;
+	padding-inline: 10px;
 
 }
 .body > :global(div > div){

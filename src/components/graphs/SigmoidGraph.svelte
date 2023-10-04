@@ -1,6 +1,6 @@
 
 <script lang="ts">
-	import { params } from "../../stores";
+	import { kernels, rules } from "../../stores";
     import Coordinates from "./Coordinates.svelte";
 	export let ruleId:number;
 	export let highlightedKernel:any;
@@ -25,7 +25,7 @@
 	}
 	
 	
-	$:$params, repaint();
+	$:$rules, repaint();
 	$:containerWidth, (()=>{
 		clearTimeout(repaintTimer);
 		repaintTimer = setTimeout(() => {width = containerWidth;repaint();}, 100)
@@ -34,17 +34,17 @@
 	
 	function repaint(){
 		graphPath = [];
-		for(let i = 0; i < $params.kernels.length; i++)
+		for(let i = 0; i < $kernels.length; i++)
 		{
 			graphPath[i] = `M -10 ${height} `;
 			for(let j = 0; j < width; j++){
 				graphPath[i]+=`L ${j} ${ 
 					getY(	
 						j/width,
-							$params.rules[ruleId].conditions[i].thersholds[0], 
-							$params.rules[ruleId].conditions[i].thersholds[1],
-							$params.rules[ruleId].conditions[i].slopes[0],
-							$params.rules[ruleId].conditions[i].slopes[1], 
+							$rules[ruleId].conditions[i].thersholds[0], 
+							$rules[ruleId].conditions[i].thersholds[1],
+							$rules[ruleId].conditions[i].slopes[0],
+							$rules[ruleId].conditions[i].slopes[1], 
 						)
 					*height} `;
 			}

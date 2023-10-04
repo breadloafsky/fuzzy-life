@@ -1,14 +1,18 @@
 
 <script lang="ts">
-    import { onMount } from "svelte";
-	import { params, callbacks, tempParams, presets } from "../../../stores";	
+	import { kernRadius, kernels, presets, rules, scene } from "../../../stores";	
 	import ParameterContainer from "../../ui/ParameterContainer.svelte";
     import Icon from "../../ui/Icon.svelte";
     import type { Params } from "../../../types/params";
+    import { onMount } from "svelte";
 
 	let fileInput:HTMLInputElement|any;
 	let expanded = false;
 
+
+	onMount(()=>{
+		setScene($presets[0]);
+	});
 
 	// remove unnecessary properties
 	function filterProperty(k:any,v:any){
@@ -16,10 +20,17 @@
 			return undefined;
 		return v;
 	}
-	
+
 	// save scene parameters to file
 	function saveScene() {
-    	var file = new Blob([JSON.stringify({...$params},filterProperty,"\t")], {type: "json"});
+    	var file = new Blob([JSON.stringify(
+			{
+				kernels:$kernels,
+				rules:$rules,
+				kernRadius:$kernRadius,
+				dt:$scene.dt,
+			}
+		,filterProperty,"\t")], {type: "json"});
 		var a = document.createElement("a"),
 				url = URL.createObjectURL(file);
 		a.href = url;
@@ -49,13 +60,15 @@
 
 	// set the current scene parameters
 	function setScene(params:Params|any) {
-		Object.assign($params, structuredClone(params));
-		$callbacks.updateKernelTextures();
-		$tempParams.resetTexture = 2;
-		$params = $params;
+		const p = structuredClone(params);
+		Object.assign($kernels,p.kernels);
+		Object.assign($rules,p.rules);
+		$kernels = $kernels;
+		$rules = $rules;
+		$scene.dt = p.dt;
+		$kernRadius = p.kernRadius;
+		setTimeout(() => $scene.resetTexture = 2, 10);	//	pattern fill
 	}
-
-
 
 </script>
 <div>

@@ -2,7 +2,7 @@
 	import "../app.css"
 	import { onMount } from "svelte";
 	import { shaders } from "../webgl/shaders";
-	import { presets, params } from "../stores";
+	import { presets } from "../stores";
 	import Main from "../components/Main.svelte";
     import Warning from "../components/misc/Warning.svelte";
     import MobileInfo from "../components/misc/MobileInfo.svelte";
@@ -41,8 +41,6 @@
 		}
 		//	preload presets
 		$presets = await( await fetch("presets.json") ).json();
-		//	set the first preset as default
-		Object.assign($params, structuredClone($presets[0]));
 		isLoaded = true;
 	});
 

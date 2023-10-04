@@ -1,51 +1,33 @@
 <script lang="ts">
 	import { onMount } from "svelte";
    	import { Scene } from "../webgl/scene.js";
-	import { params, callbacks, settings, tempParams, scene } from "../stores"
+	import { scene, fpsLimit } from "../stores"
     import Controls from "../components/Controls.svelte";
     import ToolTip from "./ui/ToolTip.svelte";
 	export let shaders:any;
 	let canvas : HTMLCanvasElement; 
 	let previousTime = 0;
 
-	$callbacks.resizeTexture = () => resize();
-	$callbacks.setTextureFilter = () => $scene.setTextureFilter();
-
-
-
-	// save settings in the local storage
-	// $:$settings,(()=>{
-	// 	if(localStorage && $settings.saveSettings)
-	// 		localStorage.setItem("settings",JSON.stringify($settings));
-	// })()
 
 	onMount(() => {
-		$scene = new Scene(canvas, shaders, $params, $tempParams, $settings);	//init scene
-		window.addEventListener("resize",resize);
-		resize();
+		$scene = new Scene(canvas, shaders);	//init scene
+		window.addEventListener("resize",()=>$scene.resize());	
+		$scene.resize();
 		requestAnimationFrame(update);
 	});
 
-	// reset the textures to the new size
-	function resize(){
-		$scene.resize();
-		setTimeout(function() {
-			$tempParams.resetTexture = 2;	// gradient fill
-		}, 1);
-	}
-
+	
 	// main loop
 	function update(time:number){
 		requestAnimationFrame(update);
 		const delta = time - previousTime;
 		// limit fps
-		const process = (delta > 1000 / $settings.fpsLimit);
+		const process = (delta > 1000 / $fpsLimit);
 		$scene.drawScene(process);
 		if (!process)
 			return;
-		$tempParams.resetTexture = 0;
 		previousTime = time;
-   }
+   	}
 
 </script>
 

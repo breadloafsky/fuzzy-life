@@ -2,7 +2,7 @@
 <script lang="ts">
 	import {utils} from "../../utils";
 
-	import {params, callbacks} from "../../stores";
+	import {kernRadius, kernels} from "../../stores";
     import Coordinates from "./Coordinates.svelte";
 	export let selectedKernel:number|any;
 	export let edit:boolean;
@@ -15,7 +15,7 @@
 	let selectedPoint:any = null;
 	let repaintTimer:any = 0;
 	
-	$:[$params,selectedKernel], repaint();
+	$:[$kernels,selectedKernel], repaint();
 
 	$:containerWidth, (()=>{
 		clearTimeout(repaintTimer);
@@ -27,7 +27,6 @@
 		document.removeEventListener("mousemove", handleMouseMove);
 		document.removeEventListener("mouseup", cleanUp);
 		selectedPoint = null;
-		$callbacks.updateKernelTextures();	// update the kernel texture
 	}
 
 	function getMousePos(e:MouseEvent){
@@ -48,7 +47,6 @@
 	}
 
 	function handleMouseDown(e:MouseEvent){
-		const kernels = $params.kernels;
 		if(selectedKernel != null)
 		{
 			// add/move point
@@ -57,20 +55,19 @@
 				document.addEventListener("mouseup", cleanUp);
 				let pos = getMousePos(e);
 				// add point
-				if(selectedPoint == null && kernels[selectedKernel].points.length < 16)
+				if(selectedPoint == null && $kernels[selectedKernel].points.length < 16)
 				{
 					selectedPoint = [pos[0],1-pos[1]];
-					kernels[selectedKernel].points.push(selectedPoint);
+					$kernels[selectedKernel].points.push(selectedPoint);
 				}
 		
 				handleMouseMove(e);
 			}
 			// delete point
-			else if(e.button == 2 && selectedPoint != null && kernels[selectedKernel].points.length > 1)
+			else if(e.button == 2 && selectedPoint != null && $kernels[selectedKernel].points.length > 1)
 			{
-				kernels[selectedKernel].points.splice(kernels[selectedKernel].points.findIndex(p => p == selectedPoint), 1);
+				$kernels[selectedKernel].points.splice($kernels[selectedKernel].points.findIndex(p => p == selectedPoint), 1);
 				selectedPoint = null;
-				$callbacks.updateKernelTextures();	// update the kernel texture
 				repaint();
 			}
 				
@@ -78,16 +75,15 @@
 	}
 
 	function handleMouseMove(e:MouseEvent){
-		const kernels = $params.kernels;
 		if(selectedKernel != null && selectedPoint != null)
 		{
 			let pos = getMousePos(e);
 			//	replace the point coordinates
-			let pid = kernels[selectedKernel].points.findIndex(p => p == selectedPoint);
+			let pid = $kernels[selectedKernel].points.findIndex(p => p == selectedPoint);
 			selectedPoint=[pos[0],1-pos[1]];
-			kernels[selectedKernel].points[pid] = selectedPoint;
+			$kernels[selectedKernel].points[pid] = selectedPoint;
 			// sort the points
-			kernels[selectedKernel].points.sort((a, b) => {
+			$kernels[selectedKernel].points.sort((a, b) => {
 				return a[0] - b[0];
 			});
 		}
@@ -95,16 +91,15 @@
 	}
 
 	function repaint(){
-		const kernels = $params.kernels;
-		for(let j = 0; j < kernels.length; j++)
+		for(let j = 0; j < $kernels.length; j++)
 		{
 			graphPath[j] = `M ${-100} ${height} `;
 			for(let i = 0; i < width; i++){
-				graphPath[j]+=`L ${i} ${ (1-utils.getKernelValue($params.kernels[j],i/width))*height} `;
+				graphPath[j]+=`L ${i} ${ (1-utils.getKernelValue($kernels[j],i/width))*height} `;
 			}
 			graphPath[j] += `L ${width+100} ${height} `;
 		}
-		$params = $params;
+		$kernels = $kernels;	// update
 	}
 
 </script>
@@ -118,16 +113,16 @@
 		<Coordinates
 			width={width}
 			height={height}
-			x={$params.convRadius}
+			x={$kernRadius}
 			y={1}
-			xDiv={$params.convRadius}
+			xDiv={$kernRadius}
 			yDiv={4}
 			xName="radius (px)"
 			yName="kernel value"
 		/>
 
 		<svg class="main" viewBox="0 0 {width} {height}" >
-			{#each $params.kernels as k,i}
+			{#each $kernels as k,i}
 				<path 
 					d={graphPath[i]} 
 					style={`--color: var(--color${i});`} 
@@ -135,7 +130,7 @@
 			{/each}
 			
 			{#if selectedKernel != null && edit}
-				{#each $params.kernels[selectedKernel].points as p,i}
+				{#each $kernels[selectedKernel].points as p,i}
 					<circle 
 						cx={width*p[0]} 
 						cy={height*(1-p[1])} 

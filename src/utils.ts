@@ -1,6 +1,4 @@
-import type KernelCanvas from "./components/misc/KernelCanvas.svelte";
-import type { Kernel, Params } from "./types/params";
-import type { TempParams } from "./types/tempParams";
+import type { Kernel, Rule } from "./types/params";
 
 export const utils = {
 	// calculate Catmull–Rom spline value
@@ -66,26 +64,22 @@ export const utils = {
 		return [pts, dists, count];
 	},
 	// format rules into 1d array
-	formatRules: function(params:Params, tempParams:TempParams){
-		tempParams.rules = [];
-		for(let i = 0; i < params.rules.length; i++)
+	formatRules: function(rules:Rule[]):number[]{
+		let result:number[] = [];
+		for(let i = 0; i < rules.length; i++)
 		{
 			let s:number[] = [];
-			if(params.rules[i].enabled)
+			if(rules[i].enabled)
 			{
-				for(let j = 0; j < params.kernels.length; j++){
-						s = s.concat(params.rules[i].conditions[j].thersholds)
-						s = s.concat(params.rules[i].conditions[j].slopes)
+				for(let j = 0; j < 2; j++){
+						s = s.concat(rules[i].conditions[j].thersholds)
+						s = s.concat(rules[i].conditions[j].slopes)
 				}
 			}
 			else
 				s = [0,0,0,0, 0,0,0,0];
-			tempParams.rules = tempParams.rules.concat(s);
+			result = result.concat(s);
 		}
-	},
-	// regenerate kernel textures
-	updateKernels: function(params:Params, tempParams:TempParams, kc:KernelCanvas):any{
-		tempParams.kernelTexture = kc.renderTexture(params.kernels, params.convRadius);
-		tempParams.kernelsPreview = kc.renderPreview(params.kernels, params.convRadius);
+		return result;
 	},
 };

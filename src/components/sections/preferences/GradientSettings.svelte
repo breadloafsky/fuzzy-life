@@ -3,7 +3,6 @@
     import { onMount } from "svelte";
 	import { gradient } from "../../../stores";	
 	import type { GradientPoint } from "../../../types/ui";
-	import ParameterContainer from "../../ui/ParameterContainer.svelte";
     import GradientPicker from "../../input/GradientPicker.svelte";
     import Dropdown from "../../ui/Dropdown.svelte";
     
@@ -13,6 +12,8 @@
 	
 	onMount( async ()=>{
 		presets = await( await fetch("gradients.json") ).json();
+		if(!$gradient)
+			$gradient = structuredClone(presets[0]);
 	});
 
 </script>
@@ -38,7 +39,9 @@
 
 	<div>
 		<div>Gradient Editor</div>
-		<GradientPicker bind:gradient={$gradient}/>
+		{#if $gradient}
+			<GradientPicker bind:gradient={$gradient}/>
+		{/if}
 		<p>LMB - move / add colour, RMB - delete colour</p>
 	</div>
 	

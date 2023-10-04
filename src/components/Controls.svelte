@@ -1,46 +1,24 @@
 
 <script lang="ts">
 	import { onMount } from "svelte";
-	import {params, tempParams, callbacks, scene} from "../stores";
-	import { utils } from "../utils";
-	import KernelCanvas from "./misc/KernelCanvas.svelte";
+	import {scene} from "../stores";
     import SectionContainer from "./ui/SectionContainer.svelte";
     import ConvolutionProperties from "./sections/simulation/ConvolutionProperties.svelte";
     import Rules from "./sections/simulation/Rules.svelte";
     import ParametersSelection from "./sections/simulation/ParametersSelection.svelte";
-    import TextureSettings from "./sections/preferences/TextureSettings.svelte"; 
     import Icon from "./ui/Icon.svelte";
     import GeneralSettings from "./sections/preferences/GeneralSettings.svelte";
     import GradientSettings from "./sections/preferences/GradientSettings.svelte";
 	
 	export let canvas : HTMLCanvasElement;
-	let kc:KernelCanvas;	// an auxiliary canvas that renders kernel textures
+
 	let paramsHidden = false;
 	let currentTab = 1;
-	let timer:any = 0;	// timer for kernel reset
 	
-	const formatRules=()=>utils.formatRules($params, $tempParams);
-	const clear=(n:number)=>$tempParams.resetTexture = n+1;
-	const pause=()=>$tempParams.paused = ! $tempParams.paused;
-
-
-	
-	const updateKernels=()=>{
-		// update kernel texture
-		utils.updateKernels($params,$tempParams,kc); 
-		// set kernel texture with a small delay
-		clearTimeout(timer);
-		timer = setTimeout(() => { $scene.setKernels($tempParams.kernelTexture, () => {
-					$tempParams.convRadius = $params.convRadius;	// update kernel radius
-		});}, 10)
-	};
-
-	
-	$callbacks.updateKernelTextures = updateKernels;
-	$:$params, formatRules();
+	const clear=(n:number)=>$scene.resetTexture = n+1;
+	const pause=()=>$scene.isPaused = ! $scene.isPaused;
 
 	onMount(() => {
-		updateKernels();
 		// prevent button triggering / scrolling when using spacebar
 		document.body.onkeydown = (e) => {
 			if(e.code == "Space")
@@ -62,33 +40,33 @@
 		};
 		// brush radius change
 		canvas.addEventListener("wheel", (e:MouseEvent|any) => {
-			let v = ($tempParams.brush.r-(e.deltaY/100));
+			let v = ($scene.brush.r-(e.deltaY/100));
 			v = v > 100 ? 100 : v < 1 ? 1 : v; 
-			$tempParams.brush.r= Math.round(v);
+			$scene.brush.r= Math.round(v);
 		});
 		// brush draw
 		canvas.addEventListener("mousedown", (e) => {
 			if(e.button == 0)
-				$tempParams.brush.type = 2;
+				$scene.brush.type = 2;
 			else
-				$tempParams.brush.type = 3;
+				$scene.brush.type = 3;
 		});
 		canvas.addEventListener("mouseup",  (e)=> {
-			$tempParams.brush.type = 1;
+			$scene.brush.type = 1;
 		});	
 		// brush position change
 		canvas.addEventListener("mousemove",(e:MouseEvent|any)=>{
-			$tempParams.brush.x = e.clientX/e.target.clientWidth;
-			$tempParams.brush.y = 1 - e.clientY/e.target.clientHeight;
+			$scene.brush.x = e.clientX/e.target.clientWidth;
+			$scene.brush.y = 1 - e.clientY/e.target.clientHeight;
 		});
 		// show/hide brush "circle" 
-		canvas.addEventListener("mouseenter",()=> $tempParams.brush.type = 1);
-		canvas.addEventListener("mouseleave",()=> $tempParams.brush.type = 0);
+		canvas.addEventListener("mouseenter",()=> $scene.brush.type = 1);
+		canvas.addEventListener("mouseleave",()=> $scene.brush.type = 0);
 	});
 
 </script>
 
-<KernelCanvas bind:this={kc}/>
+
 <div class="controls-container" data-hidden={paramsHidden}>
 	<div class="params-container" >
 		<div class="params-header">
@@ -104,10 +82,7 @@
 				<SectionContainer label="General">
 					<GeneralSettings/>
 				</SectionContainer>
-				<SectionContainer label="Texture & Graphics">
-					<TextureSettings/>
-				</SectionContainer>
-				<SectionContainer label="Colour Gradient">
+				<SectionContainer label="Colour">
 					<GradientSettings/>
 				</SectionContainer>
 			</div>
@@ -130,8 +105,8 @@
 			{paramsHidden ? ">" : "<"}
 		</button>
 		<div class="actions">
-			<button on:click={()=>pause( )} title="{$tempParams.paused ? "activate":"pause"} the simulation (SPACEBAR)">
-				<Icon name={$tempParams.paused ? "play":"pause"}/>
+			<button on:click={()=>pause( )} title="{$scene.isPaused ? "activate":"pause"} the simulation (SPACEBAR)">
+				<Icon name={$scene.isPaused ? "play":"pause"}/>
 			</button>
 			<button on:click={()=>clear(1)} title="pattern fill (X)">
 				<Icon name="gradient"/>

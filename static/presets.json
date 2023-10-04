@@ -38,7 +38,7 @@
 				]
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.5,
 		"name": "life0",
 		"rules": [
@@ -182,7 +182,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.5,
 		"rules": [
 			{
@@ -337,7 +337,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 15,
+		"kernRadius": 16,
 		"dt": 0.4,
 		"rules": [
 			{
@@ -482,7 +482,7 @@
 				]
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.5,
 		"rules": [
 			{
@@ -629,7 +629,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.3,
 		"rules": [
 			{
@@ -774,7 +774,7 @@
 				]
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.4,
 		"rules": [
 			{
@@ -1016,7 +1016,7 @@
 				]
 			}
 		],
-		"convRadius": 16,
+		"kernRadius": 16,
 		"dt": 0.5,
 		"name": "segmented"
 	},
@@ -1077,7 +1077,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.4,
 		"name": "axe_heads",
 		"rules": [
@@ -1223,7 +1223,7 @@
 				]
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.4,
 		"rules": [
 			{
@@ -1367,7 +1367,7 @@
 				]
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.5,
 		"name": "gliders0",
 		"rules": [
@@ -1530,7 +1530,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.4,
 		"name": "gliders1",
 		"rules": [
@@ -1681,7 +1681,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.45,
 		"name": "worms",
 		"rules": [
@@ -1829,7 +1829,7 @@
 				"previewImage": null
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.4,
 		"rules": [
 			{
@@ -1974,7 +1974,7 @@
 				]
 			}
 		],
-		"convRadius": 12,
+		"kernRadius": 16,
 		"dt": 0.5,
 		"rules": [
 			{
@@ -2110,7 +2110,7 @@
 				]
 			}
 		],
-		"convRadius": 2,
+		"kernRadius": 2,
 		"dt": 1,
 		"name": "conway's_game_of_life",
 		"rules": [
@@ -2256,7 +2256,7 @@
 				]
 			}
 		],
-		"convRadius": 2,
+		"kernRadius": 2,
 		"dt": 0.68,
 		"rules": [
 			{

@@ -1,11 +1,8 @@
-
-import { get } from 'svelte/store';
+import Rules from '../components/sections/simulation/Rules.svelte';
 import { glUtils } from './glUtils';
 
 var screen = [100,100];
 var textureDims = [10,10];
-
-
 
 
 
@@ -23,18 +20,60 @@ function setAttribute(gl, attrib, num=2, type=null, normalize=false, stride=0, o
 
 
 
+// class Scene{
+// 	params:any;
+// 	tempParams:any;
+// 	settings:any;
+// 	initialized = false;
+// 	fb = [];	//	frame buffers
+// 	textures = [];
+// 	kern = {};	//kernel texture
+// 	gradient = {} // colour gradient texture
+// 	shaders = [];
+// 	gl:any;
+// 	glParams = {
+// 		premultipliedAlpha: false, 
+// 		antialias: true,
+// 		depth:true,
+// 	};
+// 	constructor(canvas, shaders, params, tempParams, settings){
+		
+// 	}
+// }
+
+
 // create scene
-export function Scene(canvas, shaders, params, tempParams, settings) {
-	this.params = params;
-	this.tempParams = tempParams;
-	this.settings = settings;
+export function Scene(canvas, shaders) {
+	this.dt = 0.5;
+	this.convRadius=16;
+	this.brush = {
+		x:0,
+		y:0,
+		r:16,
+		type:0,
+	};
+
+	this.rules = [];
+	this.isPaused = false;
+	this.resetTexture = 0;
+	
+
+	this.textureSize = 0.1;
+	this.blur = 2;
+	this.frameSmoothing = 1;
+	this.textureFilter = 1;
+
+
 	this.canvas = canvas;
 	this.initialized = false;
+	
+	
+	this.shaders = shaders;
 	this.fb = [];	//	frame buffers
 	this.textures = [];
 	this.kern = {};	//kernel texture
 	this.gradient = {} // colour gradient texture
-	this.shaders = shaders;
+	
 	const glParams = {
 		premultipliedAlpha: false, 
 		antialias: true,
@@ -74,7 +113,7 @@ Scene.prototype.init = function(){
 	for(let i = 0; i < 2; i++)
 	{
 		const texture = gl.createTexture();
-		glUtils.resetTexture(gl, textureDims, texture, this.settings.textureFilter);
+		glUtils.resetTexture(gl, textureDims, texture, this.textureFilter);
 		this.textures.push(texture);
 		const fb  = gl.createFramebuffer();
 		this.fb.push(fb);
@@ -97,22 +136,26 @@ Scene.prototype.resize = function(){
 	this.canvas.setAttribute("height", b);
 	this.gl.viewport( 0, 0, a, b );
 
-	const multiplier = Math.sqrt(1/(a*b))*Math.sqrt(this.settings.textureSize * 1000000)
+	const multiplier = Math.sqrt(1/(a*b))*Math.sqrt(this.textureSize * 1000000)
 	textureDims = [
 		Math.round(a * multiplier),  
 		Math.round(b * multiplier)
 	];
 	// update texture size
 	this.textures.forEach((tex,i) => {
-		glUtils.resetTexture(this.gl, textureDims, tex, this.settings.textureFilter);
+		glUtils.resetTexture(this.gl, textureDims, tex, this.textureFilter);
 	});
+
+	setTimeout( ()=> {
+		this.resetTexture = 2;	// pattern fill
+	}, 1);
 }
 
 Scene.prototype.setTextureFilter = function(){
 	const gl = this.gl;
 	this.textures.forEach((tex,i) => {
 		gl.bindTexture(gl.TEXTURE_2D, tex);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.settings.textureFilter == 0 ? gl.NEAREST : gl.LINEAR);	
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.textureFilter == 0 ? gl.NEAREST : gl.LINEAR);	
 	});
 }
 
@@ -132,10 +175,12 @@ Scene.prototype.drawScene = function (process)  {
 	if(!this.initialized)
 		return;
 
-	const brush = [this.tempParams.brush.x,this.tempParams.brush.y,this.tempParams.brush.r,this.tempParams.brush.type];
+	
 	const gl = this.gl;
 	const shaders =  this.shaders;
 	const fb = this.fb;
+
+	const brush = Object.values(this.brush);
 
 	gl.enable(gl.CULL_FACE);
 
@@ -147,17 +192,19 @@ Scene.prototype.drawScene = function (process)  {
 	setAttribute(gl, shader.attributes.aVertexPosition);
 	setAttribute(gl, shader.attributes.aTextureCoord);
 	
+
+	
 	fbCurrent  =  1 - fbCurrent;	//flip the current framebuffer index
 	//	process the texture
 	{
 		//set the parameters
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
-		gl.uniform1i(shader.uniforms.uKernelRadius.location, this.tempParams.convRadius);
-		gl.uniform1f(shader.uniforms.uDelta.location, this.params.dt);
-		gl.uniform1fv(shader.uniforms.uRules.location, this.tempParams.rules);
-		gl.uniform1i(shader.uniforms.isPaused.location, this.tempParams.paused || !process);
-		gl.uniform1i(shader.uniforms.uReset.location, this.tempParams.resetTexture);		
+		gl.uniform1i(shader.uniforms.uKernelRadius.location, this.convRadius);
+		gl.uniform1f(shader.uniforms.uDelta.location, this.dt);
+		gl.uniform1fv(shader.uniforms.uRules.location, this.rules);
+		gl.uniform1i(shader.uniforms.isPaused.location, this.isPaused || !process);
+		gl.uniform1i(shader.uniforms.uReset.location, this.resetTexture);		
 		
 		
 
@@ -184,7 +231,7 @@ Scene.prototype.drawScene = function (process)  {
 	gl.useProgram(shader.program);
 	{
 		gl.uniform1fv(shader.uniforms.uTextureDims.location, textureDims);
-		gl.uniform1iv(shader.uniforms.uPostProcessing.location, [this.settings.blur, this.settings.frameSmoothing]);
+		gl.uniform1iv(shader.uniforms.uPostProcessing.location, [this.blur, this.frameSmoothing]);
 		gl.uniform1fv(shader.uniforms.uBrush.location, brush);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
@@ -201,6 +248,9 @@ Scene.prototype.drawScene = function (process)  {
 		gl.viewport(0, 0, screen[0],screen[1]);	 
 		drawScreen(gl);
 	}
+
+
+	this.resetTexture = 0;
 }
 
 

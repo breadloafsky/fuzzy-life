@@ -1,7 +1,7 @@
 
 <script lang="ts">
-    import { onMount } from "svelte";
-	import { settings, callbacks, scene } from "../../stores";	
+
+	import { scene } from "../../stores";	
     import GradientCanvas from "../misc/GradientCanvas.svelte";
     import { GradientPoint } from "../../types/ui";
     import Icon from "../ui/Icon.svelte";

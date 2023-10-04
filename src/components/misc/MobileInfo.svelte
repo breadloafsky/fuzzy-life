@@ -1,6 +1,5 @@
 <script>
     import Icon from "../ui/Icon.svelte";
-
 </script>
 
 
