@@ -18,7 +18,9 @@
 	
 
 	// sort gradient and create gradient CSS string
-	$:gradient,(()=>{
+	$:gradient,updateGradient();
+
+	function updateGradient(){
 		gradient.sort((a, b) => {
 			return a.pos - b.pos;
 		});
@@ -34,7 +36,8 @@
 				$scene.setGradient(texture);
 			}, 10)
 		}
-	})();
+
+	}
 	
 	function getMousePos(e:MouseEvent){
 		let pos = (e.pageX - container.offsetLeft)/width;

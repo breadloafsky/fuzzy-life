@@ -35,6 +35,7 @@
 	position: absolute;
 	width: 100%;
 	visibility: hidden;
+	z-index: 3;
 }
 
 .dropdown:hover > div:last-child{

@@ -12,7 +12,6 @@
 	let kc:KernelCanvas;	// a canvas that renders kernel textures
 	let timer:any = 0;	// timer for kernel reset
 	
-	let kernelTexture:any;
 	let kernelsPreview:any;
 	
 	onMount(() => {
@@ -23,16 +22,16 @@
 	$:$kernels,kc && updateKernels();
 
 	const updateKernels=()=>{
-
 		// update kernel texture
-		kernelTexture = kc.renderTexture($kernels, $kernRadius);
+		const kernelTexture = kc.renderTexture($kernels, $kernRadius);
 		kernelsPreview = kc.renderPreview($kernels, $kernRadius);
 
 		// set kernel texture with a small delay
 		clearTimeout(timer);
-		timer = setTimeout(() => { $scene.setKernels(kernelTexture, () => {
-					$scene.convRadius = $kernRadius;	// update kernel radius
-		});}, 10)
+		timer = setTimeout(() => { 
+			$scene.setKernels(kernelTexture, () => 
+			$scene.convRadius = $kernRadius	// update kernel radius
+		);}, 10);
 	};
 
 </script>

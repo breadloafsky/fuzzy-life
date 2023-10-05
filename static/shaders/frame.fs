@@ -42,8 +42,11 @@ float t(float m,float n)
     float result = 0.0;
     for(int i = 0; i < 4; i++){
         float 
+        // a = s1( m, uRules[i*8+0], uRules[i*8+1], uRules[i*8+2], uRules[i*8+3]);
+        // a = min(a, s1( n, uRules[i*8+4], uRules[i*8+5], uRules[i*8+6], uRules[i*8+7]));
+
         a = s1( m, uRules[i*8+0], uRules[i*8+1], uRules[i*8+2], uRules[i*8+3]);
-        a = min(a, s1( n, uRules[i*8+4], uRules[i*8+5], uRules[i*8+6], uRules[i*8+7]));
+        a = a*s1( n, uRules[i*8+4], uRules[i*8+5], uRules[i*8+6], uRules[i*8+7]);
         result = max(result, a);   
     }
     return result;
@@ -67,9 +70,7 @@ float processPixel(){
     //  convolution
     for(float i = -31.; i < 32.; i++){
         for(float j = -31.; j < 32.; j++){
-            
             float dist = distance(vec2(i,j), vec2(0.,0.));
-
             if( dist < r)
             {
                 float i_f = (i) / uTextureDims[0];

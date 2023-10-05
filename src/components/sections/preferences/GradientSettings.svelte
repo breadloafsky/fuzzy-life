@@ -19,7 +19,6 @@
 </script>
 
 <div>
-	
 	<div style="display: flex; justify-content: space-between;">
 		Presets
 		<Dropdown title="select">

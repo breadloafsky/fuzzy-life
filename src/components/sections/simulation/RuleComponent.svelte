@@ -10,7 +10,6 @@
 	export let ruleId:number;	
 	let highlightedKernel:number|null=null;	//	highlight kernel
 
-
 	$:$rules, (()=>{
 		$scene.rules =
 			utils.formatRules($rules);
@@ -61,7 +60,7 @@
 					<NumberInput 
 						bind:value={$rules[ruleId].conditions[i].slopes[0]}  
 						step={0.01} 
-						min={0.001} 
+						min={0.00} 
 						max={1.0}
 					/>
 					<hr/>
@@ -70,7 +69,7 @@
 					<NumberInput 
 						bind:value={$rules[ruleId].conditions[i].slopes[1]}  
 						step={0.01} 
-						min={0.001} 
+						min={0.00} 
 						max={1.0}
 					/>
 				</div>
