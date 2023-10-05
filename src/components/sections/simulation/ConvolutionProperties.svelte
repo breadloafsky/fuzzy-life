@@ -31,7 +31,7 @@
 		timer = setTimeout(() => { 
 			$scene.setKernels(kernelTexture, () => 
 			$scene.convRadius = $kernRadius	// update kernel radius
-		);}, 10);
+		);}, 100);
 	};
 
 </script>

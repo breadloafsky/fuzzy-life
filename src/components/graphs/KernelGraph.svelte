@@ -15,7 +15,7 @@
 	let selectedPoint:any = null;
 	let repaintTimer:any = 0;
 	
-	$:[selectedKernel], repaint();
+	$:[$kernels,selectedKernel], repaint();
 
 	$:containerWidth, (()=>{
 		clearTimeout(repaintTimer);
@@ -99,7 +99,7 @@
 			}
 			graphPath[j] += `L ${width+100} ${height} `;
 		}
-		//$kernels = $kernels;	// update
+		$kernels = $kernels;	// update
 	}
 
 </script>

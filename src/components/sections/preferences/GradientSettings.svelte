@@ -16,6 +16,10 @@
 			$gradient = structuredClone(presets[0]);
 	});
 
+	$:$gradient,(()=>{
+		console.log($gradient);
+	});
+
 </script>
 
 <div>
