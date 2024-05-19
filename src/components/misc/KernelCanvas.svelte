@@ -30,7 +30,7 @@
 						if(dist < radius)
 						{
 							let c = utils.getKernelValue(kernels[k],(dist)/radius);
-							ctx.fillStyle = `rgba(${255},${180},${180},${c})`;
+							ctx.fillStyle = `rgba(${250},${180},${180},${c})`;
 							ctx.fillRect(i-1, j-1, 1, 1)
 						}
 					}
